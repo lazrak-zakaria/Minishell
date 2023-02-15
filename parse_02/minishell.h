@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/15 06:33:17 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/15 09:31:24 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ typedef struct s_cmd_wrapper
 {
 	char	*cmd;
 	t_queue	*args;
-	char	*infile;
-	char	*outfile;
+	t_queue	*infile;
+	t_queue	*outfile;
 	char	*limiter;
-	char	*append;
+	t_queue	*append;
 	char	*relation;
 }	t_cmd_wrapper;
 

@@ -79,3 +79,7 @@ problem to this moment :
 							$		this should expand to the value 
 
 
+part 5 ---			   :
+				i should check for syntax error ;
+				handle the $ ---> this should be between 4 && 5; 
+
