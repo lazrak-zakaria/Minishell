@@ -79,7 +79,19 @@ problem to this moment :
 							$		this should expand to the value 
 
 
+
+before i put everythinf to the final struct i should check for errors first and expand $ ;
+
+	if (' >> or > Or << < is folowed by a token or newline ===> syntax error);
+
+	
 part 5 ---			   :
 				i should check for syntax error ;
 				handle the $ ---> this should be between 4 && 5; 
+
+		$USER 
+				if (between "") expand;
+				if (between '') but it was first "'   '"   expand	' expr '
+				if (between ) bit it ws between ' '  dont expand;
+
 
