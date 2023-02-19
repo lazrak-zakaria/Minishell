@@ -46,4 +46,3 @@ int		ft_q_size(t_queue *top)
 	}
 	return (i);
 }
-

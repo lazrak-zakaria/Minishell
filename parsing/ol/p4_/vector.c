@@ -4,15 +4,15 @@ void	ft_push_back(t_vector *vec, char data)
 {
 	char	*new;
 	int		j;
-
-	if (vec->i + 1 == vec->size)
+	
+	if (vec->i + 1 >= vec->size)
 	{
 		if (!vec->size)
 			vec->size = 2;
 		new = malloc(sizeof(char) * (vec->size * 2));
 		vec->size *= 2;
 		j = 0;
-		while (vec->string[j])
+		while (vec->string && vec->string[j])
 		{
 			new[j] = vec->string[j];
 			j++;
