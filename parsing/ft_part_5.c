@@ -11,7 +11,7 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	elem = var->temp_queue->data;
 	b = elem->s;
 	ft_push(&cmd->outfile, ft_new_node(b));
-	if (elem->dollar && !b[0])
+	if (elem->dollar && !elem->quote && !b[0])
 		ft_push(&cmd->rel_1, ft_new_node(strdup("BIGOUS")));
 	else if (a[1])
 		ft_push(&cmd->rel_1, ft_new_node(strdup("APPEND")));
