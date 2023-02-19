@@ -90,7 +90,10 @@ char	*ft_substr(char	*a, int s, int e);
 void	ft_parse(char *a, t_yassir *ys);
 
 
-
+void    ft_putchar_fd(char c, int fd);
+void    ft_putstr_fd(char *a, int fd);
+int    ft_err_2(char *a, char *b);
+int    ft_err_1(char *a);
 /****************/
 
 typedef struct s_env

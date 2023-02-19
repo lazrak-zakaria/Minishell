@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_4.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 15:13:35 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/19 17:42:49 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
 
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys);
 int		ft_dollar_ok(char c);
@@ -108,9 +108,11 @@ t_queue	*ft_part_4(t_queue *queue, t_yassir *ys)
 		a = var.temp_queue->data;
 		element = malloc (sizeof (t_elem));
 		element->s = NULL;
+		element->dollar = 0;
 		element->quote = (a[0] == '\'' || a[0] == '\"');
 		if (ft_find(a, '$'))
 		{
+			element->dollar = 1;
 			element->s = ft_expand_dollar(a, ys);
 			if (!element->s)
 				element->s = var.vec.string;

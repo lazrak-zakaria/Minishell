@@ -1,6 +1,18 @@
-#include "../minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_parse.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
+/*   Updated: 2023/02/19 17:58:52 by zlazrak          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "minishell.h"
 
+int	check_enclosed_quotes(char	*a);
 /*************/
 
 t_list	*ft_lstlast(t_list *lst)
@@ -148,7 +160,7 @@ void	ft_print2d(char **a)
 {
 	int i = 0;
 	while (a[i])
-		printf ("%s 	|", a[i++]);
+		printf ("|%d|%s|" , a[0][0],a[i++]);
 	printf ("\n");
 }
 
@@ -185,11 +197,17 @@ void	ft_free_part_5(t_queue *q)
 		q = qq;
 	}
 }
+
 void	ft_parse(char *a, t_yassir *ys)
 {
 	t_queue	*q;
 	t_queue	*temp;
 
+	if (check_enclosed_quotes(a))
+	{
+		ft_putstr_fd("unclosed quotes\n", 2);
+		return ;
+	}
 	q = ft_part_1(a);
 	
 	temp = ft_part_2(q);
@@ -199,7 +217,12 @@ void	ft_parse(char *a, t_yassir *ys)
 	q = ft_part_3(temp);
 	
 	ft_free_q(temp);
-//	ft_part_3_5(q);
+	if(ft_part_3_5(q))
+	{
+		ft_free_q(q);
+		//system("leaks a.out");
+		return ;
+	};
 
 	temp = ft_part_4(q, ys);
 		ft_free_q(q);

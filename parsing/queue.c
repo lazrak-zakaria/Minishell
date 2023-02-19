@@ -1,4 +1,4 @@
-#include "../queue.h"
+#include "queue.h"
 
 t_queue *ft_new_node(void *data)
 {

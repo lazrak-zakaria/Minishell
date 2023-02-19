@@ -1,4 +1,4 @@
-#include "../vector.h"
+#include "vector.h"
 
 void	ft_push_back(t_vector *vec, char data)
 {
