@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 17:17:07 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/19 18:06:36 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ typedef	struct s_elem
 {
 	char	*s;
 	int		quote;
+	int		dollar;
 } t_elem;
 
 typedef struct s_var

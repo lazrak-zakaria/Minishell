@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 #include <errno.h>
 #include <string.h>
 

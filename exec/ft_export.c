@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_export_2(t_yassir *promet)
 {

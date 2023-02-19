@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_4.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 17:42:49 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:05:27 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys);
 int		ft_dollar_ok(char c);

@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	get_cmd_child(t_pipex *pipex, t_yassir *promet)
 {

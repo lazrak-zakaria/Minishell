@@ -1,5 +1,5 @@
 
-#include "minishell.h"
+#include "../minishell.h"
 
 char	*ft_substr_2(char *s, unsigned int start, size_t len)
 {

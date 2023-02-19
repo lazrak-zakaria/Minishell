@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_sub_3_5.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:42:28 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 16:47:28 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:05:07 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_is_token(char *a);
 

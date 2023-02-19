@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_3_5.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:40:33 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 16:49:42 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:05:23 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_synerr(char *a, int i, int j);
 int		check_err(t_queue *q, char *a, char f);

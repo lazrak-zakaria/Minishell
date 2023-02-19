@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 

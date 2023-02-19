@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:00:21 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 10:52:13 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:05:21 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_norm_p_2(char *a, t_var *var)
 {

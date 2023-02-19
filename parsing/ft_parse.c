@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 17:58:52 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 18:05:16 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	check_enclosed_quotes(char	*a);
 /*************/
