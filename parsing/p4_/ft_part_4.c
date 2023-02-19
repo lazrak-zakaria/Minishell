@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 10:35:17 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 11:47:53 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,8 @@ void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i)
 	{
 		memset(&vec_dollar, 0, sizeof(vec_dollar));
 		ft_push_back(&vec_dollar, a[(*i)++]);
+		if (a[(*i)] == '?')
+			ft_push_back(&vec_dollar, a[(*i)++]);
 		while (ft_dollar_ok(a[(*i)]))
 			ft_push_back(&vec_dollar, a[(*i)++]);
 		flag = 1;
@@ -196,10 +198,7 @@ void	ft_join_dollar(t_vector *vec, t_vector *vec_dollar, t_yassir *ys)
 		a = ft_itoa(ys->exit_status);
 		i = 0;
 		while (a && a[i])
-		{
-			ft_push_back(vec, a[i]);
-		}
-		
+			ft_push_back(vec, a[i++]);
 	}
 	else
 	{

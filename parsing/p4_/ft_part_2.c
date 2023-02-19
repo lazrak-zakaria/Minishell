@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:00:21 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/18 17:19:27 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/19 10:52:13 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ t_queue	*ft_part_2(t_queue *queue)
 		var.temp_queue = ft_pop(&queue);
 		a = var.temp_queue->data;
 		ft_norm_p_2(a, &var);
-		free (var.temp_queue);
-		free (a);
 	}
 	return (var.queue_answer);
 }
