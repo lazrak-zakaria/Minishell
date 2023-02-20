@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 18:05:16 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 13:40:52 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	ft_here(t_queue *queue);
 int	check_enclosed_quotes(char	*a);
 /*************/
 
@@ -145,10 +146,11 @@ t_list	*ft_copy_(t_queue *q)
 		to = malloc(sizeof(t_cmd_package));
 		from = q->data;
 		to->cmd = ft_cp(from->cmd);
-		to->outfile = ft_cp(from->outfile);
-		to->infile = ft_cp(from->infile);
-		to->rel_1 = ft_cp(from->rel_1);
-		to->rel_2 = ft_cp(from->rel_2);
+		to->file = ft_cp(from->file);
+		to->rel = ft_cp(from->rel);
+		/*    */
+		to->buffer = ft_cp(from->buffer);
+		/*     */
 		to->fd_0 = 0;
 		to->fd_1 = 1;
 		ft_lstadd_back(&cmd, ft_lstnew(to));
@@ -185,11 +187,8 @@ void	ft_free_part_5(t_queue *q)
 		p = q->data;
 	//	ft_free_q(p->cmd);
 		ft_free(p->cmd);
-		ft_free(p->infile);
-		ft_free(p->outfile);
-
-		ft_free_q(p->rel_1);
-		ft_free_q(p->rel_2);
+		ft_free(p->file);
+		ft_free_q(p->rel); //later free buffer;
 		free(p);
 	
 		free(q);
@@ -227,6 +226,7 @@ void	ft_parse(char *a, t_yassir *ys)
 	temp = ft_part_4(q, ys);
 		ft_free_q(q);
 	q = ft_part_5(temp);
+	ft_here(q);
 	ys->list_cmd = ft_copy_(q);
 
 	// t_list 	*y = ys->list_cmd;

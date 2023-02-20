@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 20:26:18 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 13:37:01 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,9 @@
 typedef struct s_cmd_package
 {
 	char	**cmd;
-	char	**infile;	 // <  <<
-	char	**outfile;	// >> >
-	char	**rel_1;	// >> or >
-	char	**rel_2;	// << or <
+	char	**file;	
+	char	**rel;	
+	char	**buffer;
 	int		fd_0;
 	int		fd_1;
 }	t_cmd_package;
@@ -53,10 +52,9 @@ typedef struct s_yassir
 typedef struct s_cmd_parse
 {
 	t_queue	*cmd;
-	t_queue	*infile;	// <  <<
-	t_queue	*outfile;	// >> 
-	t_queue	*rel_1;		// < or <<
-	t_queue	*rel_2;		// >> or >
+	t_queue	*file;	
+	t_queue	*rel;		
+	t_queue	*buffer;
 }	t_cmd_parse;
 
 
