@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 15:15:35 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 16:21:38 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ typedef	struct s_list
 } t_list;
 
 
-typedef struct s_yassir
+typedef struct s_prompt
 {
 	t_list	*list_cmd;
 	struct s_env *s_env; // add
 	char	**env;
 	int		exit_status;
-}	t_yassir;
+}	t_prompt;
 
 typedef struct s_cmd_parse
 {
@@ -83,10 +83,10 @@ int		ft_part_3_5(t_queue *q);
 t_queue	*ft_part_1(char *a);
 t_queue	*ft_part_2(t_queue *q);
 t_queue	*ft_part_3(t_queue *queue);
-t_queue	*ft_part_4(t_queue *queue, t_yassir *ys);
+t_queue	*ft_part_4(t_queue *queue, t_prompt *ys);
 t_queue	*ft_part_5(t_queue *queue);
 char	*ft_substr(char	*a, int s, int e);
-void	ft_parse(char *a, t_yassir *ys);
+void	ft_parse(char *a, t_prompt *ys);
 
 
 void    ft_putchar_fd(char c, int fd);
@@ -115,11 +115,11 @@ typedef struct s_pipex
 }t_pipex;
 
 // Exec
-void	ft_exec(t_yassir *promet);
-void	one_cmd(t_yassir *promet, t_pipex *pipex);
+void	ft_exec(t_prompt *prompt);
+void	one_cmd(t_prompt *prompt, t_pipex *pipex);
 void	get_cmd_path(char **paths, char **command);
 char	**get_paths(char **envp);
-void	get_cmd_child(t_pipex *pipex, t_yassir *promet);
+void	get_cmd_child(t_pipex *pipex, t_prompt *prompt);
 
 // Utils
 size_t	ft_strlen(char *s);
@@ -142,21 +142,22 @@ t_env	*ft_creat_env(char **envp);
 char	*ft_strjoin(char *s1, char *s2);
 char	**get_env(t_env *envp);
 t_env	*ft_env_last(t_env *lst);
-int		ft_env(t_yassir *promet);
+int		ft_env(t_prompt *prompt);
 
 // Builting
 int		ft_echo(char **args, int fd);
-int		ft_exit(char **args, t_yassir *promet);
-int		ft_cd(char **args, t_yassir *promet);
+int		ft_exit(char **args, t_prompt *prompt);
+int		ft_cd(char **args, t_prompt *prompt);
 int		ft_pwd();
-int		ft_unset(t_yassir *promet, char **args);
-int		ft_export(t_yassir *promet);
+int		ft_unset(t_prompt *prompt, char **args);
+int		ft_export(t_prompt *prompt);
 
 //Red
-void	red(t_list	*cmd);int	red_2(t_list	*cmd);
+int	red(t_list	*cmd);
+int	red_2(t_list	*cmd);
 
 
 int	is_builting(char *cmd);
-void	ft_builting(t_yassir *promet);
+void	ft_builting(t_prompt *prompt);
 
 #endif

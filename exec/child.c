@@ -1,9 +1,9 @@
 
 #include "../minishell.h"
 
-void	get_cmd_child(t_pipex *pipex, t_yassir *promet)
+void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 {
-	pipex->cmd = promet->list_cmd->data->cmd;
+	pipex->cmd = prompt->list_cmd->data->cmd;
 	if (pipex->cmd[0][0] == '\0')
 	{
 		write(2, "bash: ", 7);
@@ -11,7 +11,7 @@ void	get_cmd_child(t_pipex *pipex, t_yassir *promet)
 		exit(127);
 	}
 	if (is_builting(pipex->cmd[0]))
-		ft_builting(promet);
+		ft_builting(prompt);
 	if (ft_strchr(pipex->cmd[0], '/') == -1)
 	{
 		pipex->all_paths = get_paths(pipex->envp);
@@ -19,10 +19,10 @@ void	get_cmd_child(t_pipex *pipex, t_yassir *promet)
 		if (pipex->all_paths != NULL)
 			ft_free_all_(pipex->all_paths); // command not found
 	}
-	if (promet->list_cmd->data->fd_0 != 0)
-		dup2(promet->list_cmd->data->fd_0, 0);
-	if (promet->list_cmd->data->fd_1 != 1)
-		dup2(promet->list_cmd->data->fd_1, 1);
+	if (prompt->list_cmd->data->fd_0 != 0)
+		dup2(prompt->list_cmd->data->fd_0, 0);
+	if (prompt->list_cmd->data->fd_1 != 1)
+		dup2(prompt->list_cmd->data->fd_1, 1);
 	execve(pipex->cmd[0], pipex->cmd, pipex->envp);
 	write(2, "bash: ", 7);
 	perror(pipex->cmd[0]);
@@ -90,24 +90,24 @@ int	is_builting(char *cmd)
 	return (0);
 }
 
-void	ft_builting(t_yassir *promet)
+void	ft_builting(t_prompt *prompt)
 {
 	int	ret;
 
-	if (my_strcmp(promet->list_cmd->data->cmd[0], "exit"))
-		ret = ft_exit(promet->list_cmd->data->cmd, promet);
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "echo"))
-		ret = ft_echo(promet->list_cmd->data->cmd, promet->list_cmd->data->fd_1);
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "cd"))
-		ret = ft_cd(promet->list_cmd->data->cmd, promet);
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "pwd"))
+	if (my_strcmp(prompt->list_cmd->data->cmd[0], "exit"))
+		ret = ft_exit(prompt->list_cmd->data->cmd, prompt);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "echo"))
+		ret = ft_echo(prompt->list_cmd->data->cmd, prompt->list_cmd->data->fd_1);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "cd"))
+		ret = ft_cd(prompt->list_cmd->data->cmd, prompt);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
 		ret = ft_pwd();
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "unset"))
-		ret = ft_unset(promet, promet->list_cmd->data->cmd);
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "env"))
-		ret = ft_env(promet);
-	else if (my_strcmp(promet->list_cmd->data->cmd[0], "export"))
-		ret = ft_export(promet);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
+		ret = ft_unset(prompt, prompt->list_cmd->data->cmd);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))
+		ret = ft_env(prompt);
+	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "export"))
+		ret = ft_export(prompt);
 	exit(ret);
 }
 

@@ -1,9 +1,9 @@
 #include "../minishell.h"
 
-int	ft_exit(char **args, t_yassir *promet)
+int	ft_exit(char **args, t_prompt *prompt)
 {
 	if (args[1] == NULL)
-		exit(promet->exit_status);
+		exit(prompt->exit_status);
 	// if (args[2] == NULL)
 	// {
 	if (ft_isdigit(args[1]))
@@ -21,7 +21,7 @@ int	ft_exit(char **args, t_yassir *promet)
 	// else
 	// {
 		
-		// exit(promet->exit_status);
+		// exit(prompt->exit_status);
 	// }
 	return (0);
 }

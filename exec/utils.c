@@ -256,5 +256,3 @@ int	ft_strchr(char *s, char c)
 				return (i);
 	return (-1);
 }
-
-

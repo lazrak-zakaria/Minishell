@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 14:54:08 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 15:38:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_here(t_queue *queue, t_yassir *ys);
+void	ft_here(t_queue *queue, t_prompt *ys);
 int	check_enclosed_quotes(char	*a);
 /*************/
 
@@ -197,7 +197,7 @@ void	ft_free_part_5(t_queue *q)
 	}
 }
 
-void	ft_parse(char *a, t_yassir *ys)
+void	ft_parse(char *a, t_prompt *ys)
 {
 	t_queue	*q;
 	t_queue	*temp;

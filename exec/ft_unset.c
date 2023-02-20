@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	ft_unset_2(t_yassir *promet, char **args)
+int	ft_unset_2(t_prompt *prompt, char **args)
 {
 	if (args[1] == NULL)
 		return (0);
@@ -8,10 +8,10 @@ int	ft_unset_2(t_yassir *promet, char **args)
 	{
 		if (ft_isalnum_(args[i]))
 		{
-			t_env *current = promet->s_env;
+			t_env *current = prompt->s_env;
 			if (my_strcmp(current->variable, args[i]))
 			{
-				promet->s_env = promet->s_env->next;
+				prompt->s_env = prompt->s_env->next;
 				free(current->value);
 				free(current->variable);
 				free(current);
@@ -39,9 +39,9 @@ int	ft_unset_2(t_yassir *promet, char **args)
 	return (0);
 }
 
-int	ft_env(t_yassir *promet)
+int	ft_env(t_prompt *prompt)
 {
-	t_env *current = promet->s_env;
+	t_env *current = prompt->s_env;
 	while (current != NULL)
 	{
 		if (current->variable)
@@ -55,12 +55,12 @@ int	ft_env(t_yassir *promet)
 	return (0);
 }
 
-int	ft_unset(t_yassir *promet, char **args)
+int	ft_unset(t_prompt *prompt, char **args)
 {
 	int ret;
 
-	ret = ft_unset_2(promet, args);
-	ft_free_all_(promet->env);
-	promet->env = get_env(promet->s_env);
+	ret = ft_unset_2(prompt, args);
+	ft_free_all_(prompt->env);
+	prompt->env = get_env(prompt->s_env);
 	return (ret);
 }

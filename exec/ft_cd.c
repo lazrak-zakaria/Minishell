@@ -25,13 +25,13 @@ t_env *search_env_2(t_env *env, char *str)
 }
 
 
-int	ft_cd_2(char **args, t_yassir *promet)
+int	ft_cd_2(char **args, t_prompt *prompt)
 {
 	t_env *str;
 
 	if (!args[1] || my_strcmp(args[1], "~"))
 	{
-		str = search_env_2(promet->s_env, "HOME");
+		str = search_env_2(prompt->s_env, "HOME");
 		if (str != NULL && str->value != NULL)
 		{
 			chdir(str->value);
@@ -42,7 +42,7 @@ int	ft_cd_2(char **args, t_yassir *promet)
 	}
 	else if (my_strcmp(args[1], "-"))
 	{
-		str = search_env_2(promet->s_env, "OLDPWD");
+		str = search_env_2(prompt->s_env, "OLDPWD");
 		if (str != NULL && str->value != NULL)
 		{
 			chdir(str->value);
@@ -61,22 +61,22 @@ int	ft_cd_2(char **args, t_yassir *promet)
 	return (1);
 }
 
-int	ft_cd(char **args, t_yassir *promet)
+int	ft_cd(char **args, t_prompt *prompt)
 {
 	int exit_status;
 	char buffer[1024];
 	getcwd(buffer, 1024);
-	exit_status = ft_cd_2(args, promet);
+	exit_status = ft_cd_2(args, prompt);
 	if (exit_status == 0)
 	{
-		char *home = search_env(promet->s_env, "");
+		char *home = search_env(prompt->s_env, "");
 		if (home == NULL)
 		{
 
 		}
 		else
 		{
-			t_env *env = promet->s_env;
+			t_env *env = prompt->s_env;
 			while(env)
 			{
 				if (ft_strcmp(env->variable, "OLDPWD"))
@@ -92,7 +92,7 @@ int	ft_cd(char **args, t_yassir *promet)
 			{
 				char *variable = "OLDPWD";
 				char *value = ft_strdup(buffer);
-				env = ft_env_last(promet->s_env);
+				env = ft_env_last(prompt->s_env);
 				env->next = malloc(sizeof(t_env));
 				if (env->next == NULL)
 					return (1);

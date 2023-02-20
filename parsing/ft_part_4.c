@@ -6,16 +6,16 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 11:12:42 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 15:38:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys);
+void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
 int		ft_dollar_ok(char c);
-char	*ft_expand_dollar(char *a, t_yassir *ys);
-void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i);
+char	*ft_expand_dollar(char *a, t_prompt *ys);
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i);
 
 
 static int	_abs(int n)
@@ -91,7 +91,7 @@ void	ft_norm_part4(char *a, t_var *var)
 	}
 }
 
-t_queue	*ft_part_4(t_queue *queue, t_yassir *ys)
+t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 {
 	t_var	var;
 	t_elem	*element;
@@ -137,7 +137,7 @@ int	ft_dollar_ok(char c)
 	return (f);
 }
 
-char	*ft_expand_dollar(char *a, t_yassir *ys)
+char	*ft_expand_dollar(char *a, t_prompt *ys)
 {
 	t_vector	vec;
 	int			i;
@@ -166,7 +166,7 @@ char	*ft_expand_dollar(char *a, t_yassir *ys)
 	return (vec.string);
 }
 
-void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i)
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 {
 	t_vector	vec_dollar;
 	int			flag;
@@ -195,7 +195,7 @@ void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i)
 		ft_push_back(vec, a[(*i)++]);
 }
 
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys)
+void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 {
 	char	*a;
 	int		i;

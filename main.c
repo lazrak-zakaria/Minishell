@@ -4,25 +4,25 @@ int	main(int ac, char **av, char **env)
 {
 	(void)ac;
 	(void)av;
-	t_yassir 	promet;
+	t_prompt 	prompt;
 
-	promet.s_env = ft_creat_env(env); //		linked list
-	promet.env = get_env(promet.s_env); // 		char ** alocated
-	promet.exit_status = 0;
-	promet.list_cmd = NULL;
+	prompt.s_env = ft_creat_env(env); //		linked list
+	prompt.env = get_env(prompt.s_env); // 		char ** alocated
+	prompt.exit_status = 0;
+	prompt.list_cmd = NULL;
 
 	while(1)
 	{
-		promet.list_cmd = NULL;
+		prompt.list_cmd = NULL;
 		char *a = readline("-->");
 		if (a == NULL)
 			exit(0);
-		ft_parse(a, &promet);
+		ft_parse(a, &prompt);
 		free(a);
 
 	/******************************/
 
-		//ft_exec(&promet);
+		ft_exec(&prompt);
 
 	}
 }

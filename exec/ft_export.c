@@ -22,7 +22,7 @@ int	check_agrs(char *s)
 	return (0);
 }
 
-void	ft_print_env(t_yassir *yassir)
+void	ft_print_env(t_prompt *yassir)
 {
 	t_env *current = yassir->s_env;
 	while (current != NULL)
@@ -38,29 +38,29 @@ void	ft_print_env(t_yassir *yassir)
 	}
 }
 
-int	ft_export_2(t_yassir *promet)
+int	ft_export_2(t_prompt *prompt)
 {
 	t_env	*last;
 	t_env	*curr;
 	int		i;
-	if (promet->list_cmd->data->cmd[1] == NULL)
-		ft_print_env(promet);
+	if (prompt->list_cmd->data->cmd[1] == NULL)
+		ft_print_env(prompt);
 	else
 	{
 		int j = 0;
-		while(promet->list_cmd->data->cmd[++j] != NULL)
+		while(prompt->list_cmd->data->cmd[++j] != NULL)
 		{
-			if (check_agrs(promet->list_cmd->data->cmd[j]))
+			if (check_agrs(prompt->list_cmd->data->cmd[j]))
 				continue;
 			i = -1;
-			while(promet->list_cmd->data->cmd[j][++i])
-				if (promet->list_cmd->data->cmd[j][i] == '=')
+			while(prompt->list_cmd->data->cmd[j][++i])
+				if (prompt->list_cmd->data->cmd[j][i] == '=')
 					break;
-			if (promet->list_cmd->data->cmd[j][i] == '\0') // there is no =
+			if (prompt->list_cmd->data->cmd[j][i] == '\0') // there is no =
 				continue;
-			char *variable = ft_substr(promet->list_cmd->data->cmd[j], 0, i);
-			char *value = ft_strdup(&promet->list_cmd->data->cmd[j][i + 1]);
-			curr = promet->s_env;
+			char *variable = ft_substr(prompt->list_cmd->data->cmd[j], 0, i);
+			char *value = ft_strdup(&prompt->list_cmd->data->cmd[j][i + 1]);
+			curr = prompt->s_env;
 			while(curr)
 			{
 				if (my_strcmp(curr->variable, variable))
@@ -74,7 +74,7 @@ int	ft_export_2(t_yassir *promet)
 			}
 			if (curr != NULL)
 				continue;
-			last = ft_env_last(promet->s_env);
+			last = ft_env_last(prompt->s_env);
 			if (last == NULL)
 			{
 				printf("NOT TODAY\n");
@@ -94,11 +94,11 @@ int	ft_export_2(t_yassir *promet)
 	return (0);
 }
 
-int	ft_export(t_yassir *promet)
+int	ft_export(t_prompt *prompt)
 {
 	int ret;
-	ret = ft_export_2(promet);
-	ft_free_all_(promet->env);
-	promet->env = get_env(promet->s_env);
+	ret = ft_export_2(prompt);
+	ft_free_all_(prompt->env);
+	prompt->env = get_env(prompt->s_env);
 	return (ret);
 }

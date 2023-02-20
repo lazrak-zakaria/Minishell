@@ -1,38 +1,52 @@
 #include "../minishell.h"
 
 
-void	red(t_list	*cmd)
+int	red(t_list	*cmd)
 {
 	int	i = 0;
 	int	j = 0;
 	int	fd_0 = 0;
 	int	fd_1 = 1;
+	int pip[2];
+
 	if (cmd->data->file  == NULL)
-		return ;
+		return -1;
 	if (cmd->data->file[0] == NULL)
-		return ;
+		return -1;
 	while(cmd->data->file[i])
 	{
-		printf("%s\n", cmd->data->rel[i]);
-		// if (cmd->data->rel[i][0] == 'T')
-		// 	fd_1 = open(cmd->data->file[i], O_CREAT | O_TRUNC, O_WRONLY, 0644);
-		// else if (cmd->data->rel[i][0] == 'A')
-		// 	fd_1 = open(cmd->data->file[i], O_CREAT | O_APPEND | O_WRONLY, 0644);
-		// else if (cmd->data->rel[i][0] == 'I')
-		// 	fd_1 = open(cmd->data->file[i], O_RDONLY);
-		if (cmd->data->rel[i][0] == 'H')
+		// if (fd_0 != 0)
+		// 	close(fd_0);
+		// if (fd_1 != 1)
+		// 	close(fd_1);
+		if (cmd->data->rel[i][0] == 'T')
+			fd_1 = open(cmd->data->file[i], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+		else if (cmd->data->rel[i][0] == 'A')
+			fd_1 = open(cmd->data->file[i], O_CREAT | O_APPEND | O_WRONLY, 0644);
+		else if (cmd->data->rel[i][0] == 'I')
+			fd_0 = open(cmd->data->file[i], O_RDONLY);
+		else if (cmd->data->rel[i][0] == 'H')
 		{
-			printf("%s\n", cmd->data->buffer[j]);
+			pipe(pip);
+			write(pip[1], cmd->data->buffer[j], ft_strlen(cmd->data->buffer[j]));
+			close(pip[1]);
+			fd_0 = pip[0];
 			j++;
-			// int pip[2];
-			// pipe(pip);
-			// while(cmd->data->buffer[j])
-			// {
-			// 	write(pip[1], )
-			// }
 		}
+		else if (cmd->data->rel[i][0] == 'B')
+		{
+			printf("%s\n", "ambiguous redirect"); // ambiguous redirect
+			return i;
+		}
+		if (fd_1 < 0 || fd_0 < 0)
+			return i;
 		i++;
 	}
+	if (fd_0 != 0)
+		cmd->data->fd_0 = fd_0;
+	if (fd_1 != 1)
+		cmd->data->fd_1 = fd_1;
+	return (-1);
 }
 
 // int	red1(t_list	*cmd)
@@ -79,7 +93,7 @@ void	red(t_list	*cmd)
 // 				if (buffer == NULL)
 // 				{
 // 					fd = -1;	// Error
-// 					break; // Show New Promet 
+// 					break; // Show New prompt 
 // 				}
 // 				if (my_strcmp(buffer, cmd->data->infile[i]))
 // 				{
