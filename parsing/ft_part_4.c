@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_4.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 15:38:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 18:25:55 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 	flag = 0;
 	if (a[*i] == '$')
 	{
+		
 		memset(&vec_dollar, 0, sizeof(vec_dollar));
 		ft_push_back(&vec_dollar, a[(*i)++]);
 		if (a[(*i)] >= '0' && a[*i] <= '9')
@@ -201,6 +202,7 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	int		i;
 	int		j;
 
+	j = 0;
 	if (vec_dollar->string[1] == '?')
 	{
 		a = ft_itoa(ys->exit_status);
@@ -213,10 +215,17 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	{
 		if (vec_dollar->string[1])
 			j = 1;
+		if (!j)
+		{
+			ft_push_back(*vec, '$');
+			free (vec_dollar->string);
+			return ;
+		}
 		ft_push_back(vec_dollar, '=');
 		a = vec_dollar->string;
 		if (j)
 			a = vec_dollar->string + 1;
+		
 		j = strlen(a);
 		i = 0;
 		while (ys->env && ys->env[i])
