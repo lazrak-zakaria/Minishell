@@ -6,16 +6,16 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 18:25:55 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 20:00:14 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
+void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys);
 int		ft_dollar_ok(char c);
-char	*ft_expand_dollar(char *a, t_prompt *ys);
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i);
+char	*ft_expand_dollar(char *a, t_yassir *ys);
+void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i);
 
 
 static int	_abs(int n)
@@ -91,7 +91,7 @@ void	ft_norm_part4(char *a, t_var *var)
 	}
 }
 
-t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
+t_queue	*ft_part_4(t_queue *queue, t_yassir *ys)
 {
 	t_var	var;
 	t_elem	*element;
@@ -112,6 +112,7 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 		element->quote = (a[0] == '\'' || a[0] == '\"');
 		if (ft_find(a, '$'))
 		{
+			//printf ("------> %s\n", a);
 			element->dollar = 1;
 			element->s = ft_expand_dollar(a, ys);
 			if (!element->s)
@@ -137,7 +138,7 @@ int	ft_dollar_ok(char c)
 	return (f);
 }
 
-char	*ft_expand_dollar(char *a, t_prompt *ys)
+char	*ft_expand_dollar(char *a, t_yassir *ys)
 {
 	t_vector	vec;
 	int			i;
@@ -151,12 +152,14 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 			i++;
 			while (a[i] && a[i] != '\'')
 				ft_push_back(&vec, a[i++]);
+			i++;	
 		}
 		else if (a[i] == '\"')
 		{
 			i++;
 			while (a[i] && a[i] != '\"')
 				ft_norm_expand(a, &vec, ys, &i);
+			i++;
 		}
 		else
 		{
@@ -166,15 +169,15 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 	return (vec.string);
 }
 
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
+void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i)
 {
 	t_vector	vec_dollar;
 	int			flag;
 
 	flag = 0;
+	
 	if (a[*i] == '$')
 	{
-		
 		memset(&vec_dollar, 0, sizeof(vec_dollar));
 		ft_push_back(&vec_dollar, a[(*i)++]);
 		if (a[(*i)] >= '0' && a[*i] <= '9')
@@ -196,13 +199,12 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 		ft_push_back(vec, a[(*i)++]);
 }
 
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
+void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_yassir *ys)
 {
 	char	*a;
 	int		i;
 	int		j;
 
-	j = 0;
 	if (vec_dollar->string[1] == '?')
 	{
 		a = ft_itoa(ys->exit_status);
@@ -215,17 +217,10 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	{
 		if (vec_dollar->string[1])
 			j = 1;
-		if (!j)
-		{
-			ft_push_back(*vec, '$');
-			free (vec_dollar->string);
-			return ;
-		}
 		ft_push_back(vec_dollar, '=');
 		a = vec_dollar->string;
 		if (j)
 			a = vec_dollar->string + 1;
-		
 		j = strlen(a);
 		i = 0;
 		while (ys->env && ys->env[i])
