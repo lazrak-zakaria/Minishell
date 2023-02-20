@@ -66,29 +66,28 @@ int	ft_export_2(t_prompt *prompt)
 				if (my_strcmp(curr->variable, variable))
 				{
 					free(curr->value);
-					free(variable);
 					curr->value = value;
 					break;
 				}
 				curr = curr->next;
 			}
+			free(variable);
 			if (curr != NULL)
 				continue;
-			last = ft_env_last(prompt->s_env);
-			if (last == NULL)
-			{
-				printf("NOT TODAY\n");
-			}
-			else
-			{
-				t_env *new = malloc(sizeof(t_env));
-				if (new == NULL)
-					continue;
-				last->next = new;
-				new->variable = variable;
-				new->value = value;
-				new->next = NULL;
-			}
+			free(value);
+			//last = ft_env_last(prompt->s_env);
+			//if (last == NULL)
+			ft_env_addback(&prompt->s_env, ft_env_new(prompt->list_cmd->data->cmd[j]));
+			// else
+			// {
+			// // 	t_env *new = malloc(sizeof(t_env));
+			// // 	if (new == NULL)
+			// // 		continue;
+			// // 	last->next = new;
+			// // 	new->variable = variable;
+			// // 	new->value = value;
+			// // 	new->next = NULL;
+			// }
 		}
 	}
 	return (0);
