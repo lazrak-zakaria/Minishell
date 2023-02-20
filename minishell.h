@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 13:37:01 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 15:15:35 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ int		ft_unset(t_yassir *promet, char **args);
 int		ft_export(t_yassir *promet);
 
 //Red
-int	red(t_list	*cmd);int	red_2(t_list	*cmd);
+void	red(t_list	*cmd);int	red_2(t_list	*cmd);
 
 
 int	is_builting(char *cmd);

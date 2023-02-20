@@ -13,8 +13,7 @@ int	main(int ac, char **av, char **env)
 
 	while(1)
 	{
-			promet.list_cmd = NULL;
-
+		promet.list_cmd = NULL;
 		char *a = readline("-->");
 		if (a == NULL)
 			exit(0);
@@ -23,7 +22,7 @@ int	main(int ac, char **av, char **env)
 
 	/******************************/
 
-		ft_exec(&promet);
+		//ft_exec(&promet);
 
 	}
 }

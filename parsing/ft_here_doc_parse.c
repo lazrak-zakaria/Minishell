@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc_parse.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 14:53:14 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 15:31:57 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 char	*ft_expand_dollar(char *a, t_yassir *ys);
 int	ft_find(char *a, char c);
 
@@ -30,9 +30,11 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_yassir *ys)
 	int			i;
 	
 	memset(&vec, 0, sizeof(vec));
+	ft_push_back(&vec, '\0');
 	while (a)
 	{
 		s = readline(">");
+
 		if (!s || !strcmp(s, a))
 		{
 			ft_push(&cmd->buffer, ft_new_node(vec.string));
