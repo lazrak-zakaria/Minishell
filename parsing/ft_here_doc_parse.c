@@ -6,11 +6,13 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 13:40:28 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 14:53:14 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "minishell.h"
+char	*ft_expand_dollar(char *a, t_yassir *ys);
+int	ft_find(char *a, char c);
 
 typedef	struct s_var_help
 {
@@ -20,12 +22,13 @@ typedef	struct s_var_help
 	char		*string2;
 } t_var_help;
 
-void	ft_take(char *a, t_cmd_parse *cmd)
+void	ft_take(char *a, t_cmd_parse *cmd, t_yassir *ys)
 {
 	t_vector	vec;
 	char		*s;
+	char		*b;
 	int			i;
-
+	
 	memset(&vec, 0, sizeof(vec));
 	while (a)
 	{
@@ -37,13 +40,24 @@ void	ft_take(char *a, t_cmd_parse *cmd)
 			break ;
 		}
 		i = 0;
+		if (ft_find(s, '$'))
+		{
+			free (s);
+			b = strdup(s);
+			s = ft_expand_dollar(b, ys);
+			if (!s)
+				s = strdup("");
+			free(b);
+		}
 		while (s[i])
+		{	
 			ft_push_back(&vec, s[i++]);
+		}	
 		ft_push_back(&vec, '\n');		
 	}
 }
 
-void	ft_here(t_queue *queue)
+void	ft_here(t_queue *queue, t_yassir *ys)
 {
 	t_cmd_parse	*cmd;
 	t_var		var;
@@ -63,7 +77,7 @@ void	ft_here(t_queue *queue)
 			var__.string = var.temp_queue->data;
 			if (var__.string[0] == 'H')
 			{
-				ft_take(q->data, cmd);
+				ft_take(q->data, cmd, ys);
 			}
 		}
 	}

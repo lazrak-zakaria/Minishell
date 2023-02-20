@@ -6,13 +6,13 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 13:40:52 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 14:54:08 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_here(t_queue *queue);
+void	ft_here(t_queue *queue, t_yassir *ys);
 int	check_enclosed_quotes(char	*a);
 /*************/
 
@@ -226,7 +226,7 @@ void	ft_parse(char *a, t_yassir *ys)
 	temp = ft_part_4(q, ys);
 		ft_free_q(q);
 	q = ft_part_5(temp);
-	ft_here(q);
+	ft_here(q, ys);
 	ys->list_cmd = ft_copy_(q);
 
 	// t_list 	*y = ys->list_cmd;
