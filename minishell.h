@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 18:06:36 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/19 20:26:18 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,5 +157,8 @@ int		ft_export(t_yassir *promet);
 //Red
 int	red(t_list	*cmd);int	red_2(t_list	*cmd);
 
+
+int	is_builting(char *cmd);
+void	ft_builting(t_yassir *promet);
 
 #endif

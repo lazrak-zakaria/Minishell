@@ -6,7 +6,6 @@ int	main(int ac, char **av, char **env)
 	(void)av;
 	t_yassir 	promet;
 
-	//promet.env = env;
 	promet.s_env = ft_creat_env(env); //		linked list
 	promet.env = get_env(promet.s_env); // 		char ** alocated
 	promet.exit_status = 0;
@@ -14,7 +13,9 @@ int	main(int ac, char **av, char **env)
 
 	while(1)
 	{
-		char *a = readline(">");
+			promet.list_cmd = NULL;
+
+		char *a = readline("-->");
 		if (a == NULL)
 			exit(0);
 		ft_parse(a, &promet);
@@ -22,6 +23,7 @@ int	main(int ac, char **av, char **env)
 
 	/******************************/
 
-		//ft_exec(&promet);
+		ft_exec(&promet);
+
 	}
 }

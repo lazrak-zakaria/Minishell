@@ -11,8 +11,17 @@ void	ft_child_child(t_pipex *pipex, t_yassir *promet)
 		{
 			promet->list_cmd->data->fd_1 = pipex->pipe2[1];
 			promet->list_cmd->data->fd_0 = pipex->pipe[0];
-			red_2(promet->list_cmd);
-			red(promet->list_cmd);
+			int ret2 = red_2(promet->list_cmd);
+			int ret = red(promet->list_cmd);
+			if (ret != -1 || ret2 != -1)
+			{
+				write(2, "bash: ", 7);
+				if (ret2 != -1)
+					perror(promet->list_cmd->data->infile[ret]);
+				else if (ret != -1)
+					perror(promet->list_cmd->data->outfile[ret]);
+				exit(1);
+			}
 			close(pipex->pipe2[0]);
 			get_cmd_child(pipex, promet);
 		}
@@ -28,8 +37,8 @@ void	ft_exec(t_yassir *promet)
 	t_pipex	pipex;
 	pipex.envp = promet->env;
 
-	// if (promet->list_cmd == NULL)
-	// 	return ;
+	if (promet->list_cmd == NULL)
+		return ; // if unclosed quotes
 	// if (promet->list_cmd->data == NULL)
 	// 	return ;
 	// if (promet->list_cmd->data->cmd == NULL)
@@ -44,8 +53,17 @@ void	ft_exec(t_yassir *promet)
 		{
 			
 			promet->list_cmd->data->fd_1 = pipex.pipe[1];
-			red_2(promet->list_cmd);
-			red(promet->list_cmd);
+			int ret2 = red_2(promet->list_cmd);
+			int ret = red(promet->list_cmd);
+			if (ret != -1 || ret2 != -1)
+			{
+				write(2, "bash: ", 7);
+				if (ret2 != -1)
+					perror(promet->list_cmd->data->infile[ret]);
+				else if (ret != -1)
+					perror(promet->list_cmd->data->outfile[ret]);
+				exit(1);
+			}
 			close(pipex.pipe[0]); // you should close this for this test : cat | ls 
 			get_cmd_child(&pipex, promet);
 		}
@@ -56,13 +74,23 @@ void	ft_exec(t_yassir *promet)
 		if (fork() == 0)
 		{
 			promet->list_cmd->data->fd_0 = pipex.pipe[0];
-			red_2(promet->list_cmd);
-			red(promet->list_cmd);
+			int ret2 = red_2(promet->list_cmd);
+			int ret = red(promet->list_cmd);
+			if (ret != -1 || ret2 != -1)
+			{
+				write(2, "bash: ", 7);
+				if (ret2 != -1)
+					perror(promet->list_cmd->data->infile[ret]);
+				else if (ret != -1)
+					perror(promet->list_cmd->data->outfile[ret]);
+				exit(1);
+			}
 			get_cmd_child(&pipex, promet);
 		}
 		close(pipex.pipe[0]);
-		while(wait(NULL) != -1)
+		while(wait(&promet->exit_status) != -1) // 3lach exit child hiya 13
 			;
+		promet->exit_status = promet->exit_status / 256;
 	}
 	else
 	 	one_cmd(promet, &pipex);
@@ -70,16 +98,28 @@ void	ft_exec(t_yassir *promet)
 
 void	one_cmd(t_yassir *promet, t_pipex *pipex)
 {
-	red_2(promet->list_cmd);
-	red(promet->list_cmd);
+	int ret2 = red_2(promet->list_cmd);
+	int ret = red(promet->list_cmd);
+	if (ret != -1 || ret2 != -1)
+	{
+		write(2, "bash: ", 7);
+		if (ret2 != -1)
+			perror(promet->list_cmd->data->infile[ret2]);
+		else if (ret != -1)
+			perror(promet->list_cmd->data->outfile[ret]);
+		return ;
+	}
 	if (my_strcmp(promet->list_cmd->data->cmd[0], "exit"))
+	{
+		printf("exit\n"); // hit parent kay print exit o child la
 		promet->exit_status = ft_exit(promet->list_cmd->data->cmd, promet);
+	}
 	else if (my_strcmp(promet->list_cmd->data->cmd[0], "echo"))
 		promet->exit_status = ft_echo(promet->list_cmd->data->cmd, promet->list_cmd->data->fd_1);
 	else if (my_strcmp(promet->list_cmd->data->cmd[0], "cd"))
-	  	promet->exit_status = ft_cd(promet->list_cmd->data->cmd, promet);
+		promet->exit_status = ft_cd(promet->list_cmd->data->cmd, promet);
 	else if (my_strcmp(promet->list_cmd->data->cmd[0], "pwd"))
-	 	promet->exit_status = ft_pwd();
+		promet->exit_status = ft_pwd();
 	else if (my_strcmp(promet->list_cmd->data->cmd[0], "unset"))
 		ft_unset(promet, promet->list_cmd->data->cmd);
 	else if (my_strcmp(promet->list_cmd->data->cmd[0], "env"))
@@ -88,6 +128,7 @@ void	one_cmd(t_yassir *promet, t_pipex *pipex)
 		promet->exit_status = ft_export(promet);
 	else if (fork() == 0)
 		get_cmd_child(pipex, promet);
+
 	wait(&promet->exit_status);
 	promet->exit_status = promet->exit_status / 256;
 }

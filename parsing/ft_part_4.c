@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 18:05:27 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/20 11:12:42 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ int	ft_dollar_ok(char c)
 {
 	int	f;
 
-	f = ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
+	f = ((c == '_') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
 			|| (c >= '0' && c <= '9'));
 	return (f);
 }
@@ -176,10 +176,15 @@ void	ft_norm_expand(char *a, t_vector *vec, t_yassir *ys, int *i)
 	{
 		memset(&vec_dollar, 0, sizeof(vec_dollar));
 		ft_push_back(&vec_dollar, a[(*i)++]);
-		if (a[(*i)] == '?')
+		if (a[(*i)] >= '0' && a[*i] <= '9')
 			ft_push_back(&vec_dollar, a[(*i)++]);
-		while (ft_dollar_ok(a[(*i)]))
-			ft_push_back(&vec_dollar, a[(*i)++]);
+		else
+		{
+			if (a[(*i)] == '?')
+				ft_push_back(&vec_dollar, a[(*i)++]);
+			while (ft_dollar_ok(a[(*i)]))
+				ft_push_back(&vec_dollar, a[(*i)++]);
+		}
 		flag = 1;
 	}
 	if (flag)

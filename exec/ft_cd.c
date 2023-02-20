@@ -46,6 +46,7 @@ int	ft_cd_2(char **args, t_yassir *promet)
 		if (str != NULL && str->value != NULL)
 		{
 			chdir(str->value);
+			printf("%s\n", str->value);
 			return (0);
 		}
 		if (str == NULL)
