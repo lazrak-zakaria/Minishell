@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_here_doc_parse.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 17:25:00 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/20 17:37:21 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-char	*ft_expand_dollar(char *a, t_yassir *ys);
+char	*ft_expand_dollar(char *a, t_prompt *ys);
 int		ft_find(char *a, char c);
 int		ft_dollar_ok(char c);
 typedef	struct s_var_help
@@ -22,7 +22,7 @@ typedef	struct s_var_help
 	char		*string2;
 } t_var_help;
 
-void	ft_take(char *a, t_cmd_parse *cmd, t_yassir *ys)
+void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 {
 	t_vector	vec;
 	char		*s;
@@ -66,7 +66,7 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_yassir *ys)
 	}
 }
 
-void	ft_here(t_queue *queue, t_yassir *ys)
+void	ft_here(t_queue *queue, t_prompt *ys)
 {
 	t_cmd_parse	*cmd;
 	t_var		var;
