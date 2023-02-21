@@ -174,6 +174,8 @@ int	ft_isdigit(char *str)
 	int	i;
 
 	i = -1;
+	if (str[0] == '\0')
+		return 0;
 	while(str[++i])
 	{
 		if ((str[i] > '9' || str[i] < '0') && str[i] != '-' && str[i] != '+')

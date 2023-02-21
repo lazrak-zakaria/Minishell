@@ -37,8 +37,7 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 			chdir(str->value);
 			return (0);
 		}
-		if (str == NULL)
-			printf("cd: HOME not set\n");
+		write(2, "bash: cd: HOME not set\n", 24);
 	}
 	else if (my_strcmp(args[1], "-"))
 	{
@@ -49,14 +48,14 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 			printf("%s\n", str->value);
 			return (0);
 		}
-		if (str == NULL)
-			printf("cd: OLDPWD not set\n");
+		write(2, "bash: cd: OLDPWD not set\n", 26);
 	}
 	else
 	{
 		if (chdir(args[1]) == 0)
 			return (0);
-		printf("No Such File Or Dir\n");
+		write(2, "bash: cd: ", 11);
+		perror(args[1]);
 	}
 	return (1);
 }
@@ -69,39 +68,30 @@ int	ft_cd(char **args, t_prompt *prompt)
 	exit_status = ft_cd_2(args, prompt);
 	if (exit_status == 0)
 	{
-		char *home = search_env(prompt->s_env, "");
+		char *home = search_env(prompt->s_env, "OLDPWD");
 		if (home == NULL)
 		{
-
+			char *tmp = ft_strjoin("OLDPWD=", buffer);
+			ft_env_addback(&prompt->s_env, ft_env_new(tmp));
+			free(tmp);
 		}
 		else
 		{
 			t_env *env = prompt->s_env;
 			while(env)
 			{
-				if (ft_strcmp(env->variable, "OLDPWD"))
+				if (my_strcmp(env->variable, "OLDPWD"))
 				{
-					free(env->value);
-					char *value = ft_strdup(buffer);
-					env->value = value;
+					if (env->value != NULL)
+						free(env->value);
+					env->value = ft_strdup(buffer);
 					break;
 				}
 				env = env->next;
 			}
-			if (env == NULL)
-			{
-				char *variable = "OLDPWD";
-				char *value = ft_strdup(buffer);
-				env = ft_env_last(prompt->s_env);
-				env->next = malloc(sizeof(t_env));
-				if (env->next == NULL)
-					return (1);
-				env->next->value = value;
-				env->variable = variable;
-			}
+
 		}
 	}
-	printf("%d\n", exit_status);
 	return (0);
 }
 
