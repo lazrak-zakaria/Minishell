@@ -22,9 +22,9 @@ int	check_agrs(char *s)
 	return (0);
 }
 
-void	ft_print_env(t_prompt *yassir)
+void	ft_print_env(t_prompt *prompt)
 {
-	t_env *current = yassir->s_env;
+	t_env *current = prompt->s_env;
 	while (current != NULL)
 	{
 		printf("declare -x ");

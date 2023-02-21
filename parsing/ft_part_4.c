@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 20:01:38 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/21 09:52:17 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,14 +186,23 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 		{
 			if (a[(*i)] == '?')
 				ft_push_back(&vec_dollar, a[(*i)++]);
-			while (ft_dollar_ok(a[(*i)]))
-				ft_push_back(&vec_dollar, a[(*i)++]);
+			else
+				while (ft_dollar_ok(a[(*i)]))
+					ft_push_back(&vec_dollar, a[(*i)++]);
 		}
 		flag = 1;
 	}
 	if (flag)
 	{
-		ft_join_dollar(&vec, &vec_dollar, ys);
+		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i])
+				&& (a[*i] != '"' && a[*i] != '\''))
+		{
+			// if (a[*i])
+			// 	(*i)++;
+			ft_push_back(vec, vec_dollar.string[0]);
+			free (vec_dollar.string);
+		}
+		else ft_join_dollar(&vec, &vec_dollar, ys);
 	}
 	else
 		ft_push_back(vec, a[(*i)++]);
@@ -205,6 +214,7 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	int		i;
 	int		j;
 
+	j = 0;
 	if (vec_dollar->string[1] == '?')
 	{
 		a = ft_itoa(ys->exit_status);
