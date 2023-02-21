@@ -110,6 +110,10 @@ void	ft_builting(t_prompt *prompt)
 {
 	int	ret;
 
+	if (prompt->list_cmd->data->fd_0 != 0)
+		dup2(prompt->list_cmd->data->fd_0, 0);
+	if (prompt->list_cmd->data->fd_1 != 1)
+		dup2(prompt->list_cmd->data->fd_1, 1);
 	if (my_strcmp(prompt->list_cmd->data->cmd[0], "exit"))
 		ret = ft_exit(prompt->list_cmd->data->cmd, prompt);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "echo"))

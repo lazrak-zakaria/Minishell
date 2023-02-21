@@ -17,8 +17,6 @@ int	check_agrs(char *s)
 		}
 		i++;
 	}
-	if (s[i] == '\0')
-		return (1);
 	return (0);
 }
 
@@ -44,6 +42,8 @@ int	ft_export_2(t_prompt *prompt)
 {
 	t_env	*last;
 	t_env	*curr;
+	char *variable;
+	char *value;
 	int		i;
 	if (prompt->list_cmd->data->cmd[1] == NULL)
 		ft_print_env(prompt);
@@ -58,17 +58,21 @@ int	ft_export_2(t_prompt *prompt)
 			while(prompt->list_cmd->data->cmd[j][++i])
 				if (prompt->list_cmd->data->cmd[j][i] == '=')
 					break;
-			if (prompt->list_cmd->data->cmd[j][i] == '\0') // there is no =
-				continue;
-			char *variable = ft_substr(prompt->list_cmd->data->cmd[j], 0, i);
-			char *value = ft_strdup(&prompt->list_cmd->data->cmd[j][i + 1]);
+			if (prompt->list_cmd->data->cmd[j][i] == '=') // there is no =
+				value = ft_strdup(&prompt->list_cmd->data->cmd[j][i + 1]);
+			else
+				value = NULL;
+			variable = ft_substr(prompt->list_cmd->data->cmd[j], 0, i);
 			curr = prompt->s_env;
 			while(curr)
 			{
 				if (my_strcmp(curr->variable, variable))
 				{
-					free(curr->value);
-					curr->value = value;
+					if (value != NULL)
+					{
+						free(curr->value);
+						curr->value = value;
+					}
 					break;
 				}
 				curr = curr->next;
