@@ -29,6 +29,35 @@ int	check_agrs(char *s)
 void	ft_print_env(t_prompt *yassir)
 {
 	t_env *current = yassir->s_env;
+	int i = 0;
+	t_env	*head = NULL;
+	while(current)
+	{
+		t_env	*new = malloc(sizeof(t_env));
+		new->next = NULL;
+		new->value = ft_strdup(current->value);
+		new->variable = ft_strdup(current->variable);
+		ft_env_addback(&head, new);
+		current = current->next;
+	}
+	current = head;
+	while (current->next)
+	{
+		if (ft_strcmp(current->variable, current->next->variable) < 0)
+		{
+			char *var = current->variable;
+			char *val = current->value;
+			current->value = current->next->value;
+			current->variable = current->next->variable;
+
+			current->next->value = val;
+			current->next->variable = var;
+			current = head;
+		}
+		else 
+			current = current->next;
+	}
+	current = head;
 	while (current != NULL)
 	{
 		printf("declare -x ");
@@ -42,6 +71,14 @@ void	ft_print_env(t_prompt *yassir)
 			printf("\n");
 		current = current->next;
 	}
+	current = head;
+	while (current)
+	{
+		free(current->value);
+		free(current->variable);
+		current = current->next;
+	}
+	
 }
 
 int	ft_export_2(t_prompt *prompt)
