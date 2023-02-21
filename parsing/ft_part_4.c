@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 10:58:53 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/21 11:38:44 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,10 +115,14 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 			//printf ("------> %s\n", a);
 			element->dollar = 1;
 			element->s = ft_expand_dollar(a, ys);
-			if (!element->s)
-				element->s = var.vec.string;
-			else
-				free (var.vec.string);
+			// if (!element->s)
+			// 	element->s = var.vec.string;
+			// else
+			// 	free (var.vec.string);
+			 if (!element->s)
+			{
+				free (var.vec.string);continue;	
+			}
 			ft_push(&var.queue_answer, ft_new_node(element));
 			continue ;
 		}
@@ -159,6 +163,8 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 			i++;
 			while (a[i] && a[i] != '\"')
 				ft_norm_expand(a, &vec, ys, &i, 1);
+			if (!vec.string)
+				ft_push_back(&vec, '\0');		
 			i++;
 		}
 		else
