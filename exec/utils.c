@@ -34,11 +34,9 @@ char	*ft_strdup(char *s1)
 	char	*str;
 
 	i = 0;
-	if (!s1 || !s1[0])
-		return (NULL);
-	while (s1[i])
+	while (s1 != NULL && s1[i])
 		i++;
-	str = malloc(i * sizeof(char) + 1);
+	str = malloc((i + 1) * sizeof(char));
 	if (!str)
 		return (NULL);
 	str[i] = '\0';
@@ -137,8 +135,10 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = -1;
 	j = 0;
-	if (!s1 || !s2)
-		return (NULL);
+	if (!s2)
+		return (s1);
+	if (!s1)
+		return (s2);
 	len_s1 = ft_strlen(s1);
 	len_s2 = ft_strlen(s2);
 	new_string = malloc((len_s1 + len_s2 + 1) * sizeof(char ));

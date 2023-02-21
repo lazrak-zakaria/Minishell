@@ -13,13 +13,11 @@ t_env *ft_env_new(char *str)
 	for(i = 0; str[i]; i++)
 		if (str[i] == '=')
 			break ;
-	if (str[i] != '\0')
-		value = ft_strdup(&str[i + 1]);
+	if (str[i] == '=')
+		new->value = ft_strdup(&str[i + 1]);
 	else
-		return (NULL);
-	var = ft_substr(str, 0, i);
-	new->variable = var;
-	new->value = value;
+		new->value = NULL;
+	new->variable = ft_substr(str, 0, i);
 	new->next = NULL;
 	return (new);
 }
@@ -56,12 +54,8 @@ t_env *ft_creat_env(char **envp)
 	t_env *env = NULL;
 	int i = -1;
 
-	char	*value;
-	char	*var;
 	while (envp[++i])
-	{
 		ft_env_addback(&env, ft_env_new(envp[i]));
-	}
 	return (env);
 }
 
@@ -71,7 +65,8 @@ char **get_env(t_env *envp)
 	t_env *current = envp;
 	while(current)
 	{
-		i++;
+		if (current->value != NULL)
+			i++;
 		current = current->next;
 	}
 	char **new_envp = malloc((i + 1) * sizeof(char *));
@@ -79,10 +74,13 @@ char **get_env(t_env *envp)
 	current = envp;
 	while(current)
 	{
-		char *tmp = ft_strjoin(current->variable, "=");
-		new_envp[i] = ft_strjoin(tmp, current->value);
-		free(tmp);
-		i++;
+		if (current->value != NULL)
+		{
+			char *tmp = ft_strjoin(current->variable, "=");
+			new_envp[i] = ft_strjoin(tmp, current->value);
+			free(tmp);
+			i++;
+		}
 		current = current->next;
 	}
 	new_envp[i] = NULL;

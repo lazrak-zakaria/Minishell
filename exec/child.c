@@ -1,5 +1,14 @@
 
 #include "../minishell.h"
+#include <sys/stat.h>
+
+int is_dir(const char *path)
+{
+	struct stat	statbuf;
+
+	stat(path, &statbuf);
+	return (S_ISDIR(statbuf.st_mode));
+}
 
 void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 {
@@ -17,7 +26,14 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 		pipex->all_paths = get_paths(pipex->envp);
 		get_cmd_path(pipex->all_paths, pipex->cmd);
 		if (pipex->all_paths != NULL)
-			ft_free_all_(pipex->all_paths); // command not found
+			ft_free_all_(pipex->all_paths);
+	}
+	else if (is_dir(pipex->cmd[0]))
+	{
+		write(2, "bash: ", 7);
+		write(2, pipex->cmd[0], ft_strlen(pipex->cmd[0]));
+		write(2, ": is a directory\n", 18);
+		exit(0);
 	}
 	if (prompt->list_cmd->data->fd_0 != 0)
 		dup2(prompt->list_cmd->data->fd_0, 0);
@@ -35,28 +51,28 @@ void	get_cmd_path(char **paths, char **command)
 	char	*path;
 	char	*tmp;
  
-	if (command == NULL || paths == NULL)
-		return ;
-	tmp = ft_strjoin("/", command[0]);
-	while (*paths != NULL)
+	if (command != NULL && paths != NULL)
 	{
-		path = ft_strjoin(*paths, tmp);
-		if (access(path, F_OK | X_OK) == 0)
+		tmp = ft_strjoin("/", command[0]);
+		while (*paths != NULL)
 		{
-			free(tmp);
-			free(command[0]);
-			command[0] = path;
-			return ;
+			path = ft_strjoin(*paths, tmp);
+			if (access(path, F_OK | X_OK) == 0 && is_dir(path) == 0)
+			{
+				free(tmp);
+				free(command[0]);
+				command[0] = path;
+				return ;
+			}
+			paths++;
+			free(path);
 		}
-		paths++;
-		free(path);
 	}
 	write(2, "bash: ", 7);
 	write(2, command[0], ft_strlen(command[0]));
 	write(2, ": command not found\n", 21);
-	exit(127);
 	free(tmp);
-	return ;
+	exit(127);
 }
 
 char	**get_paths(char **envp)

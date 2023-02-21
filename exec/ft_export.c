@@ -22,18 +22,20 @@ int	check_agrs(char *s)
 	return (0);
 }
 
-void	ft_print_env(t_prompt *prompt)
+void	ft_print_env(t_prompt *yassir)
 {
-	t_env *current = prompt->s_env;
+	t_env *current = yassir->s_env;
 	while (current != NULL)
 	{
 		printf("declare -x ");
-		if (current->variable)
+		if (current->variable != NULL)
 			printf("%s", current->variable);
-		printf("=");
-		if (current->value)
+		if (current->value != NULL)
+		{
+			printf("=");
 			printf("\"%s\"", current->value);
-		printf("\n");
+		}
+			printf("\n");
 		current = current->next;
 	}
 }
