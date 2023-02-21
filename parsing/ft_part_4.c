@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 09:52:17 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/21 10:58:53 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
 int		ft_dollar_ok(char c);
 char	*ft_expand_dollar(char *a, t_prompt *ys);
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i);
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i, int ff);
 
 
 static int	_abs(int n)
@@ -158,18 +158,18 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 		{
 			i++;
 			while (a[i] && a[i] != '\"')
-				ft_norm_expand(a, &vec, ys, &i);
+				ft_norm_expand(a, &vec, ys, &i, 1);
 			i++;
 		}
 		else
 		{
-			ft_norm_expand(a, &vec, ys, &i);
+			ft_norm_expand(a, &vec, ys, &i, 0);
 		}
 	}
 	return (vec.string);
 }
 
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i, int ff)
 {
 	t_vector	vec_dollar;
 	int			flag;
@@ -194,8 +194,8 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 	}
 	if (flag)
 	{
-		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i])
-				&& (a[*i] != '"' && a[*i] != '\''))
+		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i]) && (ff
+				|| (a[*i] != '"' && a[*i] != '\'')))
 		{
 			// if (a[*i])
 			// 	(*i)++;

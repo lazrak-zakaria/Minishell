@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_parse.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 15:38:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/21 10:29:39 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ void	ft_parse(char *a, t_prompt *ys)
 	if (check_enclosed_quotes(a))
 	{
 		ft_putstr_fd("unclosed quotes\n", 2);
+		ys->exit_status = 258;
 		return ;
 	}
 	q = ft_part_1(a);
@@ -219,6 +220,7 @@ void	ft_parse(char *a, t_prompt *ys)
 	if(ft_part_3_5(q))
 	{
 		ft_free_q(q);
+		ys->exit_status = 258;
 		//system("leaks a.out");
 		return ;
 	};
