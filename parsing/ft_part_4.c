@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 11:38:44 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/21 13:24:56 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,10 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 			while (a[i] && a[i] != '\"')
 				ft_norm_expand(a, &vec, ys, &i, 1);
 			if (!vec.string)
-				ft_push_back(&vec, '\0');		
+			{
+				ft_create_vector(&vec, 2);
+				vec.string[0] = '\0';
+			}	
 			i++;
 		}
 		else
@@ -205,7 +208,7 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i, int ff)
 		{
 			// if (a[*i])
 			// 	(*i)++;
-			ft_push_back(vec, vec_dollar.string[0]);
+			ft_push_back(vec, vec_dollar.string[0]);		
 			free (vec_dollar.string);
 		}
 		else ft_join_dollar(&vec, &vec_dollar, ys);
