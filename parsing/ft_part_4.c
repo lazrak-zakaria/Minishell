@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 13:24:56 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/21 13:32:25 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,9 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 				ft_norm_expand(a, &vec, ys, &i, 1);
 			if (!vec.string)
 			{
-				ft_create_vector(&vec, 2);
-				vec.string[0] = '\0';
+				//ft_create_vector(&vec, 2);
+				ft_push_back(&vec, '\0');
+				vec.i--;
 			}	
 			i++;
 		}
