@@ -51,12 +51,13 @@ int	ft_env(t_prompt *prompt)
 	t_env *current = prompt->s_env;
 	while (current != NULL)
 	{
-		if (current->variable)
+		if (current->value != NULL)
+		{
 			printf("%s", current->variable);
-		printf("=");
-		if (current->value)
+			printf("=");
 			printf("%s", current->value);
-		printf("\n");
+			printf("\n");
+		}
 		current = current->next;
 	}
 	return (0);
