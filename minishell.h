@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 16:21:38 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/21 14:51:38 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,11 +88,11 @@ t_queue	*ft_part_5(t_queue *queue);
 char	*ft_substr(char	*a, int s, int e);
 void	ft_parse(char *a, t_prompt *ys);
 
-
 void    ft_putchar_fd(char c, int fd);
 void    ft_putstr_fd(char *a, int fd);
 int    ft_err_2(char *a, char *b);
 int    ft_err_1(char *a);
+
 /****************/
 
 typedef struct s_env
@@ -104,8 +104,6 @@ typedef struct s_env
 
 typedef struct s_pipex
 {
-	int		infile;
-	int		outfile;
 	char	**all_paths;
 	char	*path;
 	char	**cmd;
