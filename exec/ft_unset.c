@@ -1,15 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_unset.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 16:26:02 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 16:27:55 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	ft_unset_2(t_prompt *prompt, char **args)
 {
-	int	error = 0;
+	int		error;
+	t_env	*current;
+	t_env	*save;
+	int		i;
+
+	error = 0;
 	if (args[1] == NULL)
 		return (0);
-	for (int i = 1; args[i]; i++)
+	i = 0;
+	while (args[++i])
 	{
 		if (ft_isalnum_(args[i]))
 		{
-			t_env *current = prompt->s_env;
+			current = prompt->s_env;
 			if (current != NULL)
 			{
 				if (my_strcmp(current->variable, args[i]))
@@ -21,16 +39,16 @@ int	ft_unset_2(t_prompt *prompt, char **args)
 				}
 				else
 				{
-					while(current->next)
+					while (current->next)
 					{
 						if (my_strcmp(current->next->variable, args[i]))
 						{
-							t_env *save = current->next;
+							save = current->next;
 							current->next = save->next;
 							free(save->value);
 							free(save->variable);
 							free(save);
-							break;
+							break ;
 						}
 						current = current->next;
 					}
@@ -50,7 +68,9 @@ int	ft_unset_2(t_prompt *prompt, char **args)
 
 int	ft_env(t_prompt *prompt)
 {
-	t_env *current = prompt->s_env;
+	t_env	*current;
+
+	current = prompt->s_env;
 	while (current != NULL)
 	{
 		if (current->value != NULL)
@@ -67,10 +87,10 @@ int	ft_env(t_prompt *prompt)
 
 int	ft_unset(t_prompt *prompt, char **args)
 {
-	int ret;
+	int	ret;
 
 	if (prompt->env == NULL)
-		return 0;
+		return (0);
 	ret = ft_unset_2(prompt, args);
 	ft_free_all_(prompt->env);
 	prompt->env = get_env(prompt->s_env);
