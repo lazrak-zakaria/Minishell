@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 10:29:39 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/22 17:17:11 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,9 +228,9 @@ void	ft_parse(char *a, t_prompt *ys)
 	temp = ft_part_4(q, ys);
 		ft_free_q(q);
 	q = ft_part_5(temp);
+
 	ft_here(q, ys);
 	ys->list_cmd = ft_copy_(q);
-
 	// t_list 	*y = ys->list_cmd;
 	// while (y)
 	// {

@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 13:32:25 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/22 16:47:30 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 		element->s = NULL;
 		element->dollar = 0;
 		element->quote = (a[0] == '\'' || a[0] == '\"');
+		element->d_s = ft_strdup(a);
 		if (ft_find(a, '$'))
 		{
 			//printf ("------> %s\n", a);
@@ -121,7 +122,7 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 			// 	free (var.vec.string);
 			 if (!element->s)
 			{
-				free (var.vec.string);continue;	
+				free (var.vec.string);//continue;	
 			}
 			ft_push(&var.queue_answer, ft_new_node(element));
 			continue ;

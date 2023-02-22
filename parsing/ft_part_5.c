@@ -1,22 +1,30 @@
 #include "../minishell.h"
 
 void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var);
+char 	*ft_hq(char *a);
 
 void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 {
 	t_elem	*elem;
 	char	*b;
+	char	*s;
 
 	var->temp_queue = ft_pop(queue);
 	elem = var->temp_queue->data;
 	b = elem->s;
-	ft_push(&cmd->file, ft_new_node(b));
-	if (elem->dollar && !elem->quote && !b[0])
+	if (elem->dollar && !elem->quote && !b)
+	{
+		s = ft_hq(elem->d_s);
 		ft_push(&cmd->rel, ft_new_node(strdup("BIGOUS")));
-	else if (a[1])
+		ft_push(&cmd->file, ft_new_node(strdup(s)));
+		free (s);
+		return ;
+	}
+	else if (a && a[1])
 		ft_push(&cmd->rel, ft_new_node(strdup("APPEND")));
 	else
 		ft_push(&cmd->rel, ft_new_node(strdup("TRUNC")));
+	ft_push(&cmd->file, ft_new_node(b));
 
 }
 
@@ -24,15 +32,34 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 {
 	t_elem	*elem;
 	char	*b;
+	char	*s;
 
 	var->temp_queue = ft_pop(queue);
 	elem = var->temp_queue->data;
 	b = elem->s;
-	ft_push(&cmd->file, ft_new_node(b));
-	if (a[1])
+	if (a && a[1])
+	{
+		s = ft_hq(elem->d_s);
+		if (elem->dollar && elem->quote)
+			ft_push(&cmd->file, ft_new_node(strdup(s)));
+		else
+			ft_push(&cmd->file, ft_new_node(strdup(b)));
 		ft_push(&cmd->rel, ft_new_node(strdup("HERE_DOC")));
+		free (s);
+	}
 	else
-		ft_push(&cmd->rel, ft_new_node(strdup("INPUT")));
+	{
+		if (elem->dollar && !elem->quote && !b)
+		{
+			s = ft_hq(elem->d_s);
+			ft_push(&cmd->rel, ft_new_node(strdup("BIGOUS")));
+			ft_push(&cmd->file, ft_new_node(strdup(s)));
+			return ;
+		}
+		else
+			ft_push(&cmd->rel, ft_new_node(strdup("INPUT")));
+		ft_push(&cmd->file, ft_new_node(b));
+	}
 
 }
 
@@ -59,6 +86,7 @@ t_queue	*ft_part_5(t_queue *queue)
 		}
 		ft_part_norm5(elem, cmd, &queue, &var);
 	}
+	
 	ft_push(&var.queue_answer, ft_new_node(cmd));
 	return (var.queue_answer);
 }
@@ -68,7 +96,7 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	char	*a;
 
 	a = e->s;
-	if ((a[0] == '>' || a[0] == '<' || a[0] == '|') && !e->quote)
+	if (a && (a[0] == '>' || a[0] == '<' || a[0] == '|') && !e->quote)
 	{
 		if (a[0] == '>')
 			ft_handle_out(a, cmd, queue, var);
@@ -82,7 +110,34 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	}
 	else
 	{
-		ft_push(&cmd->cmd, ft_new_node(a));
+
+		// if (!a)
+		//  	a = strdup("");
+		if (a) ft_push(&cmd->cmd, ft_new_node(a));
+	
 	}
 }
 
+char 	*ft_hq(char *a)
+{
+	char		*b;
+	t_vector	vec;
+	char		c;
+
+	memset(&vec, 0, sizeof (vec));
+	int i = 0;
+	while (a[i])
+	{
+		if (a[i] == '\'' || a[i] == '"')
+		{
+			c = a[i++];
+			while (a[i] && a[i] != c)
+				ft_push_back(&vec, a[i++]);
+			i++;
+		}
+		else if (a[i])
+			ft_push_back(&vec, a[i++]);
+	}
+	return (vec.string);
+
+}

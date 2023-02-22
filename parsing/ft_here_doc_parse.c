@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/20 18:10:51 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/22 16:48:31 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 char	*ft_expand_dollar(char *a, t_prompt *ys);
 int		ft_find(char *a, char c);
 int		ft_dollar_ok(char c);
+
 typedef	struct s_var_help
 {
 	t_queue		*a;
