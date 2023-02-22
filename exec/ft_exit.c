@@ -4,25 +4,19 @@ int	ft_exit(char **args, t_prompt *prompt)
 {
 	if (args[1] == NULL)
 		exit(prompt->exit_status);
-	// if (args[2] == NULL)
-	// {
 	if (ft_isdigit(args[1]))
 	{
 		if (args[2] != NULL)
 		{
-			printf("exit: too many arguments\n");
+			write(2, "exit: too many arguments\n", 26);
 			return (1);
 		}
 		exit((unsigned char )ft_atoi(args[1]));
 	}
-	printf("exit: %s: numeric argument required\n", args[1]);
+	write(2, "exit: ", 7);
+	write(2, args[1], ft_strlen(args[1]));
+	write(2, ": numeric argument required\n", 29);
 	exit(255);
-	// }
-	// else
-	// {
-		
-		// exit(prompt->exit_status);
-	// }
 	return (0);
 }
 

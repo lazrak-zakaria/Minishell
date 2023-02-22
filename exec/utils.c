@@ -258,3 +258,13 @@ int	ft_strchr(char *s, char c)
 				return (i);
 	return (-1);
 }
+
+void	printf_error(char *s1, char *s2, char *s3)
+{
+	if (s1 != NULL)
+		write(2, s1, ft_strlen(s1));
+	if (s2 != NULL)
+		write(2, s2, ft_strlen(s2));
+	if (s3 != NULL)
+		write(2, s3, ft_strlen(s3));
+}

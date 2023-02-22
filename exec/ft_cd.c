@@ -89,10 +89,9 @@ int	ft_cd(char **args, t_prompt *prompt)
 				}
 				env = env->next;
 			}
-
 		}
 	}
-	return (0);
+	return (exit_status);
 }
 
 int	ft_pwd()

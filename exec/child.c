@@ -15,8 +15,7 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 	pipex->cmd = prompt->list_cmd->data->cmd;
 	if (pipex->cmd[0][0] == '\0')
 	{
-		write(2, "bash: ", 7);
-		write(2, ": command not found\n", 21);
+		printf_error("bash: ", "", ": command not found\n");
 		exit(127);
 	}
 	if (is_builting(pipex->cmd[0]))
@@ -25,14 +24,10 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 	{
 		pipex->all_paths = get_paths(pipex->envp);
 		get_cmd_path(pipex->all_paths, pipex->cmd);
-		// if (pipex->all_paths != NULL)
-		// 	ft_free_all_(pipex->all_paths);
 	}
 	else if (is_dir(pipex->cmd[0]))
 	{
-		write(2, "bash: ", 7);
-		write(2, pipex->cmd[0], ft_strlen(pipex->cmd[0]));
-		write(2, ": is a directory\n", 18);
+		printf_error("bash: ", pipex->cmd[0], ": is a directory\n");
 		exit(0);
 	}
 	if (prompt->list_cmd->data->fd_0 != 0)
@@ -44,7 +39,6 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 	perror(pipex->cmd[0]);
 	exit(127);
 } 
-// fixed
 
 void	get_cmd_path(char **paths, char **command)
 {
@@ -69,9 +63,7 @@ void	get_cmd_path(char **paths, char **command)
 		}
 		free(tmp);
 	}
-	write(2, "bash: ", 7);
-	write(2, command[0], ft_strlen(command[0]));
-	write(2, ": command not found\n", 21);
+	printf_error("bash: ", command[0], ": command not found\n");
 	exit(127);
 }
 

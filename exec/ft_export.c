@@ -5,9 +5,7 @@ int	check_agrs(char *s)
 	int i = 0;
 	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || s[0] == '=' || s[0] == '+')
 	{
-		write(2, "bash: export: `", 16);
-		write(2, s, ft_strlen(s));
-		write(2, "': not valid identifier\n", 25);
+		printf_error("bash: export: `", s, "': not valid identifier\n");
 		return (1);
 	}
 	while (s[i] && s[i] != '=')
@@ -16,9 +14,7 @@ int	check_agrs(char *s)
 			break;
 		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) && !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
 		{
-			write(2, "bash: export: `", 16);
-			write(2, s, ft_strlen(s));
-			write(2, "': not valid identifier\n", 25);
+			printf_error("bash: export: `", s, "': not valid identifier\n");
 			return (1);
 		}
 		i++;
