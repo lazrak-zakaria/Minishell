@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:28 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 12:43:29 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/22 16:31:45 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,3 @@ int	ft_exit(char **args, t_prompt *prompt)
 	printf_error("bash: exit: ", args[1], ": numeric argument required\n");
 	exit(255);
 }
-
-/*
-bash: exit: %s: numeric argument required && exit => 255 
-*/
-/*
-bash: exit: too many arguments | $? => 1 if the first args numeric and there is more then one args
-*/

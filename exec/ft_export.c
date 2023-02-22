@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 12:43:26 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/22 16:52:03 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	check_agrs(char *s)
 	int	i;
 
 	i = 0;
-	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || s[0] == '=' || s[0] == '+')
+	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || \
+									s[0] == '=' || s[0] == '+')
 	{
 		printf_error("bash: export: `", s, "': not valid identifier\n");
 		return (1);
@@ -25,8 +26,9 @@ int	check_agrs(char *s)
 	while (s[i] && s[i] != '=')
 	{
 		if (s[i] == '+' && s[i + 1] == '=')
-			break;
-		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) && !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
+			break ;
+		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) \
+							&& !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
 		{
 			printf_error("bash: export: `", s, "': not valid identifier\n");
 			return (1);
@@ -42,7 +44,7 @@ t_env	*ft_dupenv(t_env *current)
 	t_env	*new;
 
 	head = NULL;
-	while(current)
+	while (current)
 	{
 		new = malloc(sizeof(t_env));
 		new->next = NULL;
@@ -57,21 +59,23 @@ t_env	*ft_dupenv(t_env *current)
 void	sort_env(t_env *head)
 {
 	t_env	*current;
+	char	*var;
+	char	*val;
+
 	current = head;
 	while (current->next)
 	{
 		if (ft_strcmp(current->variable, current->next->variable) < 0)
 		{
-			char *var = current->variable;
-			char *val = current->value;
+			var = current->variable;
+			val = current->value;
 			current->value = current->next->value;
 			current->variable = current->next->variable;
-
 			current->next->value = val;
 			current->next->variable = var;
 			current = head;
 		}
-		else 
+		else
 			current = current->next;
 	}
 }
@@ -79,6 +83,7 @@ void	sort_env(t_env *head)
 void	ft_free_env(t_env *current)
 {
 	t_env	*tmp;
+
 	while (current)
 	{
 		tmp = current->next;
@@ -91,7 +96,7 @@ void	ft_free_env(t_env *current)
 
 void	ft_print_env(t_prompt *yassir)
 {
-	t_env	*current;;
+	t_env	*current;
 	t_env	*head;
 
 	head = ft_dupenv(yassir->s_env);
@@ -107,7 +112,7 @@ void	ft_print_env(t_prompt *yassir)
 			printf("=");
 			printf("\"%s\"", current->value);
 		}
-			printf("\n");
+		printf("\n");
 		current = current->next;
 	}
 	ft_free_env(head);
@@ -115,39 +120,43 @@ void	ft_print_env(t_prompt *yassir)
 
 int	ft_export_2(t_prompt *prompt)
 {
-	t_env	*last;
 	t_env	*curr;
-	char *variable;
-	char *value;
+	char	*variable;
+	char	*value;
 	int		i;
-	int		flag = 0;
-	int		error = 0;
+	int		j;
+	int		flag;
+	int		error;
+	char	*tmp;
+
+	flag = 0;
+	error = 0;
 	if (prompt->list_cmd->data->cmd[1] == NULL)
 		ft_print_env(prompt);
 	else
 	{
-		int j = 0;
-		while(prompt->list_cmd->data->cmd[++j] != NULL)
+		j = 0;
+		while (prompt->list_cmd->data->cmd[++j] != NULL)
 		{
 			if (check_agrs(prompt->list_cmd->data->cmd[j]))
 			{
 				error = 1;
-				continue;
+				continue ;
 			}
 			i = -1;
-			while(prompt->list_cmd->data->cmd[j][++i])
-				if (prompt->list_cmd->data->cmd[j][i] == '=' || prompt->list_cmd->data->cmd[j][i] == '+')
-					break;
-
+			while (prompt->list_cmd->data->cmd[j][++i])
+				if (prompt->list_cmd->data->cmd[j][i] == '=' \
+						|| prompt->list_cmd->data->cmd[j][i] == '+')
+					break ;
 			if (prompt->list_cmd->data->cmd[j][i] == '+' && ++i)
 				flag = 1;
-			if (prompt->list_cmd->data->cmd[j][i] == '=') // there is no =
+			if (prompt->list_cmd->data->cmd[j][i] == '=')
 				value = ft_strdup(&prompt->list_cmd->data->cmd[j][i + 1]);
 			else
 				value = NULL;
 			variable = ft_substr(prompt->list_cmd->data->cmd[j], 0, i - flag);
 			curr = prompt->s_env;
-			while(curr)
+			while (curr)
 			{
 				if (my_strcmp(curr->variable, variable))
 				{
@@ -158,20 +167,21 @@ int	ft_export_2(t_prompt *prompt)
 					}
 					else if (value != NULL && flag == 1)
 					{
-						char *tmp = ft_strjoin(curr->value, value);
+						tmp = ft_strjoin(curr->value, value);
 						free(value);
 						free(curr->value);
 						curr->value = tmp;
 					}
-					break;
+					break ;
 				}
 				curr = curr->next;
 			}
 			free(variable);
 			if (curr != NULL)
-				continue;
+				continue ;
 			free(value);
-			ft_env_addback(&prompt->s_env, ft_env_new(prompt->list_cmd->data->cmd[j]));
+			ft_env_addback(&prompt->s_env, \
+					ft_env_new(prompt->list_cmd->data->cmd[j]));
 		}
 	}
 	return (error);
@@ -179,7 +189,8 @@ int	ft_export_2(t_prompt *prompt)
 
 int	ft_export(t_prompt *prompt)
 {
-	int ret;
+	int	ret;
+
 	ret = ft_export_2(prompt);
 	ft_free_all_(prompt->env);
 	prompt->env = get_env(prompt->s_env);

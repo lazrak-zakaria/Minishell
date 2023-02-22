@@ -1,16 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 15:41:32 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 16:52:16 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_env *ft_env_new(char *str)
+t_env	*ft_env_new(char *str)
 {
-	char	*value;
-	char	*var;
+	t_env	*new;
 	int		i;
 
-	t_env *new = malloc(sizeof(t_env));
+	new = malloc(sizeof(t_env));
 	if (new == NULL)
 		return (NULL);
-	for(i = 0; str[i]; i++)
+	i = -1;
+	while (str[++i])
 		if (str[i] == '=')
 			break ;
 	if (str[i] == '=')
@@ -49,34 +60,47 @@ void	ft_env_addback(t_env **lst, t_env *new)
 	last->next = new;
 }
 
-t_env *ft_creat_env(char **envp)
+t_env	*ft_creat_env(char **envp)
 {
-	t_env *env = NULL;
-	int i = -1;
+	t_env	*env;
+	int		i;
 
+	env = NULL;
+	i = -1;
 	while (envp[++i])
 		ft_env_addback(&env, ft_env_new(envp[i]));
 	return (env);
 }
 
-char **get_env(t_env *envp)
+int	ft_count_env(t_env *current)
 {
-	int i = 0;
-	t_env *current = envp;
-	while(current)
+	int	i;
+
+	i = 0;
+	while (current)
 	{
 		if (current->value != NULL)
 			i++;
 		current = current->next;
 	}
-	char **new_envp = malloc((i + 1) * sizeof(char *));
+	return (i);
+}
+
+char	**get_env(t_env *envp)
+{
+	int		i;
+	t_env	*current;
+	char	**new_envp;
+	char	*tmp;
+
+	new_envp = malloc((ft_count_env(envp) + 1) * sizeof(char *));
 	i = 0;
 	current = envp;
-	while(current)
+	while (current)
 	{
 		if (current->value != NULL)
 		{
-			char *tmp = ft_strjoin(current->variable, "=");
+			tmp = ft_strjoin(current->variable, "=");
 			new_envp[i] = ft_strjoin(tmp, current->value);
 			free(tmp);
 			i++;

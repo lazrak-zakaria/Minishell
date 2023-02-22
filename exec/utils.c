@@ -6,10 +6,9 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:47 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 12:46:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/22 15:40:29 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../minishell.h"
 
@@ -66,7 +65,6 @@ size_t	ft_strlen(char *s)
 		len++;
 	return (len);
 }
-
 
 static int	count_words(char const *s, char c)
 {
@@ -162,7 +160,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 int	my_strcmp(char *s1, char *s2)
 {
-	int i;
+	int	i;
 
 	if (s1 == NULL || s2 == NULL)
 		return (0);
@@ -180,12 +178,13 @@ int	ft_isdigit(char *str)
 
 	i = -1;
 	if (str[0] == '\0')
-		return 0;
-	while(str[++i])
+		return (0);
+	while (str[++i])
 	{
 		if ((str[i] > '9' || str[i] < '0') && str[i] != '-' && str[i] != '+')
 			return (0);
-		if ((str[i] == '-' || str[i] == '+') && (str[i + 1] > '9' || str[i + 1] < '0'))
+		if ((str[i] == '-' || str[i] == '+') && (str[i + 1] > '9' || \
+								str[i + 1] < '0'))
 			return (0);
 	}
 	return (1);
@@ -228,11 +227,14 @@ int	ft_strcmp(char *s1, char *s2)
 
 int	ft_isalnum_(char *s)
 {
-	int i = -1;
+	int	i;
+
+	i = -1;
 	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0')
 		return (0);
 	while (s[++i])
-		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) && !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
+		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) \
+						&& !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
 			return (0);
 	return (1);
 }
@@ -272,12 +274,4 @@ void	printf_error(char *s1, char *s2, char *s3)
 		write(2, s2, ft_strlen(s2));
 	if (s3 != NULL)
 		write(2, s3, ft_strlen(s3));
-}
-
-int	is_dir(const char *path)
-{
-	struct stat	statbuf;
-
-	stat(path, &statbuf);
-	return (S_ISDIR(statbuf.st_mode));
 }

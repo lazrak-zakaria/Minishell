@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 16:32:27 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 16:33:45 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
-#include <errno.h>
 #include <string.h>
 
-char *search_env(t_env *env, char *str)
+char	*search_env(t_env *env, char *str)
 {
 	while(env)
 	{
@@ -13,9 +24,9 @@ char *search_env(t_env *env, char *str)
 	return (NULL);
 }
 
-t_env *search_env_2(t_env *env, char *str)
+t_env	*search_env_2(t_env *env, char *str)
 {
-	while(env)
+	while (env)
 	{
 		if (my_strcmp(env->variable, str))
 			return (env);
@@ -24,10 +35,9 @@ t_env *search_env_2(t_env *env, char *str)
 	return (NULL);
 }
 
-
 int	ft_cd_2(char **args, t_prompt *prompt)
 {
-	t_env *str;
+	t_env	*str;
 
 	if (!args[1] || my_strcmp(args[1], "~"))
 	{
@@ -62,30 +72,34 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 
 int	ft_cd(char **args, t_prompt *prompt)
 {
-	int exit_status;
-	char buffer[1024];
+	int		exit_status;
+	char	buffer[1024];
+	char	*home;
+	char	*tmp;
+	t_env	*env;
+
 	getcwd(buffer, 1024);
 	exit_status = ft_cd_2(args, prompt);
 	if (exit_status == 0)
 	{
-		char *home = search_env(prompt->s_env, "OLDPWD");
+		home = search_env(prompt->s_env, "OLDPWD");
 		if (home == NULL)
 		{
-			char *tmp = ft_strjoin("OLDPWD=", buffer);
+			tmp = ft_strjoin("OLDPWD=", buffer);
 			ft_env_addback(&prompt->s_env, ft_env_new(tmp));
 			free(tmp);
 		}
 		else
 		{
-			t_env *env = prompt->s_env;
-			while(env)
+			env = prompt->s_env;
+			while (env)
 			{
 				if (my_strcmp(env->variable, "OLDPWD"))
 				{
 					if (env->value != NULL)
 						free(env->value);
 					env->value = ft_strdup(buffer);
-					break;
+					break ;
 				}
 				env = env->next;
 			}
@@ -97,6 +111,7 @@ int	ft_cd(char **args, t_prompt *prompt)
 int	ft_pwd()
 {
 	char buf[1024];
+
 	getcwd(buf, 1024);
 	printf("%s\n", buf);
 	return (0);
