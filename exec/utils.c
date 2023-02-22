@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 12:43:47 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 12:46:15 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../minishell.h"
 
@@ -127,30 +139,23 @@ char	**ft_split(char *s, char c)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int		len_s1;
-	int		len_s2;
 	int		i;
 	int		j;
 	char	*new_string;
 
 	i = -1;
-	j = 0;
+	j = -1;
 	if (!s2)
 		return (s1);
 	if (!s1)
 		return (s2);
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	new_string = malloc((len_s1 + len_s2 + 1) * sizeof(char ));
+	new_string = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char ));
 	if (!new_string)
 		return (NULL);
-	while (++i < len_s1)
+	while (s1[++i])
 		new_string[i] = s1[i];
-	while ((i + j) < (len_s1 + len_s2))
-	{
+	while ((s2[++j]))
 		new_string[i + j] = s2[j];
-		j++;
-	}
 	new_string[i + j] = '\0';
 	return (new_string);
 }
@@ -267,4 +272,12 @@ void	printf_error(char *s1, char *s2, char *s3)
 		write(2, s2, ft_strlen(s2));
 	if (s3 != NULL)
 		write(2, s3, ft_strlen(s3));
+}
+
+int	is_dir(const char *path)
+{
+	struct stat	statbuf;
+
+	stat(path, &statbuf);
+	return (S_ISDIR(statbuf.st_mode));
 }

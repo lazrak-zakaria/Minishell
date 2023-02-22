@@ -1,14 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   child.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 12:50:12 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
-#include <sys/stat.h>
-
-int is_dir(const char *path)
-{
-	struct stat	statbuf;
-
-	stat(path, &statbuf);
-	return (S_ISDIR(statbuf.st_mode));
-}
 
 void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 {
@@ -124,5 +126,3 @@ void	ft_builting(t_prompt *prompt)
 		ret = ft_export(prompt);
 	exit(ret);
 }
-
-// ls | exit : ??? How I can Do this

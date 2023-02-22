@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/21 14:51:38 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/22 12:31:18 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include "vector.h"
 #include <string.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 typedef struct s_cmd_package
 {
@@ -131,7 +132,8 @@ int		ft_isalnum_(char *s);
 void	ft_free_all_(char **strs);
 int		ft_strchr(char *s, char c);
 char	**ft_split(char *s, char c);
-
+void	printf_error(char *s1, char *s2, char *s3);
+int		is_dir(const char *path);
 
 // Env
 t_env	*ft_env_new(char *str);

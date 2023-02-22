@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_export.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 12:43:26 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	check_agrs(char *s)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || s[0] == '=' || s[0] == '+')
 	{
 		printf_error("bash: export: `", s, "': not valid identifier\n");
@@ -22,20 +36,27 @@ int	check_agrs(char *s)
 	return (0);
 }
 
-void	ft_print_env(t_prompt *yassir)
+t_env	*ft_dupenv(t_env *current)
 {
-	t_env *current = yassir->s_env;
-	int i = 0;
-	t_env	*head = NULL;
+	t_env	*head;
+	t_env	*new;
+
+	head = NULL;
 	while(current)
 	{
-		t_env	*new = malloc(sizeof(t_env));
+		new = malloc(sizeof(t_env));
 		new->next = NULL;
 		new->value = ft_strdup(current->value);
 		new->variable = ft_strdup(current->variable);
 		ft_env_addback(&head, new);
 		current = current->next;
 	}
+	return (head);
+}
+
+void	sort_env(t_env *head)
+{
+	t_env	*current;
 	current = head;
 	while (current->next)
 	{
@@ -53,6 +74,28 @@ void	ft_print_env(t_prompt *yassir)
 		else 
 			current = current->next;
 	}
+}
+
+void	ft_free_env(t_env *current)
+{
+	t_env	*tmp;
+	while (current)
+	{
+		tmp = current->next;
+		free(current->value);
+		free(current->variable);
+		free(current);
+		current = tmp;
+	}
+}
+
+void	ft_print_env(t_prompt *yassir)
+{
+	t_env	*current;;
+	t_env	*head;
+
+	head = ft_dupenv(yassir->s_env);
+	sort_env(head);
 	current = head;
 	while (current != NULL)
 	{
@@ -67,14 +110,7 @@ void	ft_print_env(t_prompt *yassir)
 			printf("\n");
 		current = current->next;
 	}
-	current = head;
-	while (current)
-	{
-		free(current->value);
-		free(current->variable);
-		current = current->next;
-	}
-	
+	ft_free_env(head);
 }
 
 int	ft_export_2(t_prompt *prompt)
@@ -123,6 +159,7 @@ int	ft_export_2(t_prompt *prompt)
 					else if (value != NULL && flag == 1)
 					{
 						char *tmp = ft_strjoin(curr->value, value);
+						free(value);
 						free(curr->value);
 						curr->value = tmp;
 					}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/22 12:43:28 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/22 12:43:29 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 int	ft_exit(char **args, t_prompt *prompt)
@@ -13,11 +25,8 @@ int	ft_exit(char **args, t_prompt *prompt)
 		}
 		exit((unsigned char )ft_atoi(args[1]));
 	}
-	write(2, "exit: ", 7);
-	write(2, args[1], ft_strlen(args[1]));
-	write(2, ": numeric argument required\n", 29);
+	printf_error("bash: exit: ", args[1], ": numeric argument required\n");
 	exit(255);
-	return (0);
 }
 
 /*

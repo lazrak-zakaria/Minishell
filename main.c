@@ -49,10 +49,9 @@ int	main(int ac, char **av, char **env)
 		free(a);
 
 	/******************************/
-	printf ("her\n");
 		t_list *oo = prompt.list_cmd;
+		ft_exec(&prompt);
 		ft_free_lis(oo);
-		//ft_exec(&prompt);
 
 	}
 }
