@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   red.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:45:51 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 17:06:36 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/22 18:12:24 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	red(t_list *cmd)
 			fd_0 = open(cmd->data->file[i], O_RDONLY);
 		else if (cmd->data->rel[i][0] == 'H')
 			fd_0 = ft_write_pipe(cmd->data->buffer[j], &j);
-		// else if (cmd->data->rel[i][0] == 'B')
-		// 	return (printf_error("bash: ", cmd->data->file[i], ": ambiguous redirect"), -2);
+		else if (cmd->data->rel[i][0] == 'B')
+		 	return (printf_error("bash: ", cmd->data->file[i], ": ambiguous redirect"), -2);
 		if (fd_1 < 0 || fd_0 < 0)
 			return (i);
 		i++;
