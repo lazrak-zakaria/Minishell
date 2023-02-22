@@ -11,13 +11,13 @@ void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
 		{
 			prompt->list_cmd->data->fd_1 = pipex->pipe2[1];
 			prompt->list_cmd->data->fd_0 = pipex->pipe[0];
-	int ret = red(prompt->list_cmd);
-	if (ret != -1)
-	{
-	 	write(2, "bash: ", 7);
-	 	perror(prompt->list_cmd->data->file[ret]);
-		return ;
-	}
+			int ret = red(prompt->list_cmd);
+			if (ret != -1)
+			{
+				write(2, "bash: ", 7);
+				perror(prompt->list_cmd->data->file[ret]);
+				return ;
+			}
 			close(pipex->pipe2[0]);
 			get_cmd_child(pipex, prompt);
 		}
@@ -49,13 +49,13 @@ void	ft_exec(t_prompt *prompt)
 		{
 			
 			prompt->list_cmd->data->fd_1 = pipex.pipe[1];
-	int ret = red(prompt->list_cmd);
-	if (ret != -1)
-	{
-	 	write(2, "bash: ", 7);
-	 	perror(prompt->list_cmd->data->file[ret]);
-		return ;
-	}
+			int ret = red(prompt->list_cmd);
+			if (ret != -1)
+			{
+				write(2, "bash: ", 7);
+				perror(prompt->list_cmd->data->file[ret]);
+				return ;
+			}
 			close(pipex.pipe[0]); // you should close this for this test : cat | ls 
 			get_cmd_child(&pipex, prompt);
 		}
@@ -66,13 +66,13 @@ void	ft_exec(t_prompt *prompt)
 		if (fork() == 0)
 		{
 			prompt->list_cmd->data->fd_0 = pipex.pipe[0];
-	int ret = red(prompt->list_cmd);
-	if (ret != -1)
-	{
-	 	write(2, "bash: ", 7);
-	 	perror(prompt->list_cmd->data->file[ret]);
-		return ;
-	}
+			int ret = red(prompt->list_cmd);
+			if (ret != -1)
+			{
+				write(2, "bash: ", 7);
+				perror(prompt->list_cmd->data->file[ret]);
+				return ;
+			}
 			get_cmd_child(&pipex, prompt);
 		}
 		close(pipex.pipe[0]);
@@ -107,13 +107,16 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
 		prompt->exit_status = ft_pwd();
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
-		ft_unset(prompt, prompt->list_cmd->data->cmd);
+		prompt->exit_status = ft_unset(prompt, prompt->list_cmd->data->cmd);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))
 		prompt->exit_status = ft_env(prompt);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "export"))
 		prompt->exit_status = ft_export(prompt);
 	else if (fork() == 0)
 		get_cmd_child(pipex, prompt);
-	wait(&prompt->exit_status);
-	prompt->exit_status = prompt->exit_status / 256;
+	else
+	{
+		wait(&prompt->exit_status);
+		prompt->exit_status = prompt->exit_status / 256;
+	}
 }

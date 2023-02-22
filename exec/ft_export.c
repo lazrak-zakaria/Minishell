@@ -89,6 +89,7 @@ int	ft_export_2(t_prompt *prompt)
 	char *value;
 	int		i;
 	int		flag = 0;
+	int		error = 0;
 	if (prompt->list_cmd->data->cmd[1] == NULL)
 		ft_print_env(prompt);
 	else
@@ -97,7 +98,10 @@ int	ft_export_2(t_prompt *prompt)
 		while(prompt->list_cmd->data->cmd[++j] != NULL)
 		{
 			if (check_agrs(prompt->list_cmd->data->cmd[j]))
+			{
+				error = 1;
 				continue;
+			}
 			i = -1;
 			while(prompt->list_cmd->data->cmd[j][++i])
 				if (prompt->list_cmd->data->cmd[j][i] == '=' || prompt->list_cmd->data->cmd[j][i] == '+')
@@ -137,7 +141,7 @@ int	ft_export_2(t_prompt *prompt)
 			ft_env_addback(&prompt->s_env, ft_env_new(prompt->list_cmd->data->cmd[j]));
 		}
 	}
-	return (0);
+	return (error);
 }
 
 int	ft_export(t_prompt *prompt)

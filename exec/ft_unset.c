@@ -2,6 +2,7 @@
 
 int	ft_unset_2(t_prompt *prompt, char **args)
 {
+	int	error = 0;
 	if (args[1] == NULL)
 		return (0);
 	for (int i = 1; args[i]; i++)
@@ -41,9 +42,10 @@ int	ft_unset_2(t_prompt *prompt, char **args)
 			write(2, "bash: unset: `", 15);
 			write(2, args[i], ft_strlen(args[i]));
 			write(2, "': not a valid identifier\n", 27);
+			error = 1;
 		}
 	}
-	return (0);
+	return (error);
 }
 
 int	ft_env(t_prompt *prompt)
