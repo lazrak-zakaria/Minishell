@@ -1,5 +1,33 @@
 #include "minishell.h"
 
+void	ft_memfree(char **a)
+{
+	int i = 0;
+	while (a && a[i])
+	{
+		free (a[i]);
+		i++;
+	}
+	free (a);
+}
+void	ft_free_lis(t_list *head)
+{
+	t_list *tt;
+	t_cmd_package *p;
+	while (head)
+	{
+		tt = head->next;
+		p = head->data;
+		ft_memfree(p->cmd);
+		ft_memfree(p->file);
+		ft_memfree(p->rel);
+		ft_memfree(p->buffer);
+		free (p);
+		free (head);
+		head = tt;
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	(void)ac;
@@ -21,8 +49,10 @@ int	main(int ac, char **av, char **env)
 		free(a);
 
 	/******************************/
-
-		ft_exec(&prompt);
+	printf ("her\n");
+		t_list *oo = prompt.list_cmd;
+		ft_free_lis(oo);
+		//ft_exec(&prompt);
 
 	}
 }
