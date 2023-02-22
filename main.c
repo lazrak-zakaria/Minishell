@@ -42,9 +42,10 @@ int	main(int ac, char **av, char **env)
 	while(1)
 	{
 		prompt.list_cmd = NULL;
-		char *a = readline("-->");
+		char *a = readline("MINISHELL:");
 		if (a == NULL)
 			exit(0);
+		add_history(a);
 		ft_parse(a, &prompt);
 		free(a);
 
