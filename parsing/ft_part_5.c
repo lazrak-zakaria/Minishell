@@ -40,10 +40,17 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	if (a && a[1])
 	{
 		s = ft_hq(elem->d_s);
-		if (elem->dollar && elem->quote)
+		if (elem->dollar && elem->quote && !b)
+		{
 			ft_push(&cmd->file, ft_new_node(strdup(s)));
+		}
 		else
-			ft_push(&cmd->file, ft_new_node(strdup(b)));
+		{
+			if (!b)
+				ft_push(&cmd->file, ft_new_node(strdup(elem->d_s)));
+			else
+				ft_push(&cmd->file, ft_new_node(strdup(b)));
+		}
 		ft_push(&cmd->rel, ft_new_node(strdup("HERE_DOC")));
 		free (s);
 	}
