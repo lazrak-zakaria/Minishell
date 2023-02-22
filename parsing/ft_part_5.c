@@ -12,7 +12,7 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	var->temp_queue = ft_pop(queue);
 	elem = var->temp_queue->data;
 	b = elem->s;
-	if (elem->dollar && !elem->quote && !b)
+	if (elem->dollar && !elem->quote)
 	{
 		s = ft_hq(elem->d_s);
 		ft_push(&cmd->rel, ft_new_node(strdup("BIGOUS")));
@@ -40,7 +40,7 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	if (a && a[1])
 	{
 		s = ft_hq(elem->d_s);
-		if (elem->dollar && elem->quote && !b)
+		if (elem->dollar && elem->quote)
 		{
 			ft_push(&cmd->file, ft_new_node(strdup(s)));
 		}
