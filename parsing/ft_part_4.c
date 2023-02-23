@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/23 14:34:39 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/23 16:46:15 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,13 @@
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
 int		ft_dollar_ok(char c);
 char	*ft_expand_dollar(char *a, t_prompt *ys);
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i);
+
+typedef struct s_pr
+{
+	int		*i;
+	int		f;	
+}	t_pr;
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, t_pr *pr);
 
 static int	_abs(int n)
 {
@@ -143,6 +149,8 @@ int	ft_dollar_ok(char c)
 
 void	ft_sub_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 {
+	t_pr	pr;
+
 	if (a[(*i)] == '\'')
 	{
 		(*i)++;
@@ -154,7 +162,12 @@ void	ft_sub_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 	{
 		(*i)++;
 		while (a[(*i)] && a[(*i)] != '\"')
-			ft_norm_expand(a, vec, ys, &(*i));
+		{
+			pr.i = i;
+			pr.f = 1;
+			ft_norm_expand(a, vec, ys, &pr);
+		
+		}
 		if (!vec->string)
 		{
 			ft_push_back(vec, '\0');
@@ -168,6 +181,7 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 {
 	t_vector	vec;
 	int			i;
+	t_pr		pr;
 
 	memset(&vec, 0, sizeof(vec));
 	i = 0;
@@ -176,7 +190,11 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 		if (a[i] == '\'' || a[i] == '\"')
 			ft_sub_expand(a, &vec, ys, &i);
 		else
-			ft_norm_expand(a, &vec, ys, &i);
+		{
+			pr.i = &i;
+			pr.f = 0;			
+			ft_norm_expand(a, &vec, ys, &pr);
+		}
 	}
 	return (vec.string);
 }
@@ -198,18 +216,18 @@ void	ft_sub_norm(char *a, t_vector *vec, int *i, int *flag)
 	*flag = 1;
 }
 
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, t_pr *pr)
 {
 	t_vector	vec_dollar;
 	int			flag;
 
 	flag = 0;
-	if (a[*i] == '$')
-		ft_sub_norm(a, &vec_dollar, i, &flag);
+	if (a[*(pr->i)] == '$')
+		ft_sub_norm(a, &vec_dollar, pr->i, &flag);
 	if (flag)
 	{
-		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i])
-			&& (a[*i] != '"' && a[*i] != '\''))
+		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*(pr->i)])
+			&& (pr->f || (a[*(pr->i)] != '"' && a[*(pr->i)] != '\'')))
 		{
 			ft_push_back(vec, vec_dollar.string[0]);
 			free (vec_dollar.string);
@@ -218,7 +236,7 @@ void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 			ft_join_dollar(&vec, &vec_dollar, ys);
 	}
 	else
-		ft_push_back(vec, a[(*i)++]);
+		ft_push_back(vec, a[(*(pr->i))++]);
 }
 
 void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
@@ -268,3 +286,4 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 		ft_subjoin_dollar(vec, vec_dollar, ys);
 	free (vec_dollar->string);
 }
+///////
