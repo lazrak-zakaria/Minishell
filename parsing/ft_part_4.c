@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/22 16:47:30 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/23 14:34:39 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
 int		ft_dollar_ok(char c);
 char	*ft_expand_dollar(char *a, t_prompt *ys);
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i, int ff);
-
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i);
 
 static int	_abs(int n)
 {
@@ -64,10 +63,11 @@ char	*ft_itoa(int n)
 	return (a);
 }
 
-
 int	ft_find(char *a, char c)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (a[i] && a[i] != c)
 		i++;
 	return (a[i] != '\0');
@@ -91,6 +91,18 @@ void	ft_norm_part4(char *a, t_var *var)
 	}
 }
 
+void	ft_var_part4(t_var *var, t_elem *element, char *a)
+{
+	ft_create_vector(&var->vec, 2);
+	var->vec.string[0] = '\0';
+	var->i = 0;
+	var->flag = 0;
+	element->quote = (a[0] == '\'' || a[0] == '\"');
+	element->s = NULL;
+	element->dollar = 0;
+	element->d_s = ft_strdup(a);
+}
+
 t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 {
 	t_var	var;
@@ -100,30 +112,16 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 	var.queue_answer = NULL;
 	while (queue)
 	{
-		var.i = 0;
-		var.flag = 0;
-		ft_create_vector(&var.vec, 2);
-		var.vec.string[0] = '\0';
 		var.temp_queue = ft_pop(&queue);
-		a = var.temp_queue->data;
 		element = malloc (sizeof (t_elem));
-		element->s = NULL;
-		element->dollar = 0;
-		element->quote = (a[0] == '\'' || a[0] == '\"');
-		element->d_s = ft_strdup(a);
+		a = var.temp_queue->data;
+		ft_var_part4(&var, element, a);
 		if (ft_find(a, '$'))
 		{
-			//printf ("------> %s\n", a);
 			element->dollar = 1;
 			element->s = ft_expand_dollar(a, ys);
-			// if (!element->s)
-			// 	element->s = var.vec.string;
-			// else
-			// 	free (var.vec.string);
-			 if (!element->s)
-			{
-				free (var.vec.string);//continue;	
-			}
+		//	if (!element->s) //leaks
+				free (var.vec.string);
 			ft_push(&var.queue_answer, ft_new_node(element));
 			continue ;
 		}
@@ -143,6 +141,29 @@ int	ft_dollar_ok(char c)
 	return (f);
 }
 
+void	ft_sub_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
+{
+	if (a[(*i)] == '\'')
+	{
+		(*i)++;
+		while (a[(*i)] && a[(*i)] != '\'')
+			ft_push_back(vec, a[(*i)++]);
+		(*i)++;
+	}
+	else if (a[(*i)] == '\"')
+	{
+		(*i)++;
+		while (a[(*i)] && a[(*i)] != '\"')
+			ft_norm_expand(a, vec, ys, &(*i));
+		if (!vec->string)
+		{
+			ft_push_back(vec, '\0');
+			vec->i--;
+		}	
+		(*i)++;
+	}
+}
+
 char	*ft_expand_dollar(char *a, t_prompt *ys)
 {
 	t_vector	vec;
@@ -152,71 +173,80 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 	i = 0;
 	while (a[i])
 	{
-		if (a[i] == '\'')
-		{
-			i++;
-			while (a[i] && a[i] != '\'')
-				ft_push_back(&vec, a[i++]);
-			i++;	
-		}
-		else if (a[i] == '\"')
-		{
-			i++;
-			while (a[i] && a[i] != '\"')
-				ft_norm_expand(a, &vec, ys, &i, 1);
-			if (!vec.string)
-			{
-				//ft_create_vector(&vec, 2);
-				ft_push_back(&vec, '\0');
-				vec.i--;
-			}	
-			i++;
-		}
+		if (a[i] == '\'' || a[i] == '\"')
+			ft_sub_expand(a, &vec, ys, &i);
 		else
-		{
-			ft_norm_expand(a, &vec, ys, &i, 0);
-		}
+			ft_norm_expand(a, &vec, ys, &i);
 	}
 	return (vec.string);
 }
 
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i, int ff)
+void	ft_sub_norm(char *a, t_vector *vec, int *i, int *flag)
+{
+	memset(vec, 0, sizeof(t_vector));
+	ft_push_back(vec, a[(*i)++]);
+	if (a[(*i)] >= '0' && a[*i] <= '9')
+		ft_push_back(vec, a[(*i)++]);
+	else
+	{
+		if (a[(*i)] == '?')
+			ft_push_back(vec, a[(*i)++]);
+		else
+			while (ft_dollar_ok(a[(*i)]))
+				ft_push_back(vec, a[(*i)++]);
+	}
+	*flag = 1;
+}
+
+void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 {
 	t_vector	vec_dollar;
 	int			flag;
 
 	flag = 0;
-	
 	if (a[*i] == '$')
-	{
-		memset(&vec_dollar, 0, sizeof(vec_dollar));
-		ft_push_back(&vec_dollar, a[(*i)++]);
-		if (a[(*i)] >= '0' && a[*i] <= '9')
-			ft_push_back(&vec_dollar, a[(*i)++]);
-		else
-		{
-			if (a[(*i)] == '?')
-				ft_push_back(&vec_dollar, a[(*i)++]);
-			else
-				while (ft_dollar_ok(a[(*i)]))
-					ft_push_back(&vec_dollar, a[(*i)++]);
-		}
-		flag = 1;
-	}
+		ft_sub_norm(a, &vec_dollar, i, &flag);
 	if (flag)
 	{
-		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i]) && (ff
-				|| (a[*i] != '"' && a[*i] != '\'')))
+		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*i])
+			&& (a[*i] != '"' && a[*i] != '\''))
 		{
-			// if (a[*i])
-			// 	(*i)++;
-			ft_push_back(vec, vec_dollar.string[0]);		
+			ft_push_back(vec, vec_dollar.string[0]);
 			free (vec_dollar.string);
 		}
-		else ft_join_dollar(&vec, &vec_dollar, ys);
+		else
+			ft_join_dollar(&vec, &vec_dollar, ys);
 	}
 	else
 		ft_push_back(vec, a[(*i)++]);
+}
+
+void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
+{
+	char	*a;
+	int		i;
+	int		j;
+
+	j = 0;
+	i = 0;
+	if (vec_dollar->string[1])
+		j = 1;
+	ft_push_back(vec_dollar, '=');
+	a = vec_dollar->string;
+	if (j)
+		a = vec_dollar->string + 1;
+	j = strlen(a);
+	i = 0;
+	while (ys->env && ys->env[i])
+	{
+		if (!strncmp(a, ys->env[i], j))
+		{
+			while (ys->env[i][j])
+				ft_push_back(*vec, ys->env[i][j++]);
+			break ;
+		}
+		++i;
+	}
 }
 
 void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
@@ -235,25 +265,6 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 		free (a);
 	}
 	else
-	{
-		if (vec_dollar->string[1])
-			j = 1;
-		ft_push_back(vec_dollar, '=');
-		a = vec_dollar->string;
-		if (j)
-			a = vec_dollar->string + 1;
-		j = strlen(a);
-		i = 0;
-		while (ys->env && ys->env[i])
-		{
-			if (!strncmp(a, ys->env[i], j))
-			{
-				while (ys->env[i][j])
-					ft_push_back(*vec, ys->env[i][j++]);
-				break ;
-			}
-			++i;
-		}
-	}
+		ft_subjoin_dollar(vec, vec_dollar, ys);
 	free (vec_dollar->string);
 }

@@ -6,22 +6,48 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/22 16:48:31 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/23 15:21:29 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
 char	*ft_expand_dollar(char *a, t_prompt *ys);
 int		ft_find(char *a, char c);
 int		ft_dollar_ok(char c);
 
-typedef	struct s_var_help
+typedef struct s_var_help
 {
 	t_queue		*a;
 	t_queue		*b;
 	char		*string;
 	char		*string2;
-} t_var_help;
+}	t_var_help;
+
+void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
+{
+	int			j;
+	char		*ff;
+	char		*tofree;
+
+	if (s[(*i)] == '$')
+	{
+		j = (*i)++;
+		while (ft_dollar_ok(s[(*i)]))
+			(*i)++;
+		tofree = ft_substr(s, j, (*i));
+		ff = ft_expand_dollar(tofree, ys);
+		free(tofree);
+		if (!ff)
+			ff = strdup("");
+		j = 0;
+		while (ff[j])
+			ft_push_back(vec, ff[j++]);
+		free(ff);
+	}
+	if (s[(*i)])
+		ft_push_back(vec, s[(*i)++]);
+}
 
 void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 {
@@ -29,8 +55,6 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 	char		*s;
 	char		*b;
 	int			i;
-	t_vector	vecb;
-
 
 	memset(&vec, 0, sizeof(vec));
 	ft_push_back(&vec, '\0');
@@ -41,30 +65,16 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 		s = readline(">");
 		if (!s || !strcmp(s, a))
 		{
-			ft_push(&cmd->buffer, ft_new_node(vec.string));
+			ft_push(&cmd->buffer, ft_new_node(strdup(vec.string)));
 			free(s);
 			break ;
 		}
 		while (s[i])
-		{	
-			if (s[i] == '$')
-			{
-				memset(&vecb, 0, sizeof(vecb));
-				int j = i++;
-				while (ft_dollar_ok(s[i]))
-					i++;
-				char	*ff = ft_expand_dollar(ft_substr(s, j, i), ys);
-				if (!ff)
-					ff = strdup("");
-				j = 0;
-				while (ff[j])
-					ft_push_back(&vec, ff[j++]);
-			}
-			if (s[i])
-				ft_push_back(&vec, s[i++]);
-		}	
-		ft_push_back(&vec, '\n');		
+			ft_sub_take(s, &i, ys, &vec);
+		ft_push_back(&vec, '\n');
+		free(s);
 	}
+	free(vec.string);
 }
 
 void	ft_here(t_queue *queue, t_prompt *ys)

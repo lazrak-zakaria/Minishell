@@ -1,40 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   queue.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/23 13:57:11 by zlazrak           #+#    #+#             */
+/*   Updated: 2023/02/23 14:01:20 by zlazrak          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../queue.h"
 
-t_queue *ft_new_node(void *data)
+t_queue	*ft_new_node(void *data)
 {
-    t_queue *q;
+	t_queue	*q;
 
 	q = malloc(sizeof(t_queue));
-    q->data = data;
-    q->next = NULL;
-    return (q);
+	q->data = data;
+	q->next = NULL;
+	return (q);
 }
 
-void    ft_push(t_queue **top, t_queue *q)
+void	ft_push(t_queue **top, t_queue *q)
 {
-    t_queue *temp;
+	t_queue	*temp;
 
 	temp = *top;
-    if (!(*top))
-    {
-        *top = q;
-        return ;
-    }
-    while (temp->next)
-        temp = temp->next;
-    temp->next = q;
+	if (!(*top))
+	{
+		*top = q;
+		return ;
+	}
+	while (temp->next)
+		temp = temp->next;
+	temp->next = q;
 }
 
-t_queue    *ft_pop(t_queue **top)
+t_queue	*ft_pop(t_queue **top)
 {
-    t_queue    *answer;
+	t_queue	*answer;
 
 	answer = *top;
-    *top = (*top)->next;
-    return (answer);
+	*top = (*top)->next;
+	return (answer);
 }
 
-int		ft_q_size(t_queue *top)
+int	ft_q_size(t_queue *top)
 {
 	int	i;
 
