@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:27 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 16:33:45 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/23 15:51:25 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,12 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 		str = search_env_2(prompt->s_env, "HOME");
 		if (str != NULL && str->value != NULL)
 		{
-			chdir(str->value);
+			if (chdir(str->value) != 0)
+			{
+				write(2, "bash: cd: ", 11);
+				perror(str->value);
+				return (1);
+			}
 			return (0);
 		}
 		write(2, "bash: cd: HOME not set\n", 24);
@@ -54,7 +59,12 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 		str = search_env_2(prompt->s_env, "OLDPWD");
 		if (str != NULL && str->value != NULL)
 		{
-			chdir(str->value);
+			if (chdir(str->value) != 0)
+			{
+				write(2, "bash: cd: ", 11);
+				perror(str->value);
+				return (1);
+			}
 			printf("%s\n", str->value);
 			return (0);
 		}
