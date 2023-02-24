@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/23 15:21:29 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 11:58:39 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 	if (s[(*i)] == '$')
 	{
 		j = (*i)++;
-		while (ft_dollar_ok(s[(*i)]))
+		while (ft_dollar_ok(s[(*i)]) || s[(*i)] == '$')
 			(*i)++;
 		tofree = ft_substr(s, j, (*i));
 		ff = ft_expand_dollar(tofree, ys);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 17:09:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 12:39:23 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
 			{
 				write(2, "bash: ", 7);
 				perror(prompt->list_cmd->data->file[ret]);
-				return ;
+				exit(1);
 			}
 			close(pipex->pipe2[0]);
 			get_cmd_child(pipex, prompt);
@@ -47,8 +47,7 @@ void	ft_exec(t_prompt *prompt)
 
 	pipex.envp = prompt->env;
 	if (!prompt->list_cmd || !prompt->list_cmd->data || \
-			!prompt->list_cmd->data->cmd || !prompt->list_cmd->data->cmd \
-					|| prompt->list_cmd->data->cmd[0] == NULL)
+			!prompt->list_cmd->data->cmd || !prompt->list_cmd->data->cmd )
 		return ;
 	if (prompt->list_cmd->next != NULL)
 	{
@@ -61,15 +60,15 @@ void	ft_exec(t_prompt *prompt)
 			{
 				write(2, "bash: ", 7);
 				perror(prompt->list_cmd->data->file[ret]);
-				return ;
+				exit(1);
 			}
 			close(pipex.pipe[0]);
 			get_cmd_child(&pipex, prompt);
 		}
 		prompt->list_cmd = prompt->list_cmd->next;
 		close(pipex.pipe[1]);
-		// if (prompt->list_cmd->next != NULL)
-		// 	ft_child_child(&pipex, prompt);
+		if (prompt->list_cmd->next != NULL)
+			ft_child_child(&pipex, prompt);
 		if (fork() == 0)
 		{
 			prompt->list_cmd->data->fd_0 = pipex.pipe[0];
@@ -78,7 +77,7 @@ void	ft_exec(t_prompt *prompt)
 			{
 				write(2, "bash: ", 7);
 				perror(prompt->list_cmd->data->file[ret]);
-				return ;
+				exit(1);
 			}
 			get_cmd_child(&pipex, prompt);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 17:02:50 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 12:45:07 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 {
+	if (prompt->list_cmd->data->cmd[0] == NULL)
+		return ;
 	if (prompt->list_cmd->data->cmd[0][0] == '\0')
 	{
 		printf_error("bash: ", "", ": command not found\n");
