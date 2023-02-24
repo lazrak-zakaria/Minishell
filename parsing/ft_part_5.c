@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/23 14:58:18 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 13:35:41 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	var->temp_queue = ft_pop(queue);
 	elem = var->temp_queue->data;
 	b = elem->s;
-	if (elem->dollar && !elem->quote)
+	if (elem->dollar && !elem->quote && !b)
 	{
 		s = ft_hq(elem->d_s);
 		ft_push(&cmd->rel, ft_new_node(strdup("BIGOUS")));

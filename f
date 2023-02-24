@@ -1,0 +1,10 @@
+a.out
+exec
+f
+main.c
+minishell
+minishell.h
+parsing
+queue.h
+vector.h
+zlazrak

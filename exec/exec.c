@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 12:39:23 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 13:49:47 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	ft_exec(t_prompt *prompt)
 
 void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 {
-	int	ret;
+	int	ret;//// Dup f parent ex:: pwd > o 
 
 	ret = red(prompt->list_cmd);
 	if (ret == -2)

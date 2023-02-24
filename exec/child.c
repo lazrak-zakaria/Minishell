@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 12:45:07 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 13:46:24 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 {
 	if (prompt->list_cmd->data->cmd[0] == NULL)
 		return ;
+	if (prompt->list_cmd->data->fd_0 != 0)
+		dup2(prompt->list_cmd->data->fd_0, 0);
+	if (prompt->list_cmd->data->fd_1 != 1)
+		dup2(prompt->list_cmd->data->fd_1, 1);
 	if (prompt->list_cmd->data->cmd[0][0] == '\0')
 	{
 		printf_error("bash: ", "", ": command not found\n");
@@ -30,10 +34,6 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
 		if (pipex->all_paths != NULL)
 			ft_free_all_(pipex->all_paths);
 	}
-	if (prompt->list_cmd->data->fd_0 != 0)
-		dup2(prompt->list_cmd->data->fd_0, 0);
-	if (prompt->list_cmd->data->fd_1 != 1)
-		dup2(prompt->list_cmd->data->fd_1, 1);
 	execve(prompt->list_cmd->data->cmd[0], \
 				prompt->list_cmd->data->cmd, pipex->envp);
 	write(2, "bash: ", 7);
