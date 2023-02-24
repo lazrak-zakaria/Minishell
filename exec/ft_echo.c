@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:18 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 16:51:08 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 14:15:20 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	ft_echo(char **args, int fd)
 	i = 0;
 	if (args[1] == NULL)
 	{
-		write(1, "\n", 1);
+		write(fd, "\n", 1);
 		return (0);
 	}
 	while (args[++i] != NULL && args[i][0] == '-')

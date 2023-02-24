@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:26:02 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 16:27:55 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 14:30:56 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,10 @@ int	ft_env(t_prompt *prompt)
 	{
 		if (current->value != NULL)
 		{
-			printf("%s", current->variable);
-			printf("=");
-			printf("%s", current->value);
-			printf("\n");
+			write(prompt->list_cmd->data->fd_1, current->variable, ft_strlen(current->variable));
+			write(prompt->list_cmd->data->fd_1, "=", 1);
+			write(prompt->list_cmd->data->fd_1, current->value, ft_strlen(current->value));
+			write(prompt->list_cmd->data->fd_1, "\n", 1);
 		}
 		current = current->next;
 	}

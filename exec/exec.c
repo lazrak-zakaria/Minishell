@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 13:49:47 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 14:23:41 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 		return ;
 	if (my_strcmp(prompt->list_cmd->data->cmd[0], "exit"))
 	{
-		printf("exit\n");
+		write(2, "exit\n", 5);
 		prompt->exit_status = ft_exit(prompt->list_cmd->data->cmd, prompt);
 	}
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "echo"))
@@ -116,7 +116,7 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "cd"))
 		prompt->exit_status = ft_cd(prompt->list_cmd->data->cmd, prompt);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
-		prompt->exit_status = ft_pwd();
+		prompt->exit_status = ft_pwd(prompt->list_cmd->data->fd_1);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
 		prompt->exit_status = ft_unset(prompt, prompt->list_cmd->data->cmd);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))
