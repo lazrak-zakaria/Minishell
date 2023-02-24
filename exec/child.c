@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 13:46:24 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 17:19:06 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	get_cmd_path(char **paths, char **command)
 
 	if (paths == NULL)
 		return ;
-	if (command != NULL)
+	if (!(my_strcmp(command[0], "..")) && !(my_strcmp(command[0], ".")))
 	{
 		tmp = ft_strjoin("/", command[0]);
 		while (*paths != NULL)
@@ -120,7 +120,7 @@ void	ft_builting(t_prompt *prompt)
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "cd"))
 		ret = ft_cd(prompt->list_cmd->data->cmd, prompt);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
-		ret = ft_pwd();
+		ret = ft_pwd(prompt->list_cmd->data->fd_1);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
 		ret = ft_unset(prompt, prompt->list_cmd->data->cmd);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))

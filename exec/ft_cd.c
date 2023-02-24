@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:27 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 14:19:57 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 17:10:43 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,7 @@ int	ft_pwd(int fd)
 	char buf[PATH_MAX + 1];
 
 	getcwd(buf, PATH_MAX);
-	write(fd, "%s\n", buf);
+	write(fd, buf, ft_strlen(buf));
+	write(fd, "\n", 1);
 	return (0);
 }
