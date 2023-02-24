@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:27 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 17:10:43 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 17:35:54 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	ft_cd_2(char **args, t_prompt *prompt)
 				return (1);
 			}
 			write(prompt->list_cmd->data->fd_1, str->value, ft_strlen(str->value));
+			write(prompt->list_cmd->data->fd_1, "\n", 1);
 			return (0);
 		}
 		write(2, "bash: cd: OLDPWD not set\n", 26);

@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 14:27:21 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/24 17:42:27 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,9 @@ void	ft_print_env(t_prompt *yassir)
 	{
 		write(yassir->list_cmd->data->fd_1, "declare -x ", 12);
 		if (current->variable != NULL)
-			printf("%s", current->variable);
+		{
+			write(yassir->list_cmd->data->fd_1, current->variable, ft_strlen(current->variable));
+		}
 		if (current->value != NULL)
 		{
 			write(yassir->list_cmd->data->fd_1, "=\"", 2);

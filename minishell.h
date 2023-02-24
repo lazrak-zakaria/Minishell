@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/22 16:45:40 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/24 14:19:06 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,6 @@ void	ft_free_all_(char **strs);
 int		ft_strchr(char *s, char c);
 char	**ft_split(char *s, char c);
 void	printf_error(char *s1, char *s2, char *s3);
-int		is_dir(const char *path);
 
 // Env
 t_env	*ft_env_new(char *str);
@@ -149,7 +148,7 @@ int		ft_env(t_prompt *prompt);
 int		ft_echo(char **args, int fd);
 int		ft_exit(char **args, t_prompt *prompt);
 int		ft_cd(char **args, t_prompt *prompt);
-int		ft_pwd();
+int		ft_pwd(int fd);
 int		ft_unset(t_prompt *prompt, char **args);
 int		ft_export(t_prompt *prompt);
 
