@@ -6,11 +6,12 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 13:31:45 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/25 15:11:03 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+int	ft_find(char *a, char c);
 
 void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 char	*ft_hq(char *a);
@@ -48,10 +49,10 @@ void	ft_handle_in_hd(t_elem *elem, t_cmd_parse *cmd, char *b)
 		ft_push(&cmd->file, ft_new_node(strdup(s)));
 	else
 	{
-		// if (!b)
-		// 	ft_push(&cmd->file, ft_new_node(strdup(elem->d_s)));
-		// else
-			ft_push(&cmd->file, ft_new_node(strdup(elem->d_s)));
+		if (!b || (s && ft_find(s, '$')))
+		 	ft_push(&cmd->file, ft_new_node(strdup(elem->d_s)));
+		 else
+			ft_push(&cmd->file, ft_new_node(strdup(b)));
 	}
 	ft_push(&cmd->rel, ft_new_node(strdup("HERE_DOC")));
 	free (s);
