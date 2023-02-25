@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 14:23:41 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 09:43:09 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,20 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 		prompt->exit_status = ft_env(prompt);
 	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "export"))
 		prompt->exit_status = ft_export(prompt);
-	else if (fork() == 0)
-		get_cmd_child(pipex, prompt);
 	else
 	{
-		wait(&prompt->exit_status);
-		prompt->exit_status = prompt->exit_status / 256;
+		prompt->flag = 1;
+		if (fork() == 0)
+		get_cmd_child(pipex, prompt);
+		else
+		{
+			wait(&prompt->exit_status);
+			if (prompt->flag == 1)
+				prompt->exit_status = prompt->exit_status / 256; // from wait
+			else 
+				prompt->exit_status = 130;
+		}
+		prompt->flag = 0;
+
 	}
 }
