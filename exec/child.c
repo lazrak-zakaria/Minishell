@@ -6,48 +6,48 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/24 17:19:06 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 13:35:20 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	get_cmd_child(t_pipex *pipex, t_prompt *prompt)
+void	get_cmd_child(t_pipex *pipex, t_prompt *pt)
 {
-	if (prompt->list_cmd->data->cmd[0] == NULL)
+	if (pt->list_cmd->data->cmd[0] == NULL) // in case of just redirection (<main.c | ls == SEGV)
 		return ;
-	if (prompt->list_cmd->data->fd_0 != 0)
-		dup2(prompt->list_cmd->data->fd_0, 0);
-	if (prompt->list_cmd->data->fd_1 != 1)
-		dup2(prompt->list_cmd->data->fd_1, 1);
-	if (prompt->list_cmd->data->cmd[0][0] == '\0')
+	dup2(pt->list_cmd->data->fd_0, 0);
+	dup2(pt->list_cmd->data->fd_1, 1);
+	if (pt->list_cmd->data->cmd[0][0] == '\0')
 	{
 		printf_error("bash: ", "", ": command not found\n");
 		exit(127);
 	}
-	if (is_builting(prompt->list_cmd->data->cmd[0]))
-		ft_builting(prompt);
-	if (ft_strchr(prompt->list_cmd->data->cmd[0], '/') == -1)
+	if (is_builting(pt->list_cmd->data->cmd[0]))
+		ft_builting(pt);
+	if (ft_strchr(pt->list_cmd->data->cmd[0], '/') == -1)
 	{
 		pipex->all_paths = get_paths(pipex->envp);
-		get_cmd_path(pipex->all_paths, prompt->list_cmd->data->cmd);
 		if (pipex->all_paths != NULL)
+		{
+			if (get_cmd_path(pipex->all_paths, pt->list_cmd->data->cmd) == 0)
+				exit(127);
 			ft_free_all_(pipex->all_paths);
+		}
 	}
-	execve(prompt->list_cmd->data->cmd[0], \
-				prompt->list_cmd->data->cmd, pipex->envp);
+	execve(pt->list_cmd->data->cmd[0], pt->list_cmd->data->cmd, pipex->envp);
 	write(2, "bash: ", 7);
-	perror(prompt->list_cmd->data->cmd[0]);
+	perror(pt->list_cmd->data->cmd[0]);
 	exit(127);
 }
 
-void	get_cmd_path(char **paths, char **command)
+int	get_cmd_path(char **paths, char **command)
 {
 	char	*path;
 	char	*tmp;
+	char	**tmp2;
 
-	if (paths == NULL)
-		return ;
+	tmp2 = paths;
 	if (!(my_strcmp(command[0], "..")) && !(my_strcmp(command[0], ".")))
 	{
 		tmp = ft_strjoin("/", command[0]);
@@ -59,7 +59,7 @@ void	get_cmd_path(char **paths, char **command)
 				free(tmp);
 				free(command[0]);
 				command[0] = path;
-				return ;
+				return (1);
 			}
 			paths++;
 			free(path);
@@ -67,7 +67,7 @@ void	get_cmd_path(char **paths, char **command)
 		free(tmp);
 	}
 	printf_error("bash: ", command[0], ": command not found\n");
-	exit(127);
+	return (ft_free_all_(tmp2), 0);
 }
 
 char	**get_paths(char **envp)

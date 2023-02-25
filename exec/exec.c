@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 12:11:22 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 13:41:43 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,11 @@ void	ft_exec(t_prompt *prompt)
 		close(pipex.pipe[0]);
 		while (wait(&prompt->exit_status) != -1)
 			;
-		if (prompt->flag == 1)
-			prompt->exit_status = prompt->exit_status / 256; // from wait
-		else 
+		if (prompt->exit_status == 2)
 			prompt->exit_status = 130;
-		prompt->flag = 1;
+		else
+			prompt->exit_status = prompt->exit_status / 256;
+		prompt->flag = 0;
 	}
 	else
 		one_cmd(prompt, &pipex);
@@ -106,6 +106,7 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 	{
 		write(2, "bash: ", 7);
 		perror(prompt->list_cmd->data->file[ret]);
+		prompt->exit_status = 1;
 		return ;
 	}
 	if (prompt->list_cmd->data->cmd[0] == NULL)
