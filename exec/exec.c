@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 09:43:09 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/25 09:46:56 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	ft_exec(t_prompt *prompt)
 		return ;
 	if (prompt->list_cmd->next != NULL)
 	{
+		prompt->flag = 1;
 		pipe(pipex.pipe);
 		if (fork() == 0)
 		{
@@ -84,7 +85,11 @@ void	ft_exec(t_prompt *prompt)
 		close(pipex.pipe[0]);
 		while (wait(&prompt->exit_status) != -1)
 			;
-		prompt->exit_status = prompt->exit_status / 256;
+		if (prompt->flag == 1)
+			prompt->exit_status = prompt->exit_status / 256; // from wait
+		else 
+			prompt->exit_status = 130;
+		prompt->flag = 1;
 	}
 	else
 		one_cmd(prompt, &pipex);

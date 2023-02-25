@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/24 14:19:06 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 09:45:54 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_prompt
 	struct s_env *s_env; // add
 	char	**env;
 	int		exit_status;
+	int		flag;
 }	t_prompt;
 
 typedef struct s_cmd_parse
