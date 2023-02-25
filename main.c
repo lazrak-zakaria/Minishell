@@ -30,29 +30,23 @@ void	ft_free_lis(t_list *head)
 t_prompt 	prompt;
 void    ft_signal_handler(int sg)
 {
-
-	//printf ("here\n");
-	// if (sg == SIGINT)
+	// if (wait(NULL) != -1)
 	// {
+	// 	prompt.flag = 0;
+	// 	return ;
+	// }
 
-		// while (wait(&prompt.exit_status) != -1)
-		// 	;
-			// {
-		if (prompt.flag == 1)
-		{
-			prompt.flag = 0;
-			return ;
-		}
+//	printf("%d\n", );
+	wait(&prompt.exit_status);
+	if (prompt.flag == 1)
+		return ;
+	else
 		prompt.exit_status = 1;
-		ft_putchar_fd('\n', 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-			// }
-
-		//*ex_status = 1;
-	// } 
-}		   
+	ft_putchar_fd('\n', 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
 void    ft_signal(void)
 {
 	// struct termios    mini_shell; 
@@ -85,7 +79,10 @@ int	main(int ac, char **av, char **env)
 		prompt.list_cmd = NULL;
 		char *a = readline("MINISHELL:");
 		if (a == NULL)
-			exit(0);
+		{
+			printf("exit\n");
+			exit(prompt.exit_status);
+		}
 		if(a[0])
 			add_history(a);
 		ft_parse(a, &prompt);
@@ -98,3 +95,4 @@ int	main(int ac, char **av, char **env)
 
 	}
 }
+ 

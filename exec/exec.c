@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 09:46:56 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 12:11:22 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,14 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 	{
 		prompt->flag = 1;
 		if (fork() == 0)
-		get_cmd_child(pipex, prompt);
+			get_cmd_child(pipex, prompt);
 		else
 		{
 			wait(&prompt->exit_status);
-			if (prompt->flag == 1)
-				prompt->exit_status = prompt->exit_status / 256; // from wait
-			else 
+			if (prompt->exit_status == 2)
 				prompt->exit_status = 130;
+			else
+				prompt->exit_status = prompt->exit_status / 256;
 		}
 		prompt->flag = 0;
 
