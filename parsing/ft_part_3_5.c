@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:40:33 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/24 13:45:15 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/25 12:55:07 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	ft_err_1(char *a)
 		ft_putstr_fd("bash: syntax error near unexpected token `>'", 2);
 		ft_putchar_fd('\n', 2);
 	}
-	if (strlen(a) == 3)
+	else if (strlen(a) == 3)
 		ft_synerr(a, 2, -1);
 	else if (strlen(a) >= 3)
 		ft_synerr(a, 2, 3);
@@ -73,11 +73,11 @@ int	ft_err_2(char *a, char *b)
 			ft_putstr_fd("bash: syntax error near unexpected token `>'", 2);
 			ft_putchar_fd('\n', 2);
 		}
-		if (strlen(a) >= 2)
+		else if (strlen(a) >= 2)
 			ft_synerr(a, 0, 1);
 	}
 	else
-		ft_synerr(a, 2, -1);
+		ft_synerr(a, 0, -1);
 	return (1);
 }
 
