@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:41:32 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/22 16:52:16 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 16:20:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,29 +84,4 @@ int	ft_count_env(t_env *current)
 		current = current->next;
 	}
 	return (i);
-}
-
-char	**get_env(t_env *envp)
-{
-	int		i;
-	t_env	*current;
-	char	**new_envp;
-	char	*tmp;
-
-	new_envp = malloc((ft_count_env(envp) + 1) * sizeof(char *));
-	i = 0;
-	current = envp;
-	while (current)
-	{
-		if (current->value != NULL)
-		{
-			tmp = ft_strjoin(current->variable, "=");
-			new_envp[i] = ft_strjoin(tmp, current->value);
-			free(tmp);
-			i++;
-		}
-		current = current->next;
-	}
-	new_envp[i] = NULL;
-	return (new_envp);
 }

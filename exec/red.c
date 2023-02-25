@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:45:51 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/23 15:37:37 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 14:28:22 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,34 @@ int	red(t_list *cmd)
 		return (-1);
 	while (cmd->data->file[i])
 	{
+		if (fd_0 != 0)
+			close(fd_0);
+
 		if (cmd->data->rel[i][0] == 'T')
+		{
+			if (fd_1 != 0)
+				close(fd_1);
 			fd_1 = open(cmd->data->file[i], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+		}
 		else if (cmd->data->rel[i][0] == 'A')
+		{
+			if (fd_1 != 0)
+				close(fd_1);
 			fd_1 = open(cmd->data->file[i], O_CREAT | O_APPEND | \
 									O_WRONLY, 0644);
+		}
 		else if (cmd->data->rel[i][0] == 'I')
+		{
+			if (fd_0 != 0)
+				close(fd_0);
 			fd_0 = open(cmd->data->file[i], O_RDONLY);
+		}
 		else if (cmd->data->rel[i][0] == 'H')
+		{
+			if (fd_0 != 0)
+				close(fd_0);
 			fd_0 = ft_write_pipe(cmd->data->buffer[j], &j);
+		}
 		else if (cmd->data->rel[i][0] == 'B')
 		 	return (printf_error("bash: ", cmd->data->file[i], ": ambiguous redirect\n"), -2);
 		if (fd_1 < 0 || fd_0 < 0)

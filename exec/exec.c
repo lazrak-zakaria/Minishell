@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 13:41:43 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 15:07:29 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,55 @@ void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
 	}
 }
 
+void	first_cmd(t_pipex *pipex, t_prompt *prompt)
+{
+	int	ret;
+
+	prompt->flag = 1;
+	pipe(pipex->pipe);
+	if (fork() == 0)
+	{
+		prompt->list_cmd->data->fd_1 = pipex->pipe[1];
+		ret = red(prompt->list_cmd);
+		if (ret != -1)
+		{
+			write(2, "bash: ", 7);
+			perror(prompt->list_cmd->data->file[ret]);
+			exit(1);
+		}
+		close(pipex->pipe[0]);
+		get_cmd_child(pipex, prompt);
+	}
+	prompt->list_cmd = prompt->list_cmd->next;
+	close(pipex->pipe[1]);
+}
+
+void	second_cmd(t_pipex *pipex, t_prompt *prompt)
+{
+	int	ret;
+
+	if (fork() == 0)
+	{
+		prompt->list_cmd->data->fd_0 = pipex->pipe[0];
+		ret = red(prompt->list_cmd);
+		if (ret != -1)
+		{
+			write(2, "bash: ", 7);
+			perror(prompt->list_cmd->data->file[ret]);
+			exit(1);
+		}
+		get_cmd_child(pipex, prompt);
+	}
+	close(pipex->pipe[0]);
+	while (wait(&prompt->exit_status) != -1)
+		;
+	if (prompt->exit_status == 2)
+		prompt->exit_status = 130;
+	else
+		prompt->exit_status = prompt->exit_status / 256;
+	prompt->flag = 0;
+}
+
 void	ft_exec(t_prompt *prompt)
 {
 	t_pipex	pipex;
@@ -51,98 +100,11 @@ void	ft_exec(t_prompt *prompt)
 		return ;
 	if (prompt->list_cmd->next != NULL)
 	{
-		prompt->flag = 1;
-		pipe(pipex.pipe);
-		if (fork() == 0)
-		{
-			prompt->list_cmd->data->fd_1 = pipex.pipe[1];
-			ret = red(prompt->list_cmd);
-			if (ret != -1)
-			{
-				write(2, "bash: ", 7);
-				perror(prompt->list_cmd->data->file[ret]);
-				exit(1);
-			}
-			close(pipex.pipe[0]);
-			get_cmd_child(&pipex, prompt);
-		}
-		prompt->list_cmd = prompt->list_cmd->next;
-		close(pipex.pipe[1]);
+		first_cmd(&pipex, prompt);
 		if (prompt->list_cmd->next != NULL)
 			ft_child_child(&pipex, prompt);
-		if (fork() == 0)
-		{
-			prompt->list_cmd->data->fd_0 = pipex.pipe[0];
-			ret = red(prompt->list_cmd);
-			if (ret != -1)
-			{
-				write(2, "bash: ", 7);
-				perror(prompt->list_cmd->data->file[ret]);
-				exit(1);
-			}
-			get_cmd_child(&pipex, prompt);
-		}
-		close(pipex.pipe[0]);
-		while (wait(&prompt->exit_status) != -1)
-			;
-		if (prompt->exit_status == 2)
-			prompt->exit_status = 130;
-		else
-			prompt->exit_status = prompt->exit_status / 256;
-		prompt->flag = 0;
+		second_cmd(&pipex, prompt);
 	}
 	else
 		one_cmd(prompt, &pipex);
-}
-
-void	one_cmd(t_prompt *prompt, t_pipex *pipex)
-{
-	int	ret;//// Dup f parent ex:: pwd > o 
-
-	ret = red(prompt->list_cmd);
-	if (ret == -2)
-		return ;
-	if (ret != -1)
-	{
-		write(2, "bash: ", 7);
-		perror(prompt->list_cmd->data->file[ret]);
-		prompt->exit_status = 1;
-		return ;
-	}
-	if (prompt->list_cmd->data->cmd[0] == NULL)
-		return ;
-	if (my_strcmp(prompt->list_cmd->data->cmd[0], "exit"))
-	{
-		write(2, "exit\n", 5);
-		prompt->exit_status = ft_exit(prompt->list_cmd->data->cmd, prompt);
-	}
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "echo"))
-		prompt->exit_status = ft_echo(prompt->list_cmd->data->cmd, \
-						prompt->list_cmd->data->fd_1);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "cd"))
-		prompt->exit_status = ft_cd(prompt->list_cmd->data->cmd, prompt);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
-		prompt->exit_status = ft_pwd(prompt->list_cmd->data->fd_1);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
-		prompt->exit_status = ft_unset(prompt, prompt->list_cmd->data->cmd);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))
-		prompt->exit_status = ft_env(prompt);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "export"))
-		prompt->exit_status = ft_export(prompt);
-	else
-	{
-		prompt->flag = 1;
-		if (fork() == 0)
-			get_cmd_child(pipex, prompt);
-		else
-		{
-			wait(&prompt->exit_status);
-			if (prompt->exit_status == 2)
-				prompt->exit_status = 130;
-			else
-				prompt->exit_status = prompt->exit_status / 256;
-		}
-		prompt->flag = 0;
-
-	}
 }

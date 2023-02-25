@@ -6,24 +6,25 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 09:45:54 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:12:22 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "queue.h"
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "vector.h"
-#include <string.h>
-#include <fcntl.h>
-#include <sys/stat.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include "queue.h"
+# include <stdio.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "vector.h"
+# include <string.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <limits.h>
 
 typedef struct s_cmd_package
 {
@@ -35,20 +36,20 @@ typedef struct s_cmd_package
 	int		fd_1;
 }	t_cmd_package;
 
-typedef	struct s_list
+typedef struct s_list
 {
 	t_cmd_package	*data;
 	struct s_list	*next;
-} t_list;
+}	t_list;
 
 
 typedef struct s_prompt
 {
-	t_list	*list_cmd;
-	struct s_env *s_env; // add
-	char	**env;
-	int		exit_status;
-	int		flag;
+	t_list			*list_cmd;
+	struct s_env	*s_env;
+	char			**env;
+	int				exit_status;
+	int				flag;
 }	t_prompt;
 
 typedef struct s_cmd_parse
@@ -60,13 +61,13 @@ typedef struct s_cmd_parse
 }	t_cmd_parse;
 
 
-typedef	struct s_elem
+typedef struct s_elem
 {
 	char	*s;
 	char	*d_s;
 	int		quote;
 	int		dollar;
-} t_elem;
+}	t_elem;
 
 typedef struct s_var
 {
@@ -77,7 +78,7 @@ typedef struct s_var
 	int			j;
 	int			flag;
 	char		c;
-} t_var;
+}	t_var;
 
 
 void	ft_norm_p1_2(char *a, t_var *var);
@@ -91,18 +92,18 @@ t_queue	*ft_part_5(t_queue *queue);
 char	*ft_substr(char	*a, int s, int e);
 void	ft_parse(char *a, t_prompt *ys);
 
-void    ft_putchar_fd(char c, int fd);
-void    ft_putstr_fd(char *a, int fd);
-int    ft_err_2(char *a, char *b);
-int    ft_err_1(char *a);
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *a, int fd);
+int		ft_err_2(char *a, char *b);
+int		ft_err_1(char *a);
 
 /****************/
 
 typedef struct s_env
 {
-	char *variable;
-	char *value;
-	struct s_env *next;
+	char			*variable;
+	char			*value;
+	struct s_env	*next;
 }t_env;
 
 typedef struct s_pipex
@@ -118,7 +119,7 @@ typedef struct s_pipex
 // Exec
 void	ft_exec(t_prompt *prompt);
 void	one_cmd(t_prompt *prompt, t_pipex *pipex);
-void	get_cmd_path(char **paths, char **command);
+int		get_cmd_path(char **paths, char **command);
 char	**get_paths(char **envp);
 void	get_cmd_child(t_pipex *pipex, t_prompt *prompt);
 
@@ -148,17 +149,20 @@ int		ft_env(t_prompt *prompt);
 // Builting
 int		ft_echo(char **args, int fd);
 int		ft_exit(char **args, t_prompt *prompt);
-int		ft_cd(char **args, t_prompt *prompt);
+int		ft_cd(char **args, t_prompt *prompt, int a, int fd);
 int		ft_pwd(int fd);
 int		ft_unset(t_prompt *prompt, char **args);
 int		ft_export(t_prompt *prompt);
 
 //Red
-int	red(t_list	*cmd);
-int	red_2(t_list	*cmd);
+int		red(t_list *cmd);
+int		red_2(t_list *cmd);
 
-
-int	is_builting(char *cmd);
+int		ft_count_env(t_env *current);
+int		is_builting(char *cmd);
 void	ft_builting(t_prompt *prompt);
+
+char	*search_env(t_env *env, char *str);
+int		ft_cd_2(char **args, t_prompt *prompt);
 
 #endif

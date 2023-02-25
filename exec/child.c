@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 13:35:20 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 17:24:03 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,10 @@
 
 void	get_cmd_child(t_pipex *pipex, t_prompt *pt)
 {
-	if (pt->list_cmd->data->cmd[0] == NULL) // in case of just redirection (<main.c | ls == SEGV)
+	if (pt->list_cmd->data->cmd[0] == NULL)
 		return ;
 	dup2(pt->list_cmd->data->fd_0, 0);
 	dup2(pt->list_cmd->data->fd_1, 1);
-	if (pt->list_cmd->data->cmd[0][0] == '\0')
-	{
-		printf_error("bash: ", "", ": command not found\n");
-		exit(127);
-	}
 	if (is_builting(pt->list_cmd->data->cmd[0]))
 		ft_builting(pt);
 	if (ft_strchr(pt->list_cmd->data->cmd[0], '/') == -1)
@@ -41,24 +36,24 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *pt)
 	exit(127);
 }
 
-int	get_cmd_path(char **paths, char **command)
+int	get_cmd_path(char **paths, char **cmd)
 {
 	char	*path;
 	char	*tmp;
 	char	**tmp2;
 
 	tmp2 = paths;
-	if (!(my_strcmp(command[0], "..")) && !(my_strcmp(command[0], ".")))
+	if (!(my_strcmp(cmd[0], "..")) && !(my_strcmp(cmd[0], ".")) && cmd[0][0])
 	{
-		tmp = ft_strjoin("/", command[0]);
+		tmp = ft_strjoin("/", cmd[0]);
 		while (*paths != NULL)
 		{
 			path = ft_strjoin(*paths, tmp);
 			if (access(path, F_OK | X_OK) == 0)
 			{
 				free(tmp);
-				free(command[0]);
-				command[0] = path;
+				free(cmd[0]);
+				cmd[0] = path;
 				return (1);
 			}
 			paths++;
@@ -66,7 +61,7 @@ int	get_cmd_path(char **paths, char **command)
 		}
 		free(tmp);
 	}
-	printf_error("bash: ", command[0], ": command not found\n");
+	printf_error("bash: ", cmd[0], ": command not found\n");
 	return (ft_free_all_(tmp2), 0);
 }
 
@@ -105,27 +100,29 @@ int	is_builting(char *cmd)
 
 void	ft_builting(t_prompt *prompt)
 {
-	int	ret;
+	int		ret;
+	char	**cmd;
 
+	cmd = prompt->list_cmd->data->cmd;
 	ret = 0;
 	if (prompt->list_cmd->data->fd_0 != 0)
 		dup2(prompt->list_cmd->data->fd_0, 0);
 	if (prompt->list_cmd->data->fd_1 != 1)
 		dup2(prompt->list_cmd->data->fd_1, 1);
-	if (my_strcmp(prompt->list_cmd->data->cmd[0], "exit"))
-		ret = ft_exit(prompt->list_cmd->data->cmd, prompt);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "echo"))
-		ret = ft_echo(prompt->list_cmd->data->cmd, \
+	if (my_strcmp(cmd[0], "exit"))
+		ret = ft_exit(cmd, prompt);
+	else if (my_strcmp(cmd[0], "echo"))
+		ret = ft_echo(cmd, \
 								prompt->list_cmd->data->fd_1);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "cd"))
-		ret = ft_cd(prompt->list_cmd->data->cmd, prompt);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "pwd"))
-		ret = ft_pwd(prompt->list_cmd->data->fd_1);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "unset"))
-		ret = ft_unset(prompt, prompt->list_cmd->data->cmd);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "env"))
+	else if (my_strcmp(cmd[0], "cd"))
+		ret = ft_cd(cmd, prompt, 1, 1);
+	else if (my_strcmp(cmd[0], "pwd"))
+		ret = ft_cd(cmd, prompt, 2, prompt->list_cmd->data->fd_1);
+	else if (my_strcmp(cmd[0], "unset"))
+		ret = ft_unset(prompt, cmd);
+	else if (my_strcmp(cmd[0], "env"))
 		ret = ft_env(prompt);
-	else if (my_strcmp(prompt->list_cmd->data->cmd[0], "export"))
+	else if (my_strcmp(cmd[0], "export"))
 		ret = ft_export(prompt);
 	exit(ret);
 }
