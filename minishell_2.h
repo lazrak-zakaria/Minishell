@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 14:09:38 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 15:44:30 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	ft_parse(char *a, t_prompt *ys);
 char	*ft_dupstr(char *a);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *a, int fd);
-int		ft_strcmp(char *a, char *b);
+int		ft_cmpstr(char *a, char *b);
 size_t	ft_strlen(char *a);
 void	*ft_memset(void *b, int c, size_t len);
 
