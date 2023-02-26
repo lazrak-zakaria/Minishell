@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:21:35 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 08:04:43 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 10:08:41 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = -1;
 	j = -1;
 	if (!s2)
-		return (s1);
+		return (ft_strdup(s1));
 	if (!s1)
-		return (s2);
+		return (ft_strdup(s2));
 	new_string = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char ));
 	if (!new_string)
 		return (NULL);

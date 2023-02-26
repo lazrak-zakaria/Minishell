@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:41:32 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 16:20:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 11:01:06 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,23 @@ t_env	*ft_env_new(char *str)
 {
 	t_env	*new;
 	int		i;
+	int		flag;
 
+	flag = 0;
 	new = malloc(sizeof(t_env));
 	if (new == NULL)
 		return (NULL);
 	i = -1;
 	while (str[++i])
-		if (str[i] == '=')
+		if (str[i] == '=' || str[i] == '+')
 			break ;
-	if (str[i] == '=')
-		new->value = ft_strdup(&str[i + 1]);
+	if (str[i] == '+')
+		flag = 1;
+	if (str[i + flag] == '=')
+		new->value = ft_strdup(&str[i + flag + 1]);
 	else
 		new->value = NULL;
-	new->variable = ft_substr(str, 0, i);
+	new->variable = ft_substr(str, 0, (i));
 	new->next = NULL;
 	return (new);
 }
