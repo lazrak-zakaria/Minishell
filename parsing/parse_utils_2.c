@@ -6,25 +6,25 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 19:53:01 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 14:10:00 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 15:43:21 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_2.h"
 
-// int	ft_strcmp(char *a, char *b)
-// {
-// 	int	i;
+int	ft_cmpstr(char *a, char *b)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (a[i] && b[i])
-// 	{
-// 		if (a[i] != b[i])
-// 			break ;
-// 		i++;
-// 	}
-// 	return (a[i] - b[i]);
-// }
+	i = 0;
+	while (a[i] && b[i])
+	{
+		if (a[i] != b[i])
+			break ;
+		i++;
+	}
+	return (a[i] - b[i]);
+}
 
 char	*ft_dupstr(char *s1)
 {

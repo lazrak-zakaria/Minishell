@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 19:45:06 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 15:43:57 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 	{
 		i = 0;
 		s = readline(">");
-		if (!s || !ft_strcmp(s, a))
+		if (!s || !ft_cmpstr(s, a))
 		{
 			ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
 			free(s);

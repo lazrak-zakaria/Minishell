@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:40:33 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 18:46:46 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 15:37:34 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ int	check_enclosed_quotes(char	*a)
 
 	i = 0;
 	f = 0;
+	if (a[0] == '|')
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
+		return (1);
+	}
 	while (a[i])
 	{
 		if ((a[i] == '\'' || a[i] == '\"') && !f)
@@ -33,6 +38,8 @@ int	check_enclosed_quotes(char	*a)
 			f = 0;
 		i++;
 	}
+	if (f)
+		ft_putstr_fd("minishell: syntax error, unclosed quotes\n", 2);
 	return (f);
 }
 

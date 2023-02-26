@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 13:49:42 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 15:35:59 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	ft_check_q(char *a, t_prompt *ys)
 {
 	if (check_enclosed_quotes(a))
 	{
-		ft_putstr_fd("minishell: syntax error, unclosed quotes\n", 2);
 		ys->exit_status = 258;
 		return (1);
 	}
