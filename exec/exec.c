@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 15:07:29 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:19:20 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,10 @@ void	second_cmd(t_pipex *pipex, t_prompt *prompt)
 void	ft_exec(t_prompt *prompt)
 {
 	t_pipex	pipex;
-	int		ret;
 
 	pipex.envp = prompt->env;
 	if (!prompt->list_cmd || !prompt->list_cmd->data || \
-			!prompt->list_cmd->data->cmd || !prompt->list_cmd->data->cmd )
+			!prompt->list_cmd->data->cmd || !prompt->list_cmd->data->cmd)
 		return ;
 	if (prompt->list_cmd->next != NULL)
 	{

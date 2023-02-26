@@ -6,11 +6,11 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:06:23 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:12:17 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 08:04:16 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 void	update_oldpwd(t_prompt *prompt, char *cwd, char *oldpwd)
 {

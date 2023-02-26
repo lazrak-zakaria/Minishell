@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 17:12:22 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:03:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,5 +164,15 @@ void	ft_builting(t_prompt *prompt);
 
 char	*search_env(t_env *env, char *str);
 int		ft_cd_2(char **args, t_prompt *prompt);
+
+int		ft_search_and_update(char *variable, \
+						char *value, t_env	*curr, int flag);
+int		ft_extracts_var_val(char **var, char **val, char *cmd);
+
+void	ft_print_env(t_prompt *yassir);
+void	ft_free_env(t_env *current);
+
+int		check_agrs(char *s);
+void	sort_env(t_env *head);
 
 #endif

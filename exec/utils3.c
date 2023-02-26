@@ -6,12 +6,11 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:21:35 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:23:12 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 08:04:43 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "minishell.h"
+#include "../minishell.h"
 
 static int	count_words(char const *s, char c)
 {

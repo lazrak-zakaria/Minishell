@@ -6,11 +6,11 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:20:29 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:25:36 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 08:04:39 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../minishell.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

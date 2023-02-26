@@ -6,12 +6,11 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:03:24 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:03:25 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 09:21:40 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#include "minishell.h"
+#include "../minishell.h"
 
 void	ft_builting_2(t_prompt *prompt)
 {
@@ -40,7 +39,7 @@ void	ft_builting_2(t_prompt *prompt)
 		prompt->exit_status = ft_export(prompt);
 }
 
-int	ft_red_nor(t_prompt *prompt, t_pipex *pipex)
+int	ft_red_nor(t_prompt *prompt)
 {
 	int	ret;
 
@@ -61,7 +60,7 @@ int	ft_red_nor(t_prompt *prompt, t_pipex *pipex)
 
 void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 {
-	if (ft_red_nor(prompt, pipex) == -1)
+	if (ft_red_nor(prompt) == -1)
 		return ;
 	if (is_builting(prompt->list_cmd->data->cmd[0]) == 1)
 		ft_builting_2(prompt);
@@ -79,6 +78,5 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 				prompt->exit_status = prompt->exit_status / 256;
 		}
 		prompt->flag = 0;
-
 	}
 }

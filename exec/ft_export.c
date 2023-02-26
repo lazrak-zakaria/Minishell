@@ -6,37 +6,11 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:34:42 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 20:03:03 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	check_agrs(char *s)
-{
-	int	i;
-
-	i = 0;
-	if ((s[0] >= '0' && s[0] <= '9') || s[0] == '\0' || \
-									s[0] == '=' || s[0] == '+')
-	{
-		printf_error("bash: export: `", s, "': not valid identifier\n");
-		return (1);
-	}
-	while (s[i] && s[i] != '=')
-	{
-		if (s[i] == '+' && s[i + 1] == '=')
-			break ;
-		if (!(s[i] >= 65 && s[i] <= 90) && !(s[i] >= 97 && s[i] <= 122) \
-							&& !(s[i] >= '0' && s[i] <= '9') && s[i] != '_')
-		{
-			printf_error("bash: export: `", s, "': not valid identifier\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
 
 t_env	*ft_dupenv(t_env *current)
 {
@@ -54,30 +28,6 @@ t_env	*ft_dupenv(t_env *current)
 		current = current->next;
 	}
 	return (head);
-}
-
-void	sort_env(t_env *head)
-{
-	t_env	*current;
-	char	*var;
-	char	*val;
-
-	current = head;
-	while (current->next)
-	{
-		if (ft_strcmp(current->variable, current->next->variable) < 0)
-		{
-			var = current->variable;
-			val = current->value;
-			current->value = current->next->value;
-			current->variable = current->next->variable;
-			current->next->value = val;
-			current->next->variable = var;
-			current = head;
-		}
-		else
-			current = current->next;
-	}
 }
 
 void	ft_free_env(t_env *current)
@@ -123,81 +73,52 @@ void	ft_print_env(t_prompt *yassir)
 	ft_free_env(head);
 }
 
-int	ft_export_2(t_prompt *prompt)
+int	ft_extracts_var_val(char **var, char **val, char *cmd)
 {
-	t_env	*curr;
-	char	*variable;
-	char	*value;
-	int		i;
-	int		j;
-	int		flag;
-	int		error;
-	char	*tmp;
+	int	i;
+	int	flag;
 
+	i = -1;
 	flag = 0;
-	error = 0;
-	if (prompt->list_cmd->data->cmd[1] == NULL)
-		ft_print_env(prompt);
+	while (cmd[++i])
+		if (cmd[i] == '=' \
+				|| cmd[i] == '+')
+			break ;
+	if (cmd[i] == '+' && ++i)
+		flag = 1;
+	if (cmd[i] == '=')
+		*val = ft_strdup(&cmd[i + 1]);
 	else
-	{
-		j = 0;
-		while (prompt->list_cmd->data->cmd[++j] != NULL)
-		{
-			if (check_agrs(prompt->list_cmd->data->cmd[j]))
-			{
-				error = 1;
-				continue ;
-			}
-			i = -1;
-			while (prompt->list_cmd->data->cmd[j][++i])
-				if (prompt->list_cmd->data->cmd[j][i] == '=' \
-						|| prompt->list_cmd->data->cmd[j][i] == '+')
-					break ;
-			if (prompt->list_cmd->data->cmd[j][i] == '+' && ++i)
-				flag = 1;
-			if (prompt->list_cmd->data->cmd[j][i] == '=')
-				value = ft_strdup(&prompt->list_cmd->data->cmd[j][i + 1]);
-			else
-				value = NULL;
-			variable = ft_substr(prompt->list_cmd->data->cmd[j], 0, i - flag);
-			curr = prompt->s_env;
-			while (curr)
-			{
-				if (my_strcmp(curr->variable, variable))
-				{
-					if (value != NULL && flag == 0)
-					{
-						free(curr->value);
-						curr->value = value;
-					}
-					else if (value != NULL && flag == 1)
-					{
-						tmp = ft_strjoin(curr->value, value);
-						free(value);
-						free(curr->value);
-						curr->value = tmp;
-					}
-					break ;
-				}
-				curr = curr->next;
-			}
-			free(variable);
-			if (curr != NULL)
-				continue ;
-			free(value);
-			ft_env_addback(&prompt->s_env, \
-					ft_env_new(prompt->list_cmd->data->cmd[j]));
-		}
-	}
-	return (error);
+		*val = NULL;
+	*var = ft_substr(cmd, 0, i - flag);
+	return (flag);
 }
 
-int	ft_export(t_prompt *prompt)
+int	ft_search_and_update(char *variable, char *value, t_env	*curr, int flag)
 {
-	int	ret;
+	char	*tmp;
 
-	ret = ft_export_2(prompt);
-	ft_free_all_(prompt->env);
-	prompt->env = get_env(prompt->s_env);
-	return (ret);
+	while (curr)
+	{
+		if (my_strcmp(curr->variable, variable))
+		{
+			if (value != NULL && flag == 0)
+			{
+				free(curr->value);
+				curr->value = value;
+			}
+			else if (value != NULL && flag == 1)
+			{
+				tmp = ft_strjoin(curr->value, value);
+				free(value);
+				free(curr->value);
+				curr->value = tmp;
+			}
+			break ;
+		}
+		curr = curr->next;
+	}
+	if (curr != NULL)
+		return (free(variable), 1);
+	return (free(variable), free(value), 0);
 }

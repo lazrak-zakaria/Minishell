@@ -6,11 +6,35 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:18 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:24:44 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 19:54:33 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_check_option(char **args, int *a)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (args[++i] != NULL && args[i][0] == '-')
+	{
+		j = 0;
+		while (args[i][++j])
+		{
+			if (args[i][j] != 'n')
+				break ;
+		}
+		if (args[i][j] != '\0')
+			break ;
+	}
+	*a = i;
+	if (i > 1)
+		return (1);
+	return (0);
+}
 
 int	ft_echo(char **args, int fd)
 {
@@ -25,19 +49,7 @@ int	ft_echo(char **args, int fd)
 		write(fd, "\n", 1);
 		return (0);
 	}
-	while (args[++i] != NULL && args[i][0] == '-')
-	{
-		j = 0;
-		while (args[i][++j])
-		{
-			if (args[i][j] != 'n')
-				break ;
-		}
-		if (args[i][j] != '\0')
-			break ;
-	}
-	if (i > 1)
-		flag = 1;
+	flag = ft_check_option(args, &i);
 	while (args[i])
 	{
 		j = 0;

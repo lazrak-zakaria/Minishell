@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"tmp": "cpp",
+		"ostream": "c",
+		"iterator": "c"
+	}
+}

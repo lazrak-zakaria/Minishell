@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:47 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:22:32 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:50:33 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ size_t	ft_strlen(char *s)
 		len++;
 	return (len);
 }
-
-
 
 int	my_strcmp(char *s1, char *s2)
 {
