@@ -1,32 +1,5 @@
 #include "minishell.h"
 
-void	ft_memfree(char **a)
-{
-	int i = 0;
-	while (a && a[i])
-	{
-		free (a[i]);
-		i++;
-	}
-	free (a);
-}
-void	ft_free_lis(t_list *head)
-{
-	t_list *tt;
-	t_cmd_package *p;
-	while (head)
-	{
-		tt = head->next;
-		p = head->data;
-		ft_memfree(p->cmd);
-		ft_memfree(p->file);
-		ft_memfree(p->rel);
-		ft_memfree(p->buffer);
-		free (p);
-		free (head);
-		head = tt;
-	}
-}
 t_prompt 	prompt;
 void    ft_signal_handler(int sg)
 {
@@ -37,16 +10,27 @@ void    ft_signal_handler(int sg)
 	// }
 
 //	printf("%d\n", );
-	wait(&prompt.exit_status);
-	if (prompt.flag == 1)
-		return ;
+	//wait(&prompt.exit_status);
+	if (sg == SIGINT)
+	{
+		if (prompt.flag == 1)
+			return ;
+		else
+			prompt.exit_status = 1;
+		ft_putchar_fd('\n', 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 	else
-		prompt.exit_status = 1;
-	ft_putchar_fd('\n', 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	{
+		//ft_putchar_fd('\n', 1);
+		rl_on_new_line();
+		//rl_replace_line("", 0);
+		rl_redisplay();
+	}
 }
+
 void    ft_signal(void)
 {
 	// struct termios    mini_shell; 
@@ -56,7 +40,7 @@ void    ft_signal(void)
 	// tcsetattr(STDIN_FILENO, TCSANOW, &mini_shell);
 
 	signal(SIGINT, ft_signal_handler);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, ft_signal_handler);
 }
 
 int	main(int ac, char **av, char **env)
@@ -75,7 +59,7 @@ int	main(int ac, char **av, char **env)
 
 	while(1)
 	{
-		printf("%d_", prompt.exit_status);
+		//printf("%d_", prompt.exit_status);
 		prompt.list_cmd = NULL;
 		char *a = readline("MINISHELL:");
 		if (a == NULL)

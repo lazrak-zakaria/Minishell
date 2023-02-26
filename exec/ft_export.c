@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 10:53:11 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:07:37 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	ft_extracts_var_val(char **var, char **val, char *cmd)
 		*val = ft_strdup(&cmd[i + 1]);
 	else
 		*val = NULL;
-	*var = ft_substr(cmd, 0, i - flag);
+	*var = ft_substr_2(cmd, 0, i - flag);
 	return (flag);
 }
 

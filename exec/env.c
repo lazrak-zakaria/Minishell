@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:41:32 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 11:01:06 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:07:24 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_env	*ft_env_new(char *str)
 		new->value = ft_strdup(&str[i + flag + 1]);
 	else
 		new->value = NULL;
-	new->variable = ft_substr(str, 0, (i));
+	new->variable = ft_substr_2(str, 0, (i));
 	new->next = NULL;
 	return (new);
 }

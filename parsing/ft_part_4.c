@@ -6,68 +6,11 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 11:53:04 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/23 16:46:15 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 13:38:56 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
-int		ft_dollar_ok(char c);
-char	*ft_expand_dollar(char *a, t_prompt *ys);
-
-typedef struct s_pr
-{
-	int		*i;
-	int		f;	
-}	t_pr;
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, t_pr *pr);
-
-static int	_abs(int n)
-{
-	if (n < 0)
-		return (n * (-1));
-	return (n);
-}
-
-static int	int_len(int n)
-{
-	int	l;
-
-	l = 0;
-	if (!n)
-		return (1);
-	while (n)
-	{
-		n /= 10;
-		l++;
-	}
-	return (l);
-}
-
-char	*ft_itoa(int n)
-{
-	int		l;
-	int		i;
-	char	*a;
-
-	l = int_len(n);
-	if (n < 0)
-		l++;
-	a = (char *)malloc(sizeof(char) * (l + 1));
-	if (!a)
-		return (NULL);
-	i = 0;
-	if (n < 0)
-		a[i++] = '-';
-	a[l--] = '\0';
-	while (l >= i)
-	{
-		a[l--] = _abs(n % 10) + '0';
-		n /= 10;
-	}
-	return (a);
-}
+#include "../minishell_2.h"
 
 int	ft_find(char *a, char c)
 {
@@ -106,7 +49,7 @@ void	ft_var_part4(t_var *var, t_elem *element, char *a)
 	element->quote = (a[0] == '\'' || a[0] == '\"');
 	element->s = NULL;
 	element->dollar = 0;
-	element->d_s = ft_strdup(a);
+	element->d_s = ft_dupstr(a);
 }
 
 t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
@@ -126,8 +69,7 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 		{
 			element->dollar = 1;
 			element->s = ft_expand_dollar(a, ys);
-		//	if (!element->s) //leaks
-				free (var.vec.string);
+			free (var.vec.string);
 			ft_push(&var.queue_answer, ft_new_node(element));
 			continue ;
 		}
@@ -137,153 +79,3 @@ t_queue	*ft_part_4(t_queue *queue, t_prompt *ys)
 	}
 	return (var.queue_answer);
 }
-
-int	ft_dollar_ok(char c)
-{
-	int	f;
-
-	f = ((c == '_') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
-			|| (c >= '0' && c <= '9'));
-	return (f);
-}
-
-void	ft_sub_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
-{
-	t_pr	pr;
-
-	if (a[(*i)] == '\'')
-	{
-		(*i)++;
-		while (a[(*i)] && a[(*i)] != '\'')
-			ft_push_back(vec, a[(*i)++]);
-		(*i)++;
-	}
-	else if (a[(*i)] == '\"')
-	{
-		(*i)++;
-		while (a[(*i)] && a[(*i)] != '\"')
-		{
-			pr.i = i;
-			pr.f = 1;
-			ft_norm_expand(a, vec, ys, &pr);
-		
-		}
-		if (!vec->string)
-		{
-			ft_push_back(vec, '\0');
-			vec->i--;
-		}	
-		(*i)++;
-	}
-}
-
-char	*ft_expand_dollar(char *a, t_prompt *ys)
-{
-	t_vector	vec;
-	int			i;
-	t_pr		pr;
-
-	memset(&vec, 0, sizeof(vec));
-	i = 0;
-	while (a[i])
-	{
-		if (a[i] == '\'' || a[i] == '\"')
-			ft_sub_expand(a, &vec, ys, &i);
-		else
-		{
-			pr.i = &i;
-			pr.f = 0;			
-			ft_norm_expand(a, &vec, ys, &pr);
-		}
-	}
-	return (vec.string);
-}
-
-void	ft_sub_norm(char *a, t_vector *vec, int *i, int *flag)
-{
-	memset(vec, 0, sizeof(t_vector));
-	ft_push_back(vec, a[(*i)++]);
-	if (a[(*i)] >= '0' && a[*i] <= '9')
-		ft_push_back(vec, a[(*i)++]);
-	else
-	{
-		if (a[(*i)] == '?')
-			ft_push_back(vec, a[(*i)++]);
-		else
-			while (ft_dollar_ok(a[(*i)]))
-				ft_push_back(vec, a[(*i)++]);
-	}
-	*flag = 1;
-}
-
-void	ft_norm_expand(char *a, t_vector *vec, t_prompt *ys, t_pr *pr)
-{
-	t_vector	vec_dollar;
-	int			flag;
-
-	flag = 0;
-	if (a[*(pr->i)] == '$')
-		ft_sub_norm(a, &vec_dollar, pr->i, &flag);
-	if (flag)
-	{
-		if (strlen(vec_dollar.string) == 1 && !ft_dollar_ok(a[*(pr->i)])
-			&& (pr->f || (a[*(pr->i)] != '"' && a[*(pr->i)] != '\'')))
-		{
-			ft_push_back(vec, vec_dollar.string[0]);
-			free (vec_dollar.string);
-		}
-		else
-			ft_join_dollar(&vec, &vec_dollar, ys);
-	}
-	else
-		ft_push_back(vec, a[(*(pr->i))++]);
-}
-
-void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
-{
-	char	*a;
-	int		i;
-	int		j;
-
-	j = 0;
-	i = 0;
-	if (vec_dollar->string[1])
-		j = 1;
-	ft_push_back(vec_dollar, '=');
-	a = vec_dollar->string;
-	if (j)
-		a = vec_dollar->string + 1;
-	j = strlen(a);
-	i = 0;
-	while (ys->env && ys->env[i])
-	{
-		if (!strncmp(a, ys->env[i], j))
-		{
-			while (ys->env[i][j])
-				ft_push_back(*vec, ys->env[i][j++]);
-			break ;
-		}
-		++i;
-	}
-}
-
-void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
-{
-	char	*a;
-	int		i;
-	int		j;
-
-	j = 0;
-	if (vec_dollar->string[1] == '?')
-	{
-		a = ft_itoa(ys->exit_status);
-		i = 0;
-		while (a && a[i])
-			ft_push_back(*vec, a[i++]);
-		free (a);
-	}
-	else
-		ft_subjoin_dollar(vec, vec_dollar, ys);
-	free (vec_dollar->string);
-}
-///////

@@ -6,111 +6,15 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/23 15:32:11 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/26 13:49:42 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../minishell_2.h"
 
-void	ft_here(t_queue *queue, t_prompt *ys);
+void	ft_here_doc(t_queue *queue, t_prompt *ys);
 int		check_enclosed_quotes(char	*a);
 /*************/
-
-t_list	*ft_lstlast(t_list *lst)
-{
-	while (lst)
-	{
-		if (!lst->next)
-			return (lst);
-		lst = lst->next;
-	}
-	return (NULL);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*temp;
-
-	if (!lst)
-		return ;
-	if (!(*lst))
-		*lst = new;
-	else
-	{
-		temp = ft_lstlast(*lst);
-		temp->next = new;
-	}
-}
-
-void	ft_p(char **a);
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*node;
-
-	node = (t_list *)malloc(sizeof(t_list));
-	if (!node)
-		return (NULL);
-	node->data = content;
-	node->next = NULL;
-	return (node);
-}
-
-void	ft_free_q(t_queue *q)
-{
-	t_queue	*te;
-
-	te = q;
-	while (q)
-	{
-		te = q->next;
-		free (q->data);
-		free (q);
-		q = te;
-	}
-}
-
-void	ft_free_qq(t_queue *q)
-{
-	t_queue	*te;
-	t_elem	*e;
-
-	te = q;
-	while (q)
-	{
-		te = q->next;
-		e = q->data;
-		free (e->s);
-		free(e->d_s);
-		free (e);
-		free (q);
-		q = te;
-	}
-}
-
-void	ft_print_queue(t_queue *q)
-{
-	while (q)
-	{
-		printf ("%s  ", q->data);
-		q = q->next;
-	}
-	printf ("\n");
-}
-
-void	ft_print_ele(t_queue *q)
-{
-	t_elem	*tr;
-	char	*a;
-
-	while (q)
-	{
-		tr = q->data;
-		a = tr->s;
-		printf ("%s  \n", a);
-		q = q->next;
-	}
-}
 
 char	*ft_substr(char	*a, int s, int e)
 {
@@ -134,7 +38,7 @@ char	**ft_cp(t_queue *q)
 	i = 0;
 	while (q)
 	{
-		answer[i++] = strdup(q->data);
+		answer[i++] = ft_dupstr(q->data);
 		q = q->next;
 	}
 	answer[i] = NULL;
@@ -164,47 +68,15 @@ t_list	*ft_copy_(t_queue *q)
 	return (cmd);
 }
 
-void	ft_print2d(char **a)
+int	ft_check_q(char *a, t_prompt *ys)
 {
-	int	i;
-
-	i = 0;
-	while (a[i])
-		printf ("|%d|%s|", a[0][0], a[i++]);
-	printf ("\n");
-}
-
-void	ft_free(t_queue *q)
-{
-	t_queue	*qq;
-
-	while (q)
+	if (check_enclosed_quotes(a))
 	{
-		qq = q->next;
-		free(q);
-		q = qq;
+		ft_putstr_fd("minishell: syntax error, unclosed quotes\n", 2);
+		ys->exit_status = 258;
+		return (1);
 	}
-}
-
-void	ft_free_part_5(t_queue *q)
-{
-	t_cmd_parse	*p;
-	t_queue		*qq;
-
-	while (q)
-	{
-		qq = q->next;
-		p = q->data;
-		ft_free(p->cmd);
-		ft_free_q(p->file);
-		ft_free_q(p->rel);
-		ft_free_q(p->buffer);
-		//free(p->file);
-		//free(p->rel);
-		free(p);
-		free(q);
-		q = qq;
-	}
+	return (0);
 }
 
 void	ft_parse(char *a, t_prompt *ys)
@@ -212,17 +84,13 @@ void	ft_parse(char *a, t_prompt *ys)
 	t_queue	*q;
 	t_queue	*temp;
 
-	if (check_enclosed_quotes(a))
-	{
-		ft_putstr_fd("unclosed quotes\n", 2);
-		ys->exit_status = 258;
+	if (ft_check_q(a, ys))
 		return ;
-	}
 	q = ft_part_1(a);
 	temp = ft_part_2(q);
 	ft_free_q(q);
 	q = ft_part_3(temp);
-	 ft_free_q(temp);
+	ft_free_q(temp);
 	if (ft_part_3_5(q))
 	{
 		ft_free_q(q);
@@ -230,11 +98,10 @@ void	ft_parse(char *a, t_prompt *ys)
 		return ;
 	}
 	temp = ft_part_4(q, ys);
-	 ft_free_q(q);
-	 q = ft_part_5(temp);
-	 ft_here(q, ys);
+	ft_free_q(q);
+	q = ft_part_5(temp);
+	ft_here_doc(q, ys);
 	ys->list_cmd = ft_copy_(q);
-	 ft_free_qq(temp);
+	ft_free_qq(temp);
 	ft_free_part_5(q);
-	//system("leaks a.out");
 }

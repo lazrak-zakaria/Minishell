@@ -3,26 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_sub_3_5.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:42:28 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/19 18:05:07 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/25 18:46:46 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../minishell_2.h"
 
 int	ft_is_token(char *a);
-
-void	ft_putstr_fd(char *a, int fd)
-{
-	write (fd, a, strlen(a));
-}
-
-void	ft_putchar_fd(char c, int fd)
-{
-	write (fd, &c, 1);
-}
 
 int	check_err(t_queue *q, char *a, char f)
 {
@@ -31,7 +21,7 @@ int	check_err(t_queue *q, char *a, char f)
 		ft_putstr_fd("bash: syntax error near unexpected token `|'\n", 2);
 		return (1);
 	}
-	if (strlen(a) > 2)
+	if (ft_strlen(a) > 2)
 		return (ft_err_1(a));
 	else if (q->next && ft_is_token(q->next->data))
 		return (ft_err_2(q->next->data, a));
@@ -52,4 +42,43 @@ void	ft_synerr(char *a, int i, int j)
 		ft_putchar_fd(a[j], 2);
 	ft_putchar_fd('\'', 2);
 	ft_putchar_fd('\n', 2);
+}
+
+int	ft_err_1(char *a)
+{
+	if (a[2] == '>' && a[3] == '<')
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `>'", 2);
+		ft_putchar_fd('\n', 2);
+	}
+	else if (ft_strlen(a) == 3)
+		ft_synerr(a, 2, -1);
+	else if (ft_strlen(a) >= 3)
+		ft_synerr(a, 2, 3);
+	return (1);
+}
+
+int	ft_err_2(char *a, char *b)
+{
+	if (a[0] == '|')
+	{
+		ft_putstr_fd("bash: syntax error near unexpected token `|'", 2);
+		ft_putchar_fd('\n', 2);
+		return (1);
+	}
+	else if (b[0] == '|')
+		return (0);
+	if (ft_strlen(a) >= 2)
+	{
+		if (a[0] == '>' && a[1] == '<')
+		{
+			ft_putstr_fd("bash: syntax error near unexpected token `>'", 2);
+			ft_putchar_fd('\n', 2);
+		}
+		else if (ft_strlen(a) >= 2)
+			ft_synerr(a, 0, 1);
+	}
+	else
+		ft_synerr(a, 0, -1);
+	return (1);
 }

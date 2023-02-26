@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 20:03:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/26 14:02:40 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,51 +52,6 @@ typedef struct s_prompt
 	int				flag;
 }	t_prompt;
 
-typedef struct s_cmd_parse
-{
-	t_queue	*cmd;
-	t_queue	*file;	
-	t_queue	*rel;		
-	t_queue	*buffer;
-}	t_cmd_parse;
-
-
-typedef struct s_elem
-{
-	char	*s;
-	char	*d_s;
-	int		quote;
-	int		dollar;
-}	t_elem;
-
-typedef struct s_var
-{
-	t_queue		*queue_answer;
-	t_queue		*temp_queue;
-	t_vector	vec;
-	int			i;
-	int			j;
-	int			flag;
-	char		c;
-}	t_var;
-
-
-void	ft_norm_p1_2(char *a, t_var *var);
-int		ft_part_3_5(t_queue *q);
-
-t_queue	*ft_part_1(char *a);
-t_queue	*ft_part_2(t_queue *q);
-t_queue	*ft_part_3(t_queue *queue);
-t_queue	*ft_part_4(t_queue *queue, t_prompt *ys);
-t_queue	*ft_part_5(t_queue *queue);
-char	*ft_substr(char	*a, int s, int e);
-void	ft_parse(char *a, t_prompt *ys);
-
-void	ft_putchar_fd(char c, int fd);
-void	ft_putstr_fd(char *a, int fd);
-int		ft_err_2(char *a, char *b);
-int		ft_err_1(char *a);
-
 /****************/
 
 typedef struct s_env
@@ -115,6 +70,13 @@ typedef struct s_pipex
 	int		pipe[2];
 	int		pipe2[2];
 }t_pipex;
+
+/*   */
+void	ft_parse(char *a, t_prompt *ys);
+void	ft_free_lis(t_list *head);
+void	ft_putchar_fd(char c, int fd);
+
+/*  */
 
 // Exec
 void	ft_exec(t_prompt *prompt);
