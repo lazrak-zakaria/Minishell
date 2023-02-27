@@ -6,11 +6,13 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 09:19:20 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/27 10:58:54 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_wait_main(t_prompt *prompt, pid_t last_cmd);
 
 void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
 {
@@ -24,10 +26,11 @@ void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
 			prompt->list_cmd->data->fd_1 = pipex->pipe2[1];
 			prompt->list_cmd->data->fd_0 = pipex->pipe[0];
 			ret = red(prompt->list_cmd);
-			if (ret != -1)
+			if (ret == -2 || ret != -1)
 			{
-				write(2, "bash: ", 7);
-				perror(prompt->list_cmd->data->file[ret]);
+				prompt->exit_status = 1;
+				if (ret != -2)
+					perror(prompt->list_cmd->data->file[ret]);
 				exit(1);
 			}
 			close(pipex->pipe2[0]);
@@ -50,9 +53,11 @@ void	first_cmd(t_pipex *pipex, t_prompt *prompt)
 	{
 		prompt->list_cmd->data->fd_1 = pipex->pipe[1];
 		ret = red(prompt->list_cmd);
-		if (ret != -1)
+		if (ret == -2 || ret != -1)
 		{
-			write(2, "bash: ", 7);
+			prompt->exit_status = 1;
+			if (ret != -2)
+				exit(1);
 			perror(prompt->list_cmd->data->file[ret]);
 			exit(1);
 		}
@@ -65,23 +70,40 @@ void	first_cmd(t_pipex *pipex, t_prompt *prompt)
 
 void	second_cmd(t_pipex *pipex, t_prompt *prompt)
 {
-	int	ret;
+	int		ret;
+	pid_t	last_cmd;
 
-	if (fork() == 0)
+	last_cmd = fork();
+	if (last_cmd == 0)
 	{
 		prompt->list_cmd->data->fd_0 = pipex->pipe[0];
 		ret = red(prompt->list_cmd);
-		if (ret != -1)
+		if (ret == -2 || ret != -1)
 		{
-			write(2, "bash: ", 7);
-			perror(prompt->list_cmd->data->file[ret]);
+			prompt->exit_status = 1;
+			if (ret != -2)
+				perror(prompt->list_cmd->data->file[ret]);
 			exit(1);
 		}
 		get_cmd_child(pipex, prompt);
 	}
 	close(pipex->pipe[0]);
-	while (wait(&prompt->exit_status) != -1)
-		;
+	ft_wait_main(prompt, last_cmd);
+}
+
+void	ft_wait_main(t_prompt *prompt, pid_t last_cmd)
+{
+	pid_t	ret_pid;
+	int		exit_s;
+
+	while (1)
+	{
+		ret_pid = wait(&exit_s);
+		if (ret_pid == last_cmd)
+			prompt->exit_status = exit_s;
+		else if (ret_pid == -1)
+			break ;
+	}
 	if (prompt->exit_status == 2)
 		prompt->exit_status = 130;
 	else

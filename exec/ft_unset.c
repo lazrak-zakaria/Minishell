@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:26:02 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 13:19:03 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/27 10:59:30 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	remove_env_variable(t_prompt *prompt, char *variable_name)
 	t_env	*save;
 
 	current = prompt->s_env;
-
 	while (current->next)
 	{
 		if (my_strcmp(current->next->variable, variable_name))
@@ -77,27 +76,6 @@ int	ft_unset_2(t_prompt *prompt, char **args)
 			error = print_unset_error(args[i]);
 	}
 	return (error);
-}
-
-int	ft_env(t_prompt *prompt)
-{
-	t_env	*current;
-
-	current = prompt->s_env;
-	while (current != NULL)
-	{
-		if (current->value != NULL)
-		{
-			write(prompt->list_cmd->data->fd_1, \
-					current->variable, ft_strlen(current->variable));
-			write(prompt->list_cmd->data->fd_1, "=", 1);
-			write(prompt->list_cmd->data->fd_1, \
-						current->value, ft_strlen(current->value));
-			write(prompt->list_cmd->data->fd_1, "\n", 1);
-		}
-		current = current->next;
-	}
-	return (0);
 }
 
 int	ft_unset(t_prompt *prompt, char **args)
