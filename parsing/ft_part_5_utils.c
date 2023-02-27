@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 09:46:57 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 19:38:04 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	var->temp_queue = ft_pop(queue);
 	elem = var->temp_queue->data;
 	b = elem->s;
-	if (elem->dollar && !elem->quote && !b)
+	if ((elem->dollar && !elem->quote && !b)
+			|| (elem->dollar && b && ft_find(b, ' ')))
 	{
 		s = ft_hq(elem->d_s);
 		ft_push(&cmd->rel, ft_new_node(ft_dupstr("BIGOUS")));
@@ -105,7 +106,8 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 		ft_handle_in_hd(elem, cmd, b);
 	else
 	{
-		if (elem->dollar && !elem->quote && !b)
+		if ((elem->dollar && !elem->quote && !b)
+			|| (elem->dollar && b && ft_find(b, ' ')))
 		{
 			s = ft_hq(elem->d_s);
 			ft_push(&cmd->rel, ft_new_node(ft_dupstr("BIGOUS")));
@@ -118,10 +120,11 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 		ft_push(&cmd->file, ft_new_node(ft_dupstr(b)));
 	}
 }
-
+t_queue	*ft__(char *a);
 void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 {
 	char	*a;
+	t_var	v;
 
 	a = e->s;
 	if (a && (a[0] == '>' || a[0] == '<' || a[0] == '|') && !e->quote)
@@ -137,6 +140,46 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 		}
 	}
 	else
-		if (a)
-			ft_push(&cmd->cmd, ft_new_node(a));
+	{
+		if (e->dollar && a)
+		{
+			v.queue_answer = ft__(a);
+			v.temp_queue = v.queue_answer;
+			while (v.temp_queue)
+			{
+				ft_push(&cmd->cmd, ft_new_node(((v.temp_queue)->data)));
+				v.temp_queue = v.temp_queue->next;
+			}
+			ft_free(v.queue_answer);
+			//free(a);
+		}
+		else if (a)
+			ft_push(&cmd->cmd, ft_new_node(ft_dupstr(a)));
+	}
+}
+
+t_queue	*ft__(char *a)
+{
+	t_var	var;
+
+	ft_memset(&var, 0, sizeof(var));
+	while (a && a[var.i])
+	{
+		if (a[var.i] == ' ' || a[var.i] == '\t')
+		{
+			if (var.flag)
+			{
+				ft_push(&var.queue_answer, ft_new_node(var.vec.string));
+				var.flag = 0;
+				ft_memset(&var.vec, 0, sizeof(t_vector));
+			}
+			var.i++;
+			continue ;
+		}
+		ft_push_back(&var.vec, a[var.i++]);
+		var.flag = 1;
+		if (!a[var.i])
+			ft_push(&var.queue_answer, ft_new_node(var.vec.string));
+	}
+	return (var.queue_answer);
 }
