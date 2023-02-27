@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/25 19:45:06 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 09:24:58 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ char	*ft_hq(char *a)
 	i = 0;
 	while (a[i])
 	{
+		if (a[i] == '$' &&(a[i+1] == '\'' || a[i+1] == '"'))
+		{
+			i++;
+			continue;
+		}
 		if (a[i] == '\'' || a[i] == '"')
 		{
 			c = a[i++];
@@ -63,18 +68,26 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 void	ft_handle_in_hd(t_elem *elem, t_cmd_parse *cmd, char *b)
 {
 	char	*s;
+	int		flag;
 
+	int i = 0;
+	flag = 0;
+	while (elem->d_s[i] && !flag)
+	{
+		if (elem->d_s[i] == '\'' || elem->d_s[i] == '"')
+			flag = 1;
+		i++;
+	}
 	s = ft_hq(elem->d_s);
-	if (elem->dollar && elem->quote)
+	//print(s);
+	if ((elem->dollar || !b) && s)
 		ft_push(&cmd->file, ft_new_node(ft_dupstr(s)));
 	else
-	{
-		if (!b || (s && ft_find(s, '$')))
-			ft_push(&cmd->file, ft_new_node(ft_dupstr(elem->d_s)));
-		else
-			ft_push(&cmd->file, ft_new_node(ft_dupstr(b)));
-	}
-	ft_push(&cmd->rel, ft_new_node(ft_dupstr("HERE_DOC")));
+		ft_push(&cmd->file, ft_new_node(ft_dupstr(b)));
+	if (elem->quote || flag)
+		ft_push(&cmd->rel, ft_new_node(ft_dupstr("HQRE_DOC")));
+	else
+		ft_push(&cmd->rel, ft_new_node(ft_dupstr("HERE_DOC")));
 	free (s);
 }
 

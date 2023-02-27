@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 15:43:57 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 09:42:55 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 		ft_push_back(vec, s[(*i)++]);
 }
 
-void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
+void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 {
 	t_vector	vec;
 	char		*s;
@@ -61,8 +61,14 @@ void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys)
 			free(s);
 			break ;
 		}
-		while (s[i])
-			ft_sub_take(s, &i, ys, &vec);
+		if (h[1] == 'E')
+			while (s[i])
+				ft_sub_take(s, &i, ys, &vec);
+		else
+		{
+			while (s[i])
+				ft_push_back(&vec, s[i++]);
+		}
 		ft_push_back(&vec, '\n');
 		free(s);
 	}
@@ -87,8 +93,8 @@ void	ft_here_doc(t_queue *queue, t_prompt *ys)
 			q = ft_pop(&var__.a);
 			var.temp_queue = ft_pop(&var__.b);
 			var__.string = var.temp_queue->data;
-			if (var__.string[0] == 'H')
-				ft_take(q->data, cmd, ys);
+			if (var__.string[1] == 'H')
+				ft_take(q->data, cmd, ys, var__.string);
 		}
 	}
 }
