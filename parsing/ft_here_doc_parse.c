@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 09:42:55 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 09:54:55 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	ft_here_doc(t_queue *queue, t_prompt *ys)
 			q = ft_pop(&var__.a);
 			var.temp_queue = ft_pop(&var__.b);
 			var__.string = var.temp_queue->data;
-			if (var__.string[1] == 'H')
+			if (var__.string[0] == 'H')
 				ft_take(q->data, cmd, ys, var__.string);
 		}
 	}

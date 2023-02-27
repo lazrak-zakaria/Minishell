@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 09:24:58 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 09:46:57 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ char	*ft_hq(char *a)
 	i = 0;
 	while (a[i])
 	{
-		if (a[i] == '$' &&(a[i+1] == '\'' || a[i+1] == '"'))
+		if (a[i] == '$' && (a[i + 1] == '\'' || a[i + 1] == '"'))
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		if (a[i] == '\'' || a[i] == '"')
 		{
@@ -69,8 +69,9 @@ void	ft_handle_in_hd(t_elem *elem, t_cmd_parse *cmd, char *b)
 {
 	char	*s;
 	int		flag;
+	int		i;
 
-	int i = 0;
+	i = 0;
 	flag = 0;
 	while (elem->d_s[i] && !flag)
 	{
