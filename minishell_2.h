@@ -3,12 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_2.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 15:44:30 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:01:18 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef MINISHELL_2_H
+# define MINISHELL_2_H
 
 # include <unistd.h>
 # include <stdio.h>
@@ -133,3 +136,5 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
+
+#endif
