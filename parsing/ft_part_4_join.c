@@ -6,11 +6,13 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:16:42 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 13:41:21 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:11:46 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_2.h"
+
+void	ft_cp_env(t_vector **vec, char *a, int j);
 
 void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 {
@@ -32,11 +34,32 @@ void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	{
 		if (!strncmp(a, ys->env[i], j))
 		{
-			while (ys->env[i][j])
-				ft_push_back(*vec, ys->env[i][j++]);
+			ft_cp_env(vec , ys->env[i], j);
 			break ;
 		}
 		++i;
+	}
+}
+
+void	ft_cp_env(t_vector **vec, char *a, int j)
+{
+	int	f;
+
+	f = 0;
+	while (a[j])
+	{
+		if (a[j] == ' ')
+		{
+			if (f)
+				ft_push_back(*vec, a[j]);
+			f = 0;
+		}
+		else
+		{
+			ft_push_back(*vec, a[j]);
+			f = 1;
+		}
+		++j;
 	}
 }
 
