@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 12:43:25 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 14:07:37 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 15:36:13 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	ft_print_env(t_prompt *yassir)
 	current = head;
 	while (current != NULL)
 	{
-		write(yassir->list_cmd->data->fd_1, "declare -x ", 12);
+		write(yassir->list_cmd->data->fd_1, "declare -x ", 11);
 		if (current->variable != NULL)
 		{
 			write(yassir->list_cmd->data->fd_1, current->variable, \
@@ -67,7 +67,7 @@ void	ft_print_env(t_prompt *yassir)
 										ft_strlen(current->value));
 			write(yassir->list_cmd->data->fd_1, "\"", 1);
 		}
-		write(yassir->list_cmd->data->fd_1, "\n", 2);
+		write(yassir->list_cmd->data->fd_1, "\n", 1);
 		current = current->next;
 	}
 	ft_free_env(head);
