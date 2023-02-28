@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:31:46 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 13:44:51 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 19:06:03 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_free_part_5(t_queue *q)
 	{
 		qq = q->next;
 		p = q->data;
-		ft_free(p->cmd);
+		ft_free_q(p->cmd);
 		ft_free_q(p->file);
 		ft_free_q(p->rel);
 		ft_free_q(p->buffer);

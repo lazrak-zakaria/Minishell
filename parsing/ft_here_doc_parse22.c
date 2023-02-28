@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_here_doc_parse.c                                :+:      :+:    :+:   */
+/*   ft_here_doc_parse22.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 09:54:55 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 09:42:09 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,42 +40,75 @@ void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 		ft_push_back(vec, s[(*i)++]);
 }
 
-void	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
+int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 {
 	t_vector	vec;
 	char		*s;
 	char		*b;
 	int			i;
+	int			fd[2];
 
+	pipe(fd);
 	ft_memset(&vec, 0, sizeof(vec));
 	ft_push_back(&vec, '\0');
 	vec.i = 0;
 	ys->exit_status = 0;
-	while (a)
+	ys->flag = 1;
+	if (fork()== 0)
 	{
-		i = 0;
-		s = readline(">");
-		if (!s || !ft_cmpstr(s, a))
+		signal(SIGINT, SIG_DFL);
+		close(fd[0]);
+		while (a)
 		{
-			ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
+			i = 0;
+			s = readline(">");
+			if (!s || !ft_cmpstr(s, a))
+			{
+				//ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
+				write(fd[1], vec.string, ft_strlen(vec.string));
+				free(s);
+				break ;
+			}
+			if (h[1] == 'E')
+				while (s[i])
+					ft_sub_take(s, &i, ys, &vec);
+			else
+			{
+				while (s[i])
+					ft_push_back(&vec, s[i++]);
+			}
+			ft_push_back(&vec, '\n');
 			free(s);
-			break ;
 		}
-		if (h[1] == 'E')
-			while (s[i])
-				ft_sub_take(s, &i, ys, &vec);
-		else
-		{
-			while (s[i])
-				ft_push_back(&vec, s[i++]);
-		}
-		ft_push_back(&vec, '\n');
-		free(s);
+		close(fd[1]);
+		free(vec.string);
+		exit(0);
 	}
-	free(vec.string);
+	else
+	{
+		wait(&ys->exit_status);
+		if (ys->exit_status == SIGINT)
+		{
+			ys->exit_status = 1;
+			free(vec.string);
+			return (1);
+		}
+		else
+			ys->exit_status = 0;
+		char c;
+		close(fd[1]);
+		while (read(fd[0], &c, 1))
+		{
+			ft_push_back(&vec, c);
+		}
+		close(fd[0]);
+		ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
+		free(vec.string);
+	}
+	return (0);
 }
 
-void	ft_here_doc(t_queue *queue, t_prompt *ys)
+int	ft_here_doc(t_queue *queue, t_prompt *ys)
 {
 	t_cmd_parse	*cmd;
 	t_var		var;
@@ -94,7 +127,11 @@ void	ft_here_doc(t_queue *queue, t_prompt *ys)
 			var.temp_queue = ft_pop(&var__.b);
 			var__.string = var.temp_queue->data;
 			if (var__.string[0] == 'H')
-				ft_take(q->data, cmd, ys, var__.string);
+			{
+				if (ft_take(q->data, cmd, ys, var__.string))
+					return (1);;
+			}
 		}
 	}
+	return 0;
 }
