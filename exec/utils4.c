@@ -6,17 +6,17 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:22:45 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 20:03:44 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/27 13:30:04 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_atoi(char *str)
+size_t	ft_atoi(char *str)
 {
-	int					i;
-	unsigned long long	number;
-	int					signe;
+	int						i;
+	unsigned long long int	number;
+	int						signe;
 
 	i = 0;
 	signe = 1;

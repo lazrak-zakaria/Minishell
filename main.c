@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
+/*   Updated: 2023/02/27 15:37:40 by yel-mass         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_prompt 	prompt;
@@ -40,7 +52,7 @@ void    ft_signal(void)
 	// tcsetattr(STDIN_FILENO, TCSANOW, &mini_shell);
 
 	signal(SIGINT, ft_signal_handler);
-	signal(SIGQUIT, ft_signal_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
 
 int	main(int ac, char **av, char **env)
@@ -56,10 +68,9 @@ int	main(int ac, char **av, char **env)
 	prompt.env = get_env(prompt.s_env); // 		char ** alocated
 	//prompt.exit_status = 0;
 	prompt.list_cmd = NULL;
-
 	while(1)
 	{
-		//printf("%d_", prompt.exit_status);
+		printf("%d_", prompt.exit_status);
 		prompt.list_cmd = NULL;
 		char *a = readline("MINISHELL:");
 		if (a == NULL)

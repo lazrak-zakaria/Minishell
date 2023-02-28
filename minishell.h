@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 14:02:40 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/27 13:30:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ char	*ft_strdup(char *s1);
 char	*ft_substr_2(char *s, unsigned int start, size_t len);
 int		my_strcmp(char *s1, char *s2);
 int		ft_isdigit(char *str);
-int		ft_atoi(char *str);
+size_t	ft_atoi(char *str);
 int		ft_strcmp(char *s1, char *s2);
 int		ft_isalnum_(char *s);
 void	ft_free_all_(char **strs);

@@ -6,11 +6,13 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 16:20:21 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 19:50:00 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:56:07 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+char	**free_all(char **s, int m);
 
 char	**get_env(t_env *envp)
 {
@@ -20,6 +22,8 @@ char	**get_env(t_env *envp)
 	char	*tmp;
 
 	new_envp = malloc((ft_count_env(envp) + 1) * sizeof(char *));
+	if (new_envp == NULL)
+		return (NULL);
 	i = 0;
 	current = envp;
 	while (current)
@@ -29,6 +33,8 @@ char	**get_env(t_env *envp)
 			tmp = ft_strjoin(current->variable, "=");
 			new_envp[i] = ft_strjoin(tmp, current->value);
 			free(tmp);
+			if (new_envp[i] == NULL)
+				return (free_all(new_envp, i));
 			i++;
 		}
 		current = current->next;

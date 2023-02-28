@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:21:35 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 10:08:41 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/27 14:55:18 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static int	count_words(char const *s, char c)
 	return (count);
 }
 
-static char	**free_all(char **s, int m)
+char	**free_all(char **s, int m)
 {
 	m--;
 	while (m >= 0)
