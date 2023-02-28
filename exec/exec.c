@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/28 10:43:17 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:41:59 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	second_cmd(t_pipex *pipex, t_prompt *prompt)
 	last_cmd = fork();
 	if (last_cmd == 0)
 	{
-		//signal(SIGQUIT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		prompt->list_cmd->data->fd_0 = pipex->pipe[0];
 		ret = red(prompt->list_cmd);
 		if (ret == -2 || ret != -1)
