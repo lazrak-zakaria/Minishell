@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:22:45 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/27 13:30:04 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 11:46:27 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ void	sort_env(t_env *head)
 	char	*val;
 
 	current = head;
+	if (head == NULL)
+		return ;
 	while (current->next)
 	{
 		if (ft_strcmp(current->variable, current->next->variable) < 0)
