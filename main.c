@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/27 15:37:40 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:01:07 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,13 @@
 t_prompt 	prompt;
 void    ft_signal_handler(int sg)
 {
-	// if (wait(NULL) != -1)
-	// {
-	// 	prompt.flag = 0;
-	// 	return ;
-	// }
-
-//	printf("%d\n", );
-	//wait(&prompt.exit_status);
 	if (sg == SIGINT)
 	{
+		if (prompt.flag == 2)
+		{
+			ft_putchar_fd('\n', 1);
+			return ;
+		}
 		if (prompt.flag == 1)
 			return ;
 		else
@@ -32,13 +29,6 @@ void    ft_signal_handler(int sg)
 		ft_putchar_fd('\n', 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		rl_redisplay();
-	}
-	else
-	{
-		//ft_putchar_fd('\n', 1);
-		rl_on_new_line();
-		//rl_replace_line("", 0);
 		rl_redisplay();
 	}
 }
@@ -70,7 +60,7 @@ int	main(int ac, char **av, char **env)
 	prompt.list_cmd = NULL;
 	while(1)
 	{
-		printf("%d_", prompt.exit_status);
+		//printf("%d_", prompt.exit_status);
 		prompt.list_cmd = NULL;
 		char *a = readline("MINISHELL:");
 		if (a == NULL)
@@ -80,7 +70,8 @@ int	main(int ac, char **av, char **env)
 		}
 		if(a[0])
 			add_history(a);
-		ft_parse(a, &prompt);
+		if (ft_parse(a, &prompt))
+			continue ;
 		free(a);
 
 	/******************************/
