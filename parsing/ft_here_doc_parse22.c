@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 09:42:09 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 13:56:03 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,10 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 	ft_push_back(&vec, '\0');
 	vec.i = 0;
 	ys->exit_status = 0;
-	ys->flag = 1;
-	if (fork()== 0)
+	ys->flag = 2;
+	
+	int k = fork();
+	if (k == 0)
 	{
 		signal(SIGINT, SIG_DFL);
 		close(fd[0]);
@@ -65,6 +67,7 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 			if (!s || !ft_cmpstr(s, a))
 			{
 				//ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
+				//write (1, "\n", 1);
 				write(fd[1], vec.string, ft_strlen(vec.string));
 				free(s);
 				break ;
@@ -86,7 +89,9 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 	}
 	else
 	{
+		close(fd[1]);
 		wait(&ys->exit_status);
+		ys->flag = 0;
 		if (ys->exit_status == SIGINT)
 		{
 			ys->exit_status = 1;
@@ -96,8 +101,8 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 		else
 			ys->exit_status = 0;
 		char c;
-		close(fd[1]);
-		while (read(fd[0], &c, 1))
+		
+		while (read(fd[0], &c, 1)> 0)
 		{
 			ft_push_back(&vec, c);
 		}
@@ -129,7 +134,7 @@ int	ft_here_doc(t_queue *queue, t_prompt *ys)
 			if (var__.string[0] == 'H')
 			{
 				if (ft_take(q->data, cmd, ys, var__.string))
-					return (1);;
+					return (1);
 			}
 		}
 	}
