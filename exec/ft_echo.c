@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:18 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 19:54:33 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 11:04:08 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_check_option(char **args, int *a)
 
 	i = 0;
 	j = 0;
-	while (args[++i] != NULL && args[i][0] == '-')
+	while (args[++i] != NULL && args[i][0] == '-' && args[i][1] == 'n')
 	{
 		j = 0;
 		while (args[i][++j])
