@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/27 14:49:53 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 10:43:17 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 void	ft_wait_main(t_prompt *prompt, pid_t last_cmd);
 
-void	ft_child_child(t_pipex *pipex, t_prompt *prompt)
+void	ft_child_child(t_pipex *pipex, t_prompt *prompt, int ret)
 {
-	int	ret;
-
 	while (prompt->list_cmd->next != NULL)
 	{
 		pipe(pipex->pipe2);
 		if (fork() == 0)
 		{
+			signal(SIGQUIT, SIG_DFL);
 			prompt->list_cmd->data->fd_1 = pipex->pipe2[1];
 			prompt->list_cmd->data->fd_0 = pipex->pipe[0];
 			ret = red(prompt->list_cmd);
@@ -51,6 +50,7 @@ void	first_cmd(t_pipex *pipex, t_prompt *prompt)
 	pipe(pipex->pipe);
 	if (fork() == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		prompt->list_cmd->data->fd_1 = pipex->pipe[1];
 		ret = red(prompt->list_cmd);
 		if (ret == -2 || ret != -1)
@@ -76,6 +76,7 @@ void	second_cmd(t_pipex *pipex, t_prompt *prompt)
 	last_cmd = fork();
 	if (last_cmd == 0)
 	{
+		//signal(SIGQUIT, SIG_DFL);
 		prompt->list_cmd->data->fd_0 = pipex->pipe[0];
 		ret = red(prompt->list_cmd);
 		if (ret == -2 || ret != -1)
@@ -104,9 +105,11 @@ void	ft_wait_main(t_prompt *prompt, pid_t last_cmd)
 		else if (ret_pid == -1)
 			break ;
 	}
-	if (prompt->exit_status == 2)
+	if (prompt->exit_status == SIGINT)
 		prompt->exit_status = 130;
-	else
+	else if(prompt->exit_status == SIGQUIT)
+		prompt->exit_status = 131;
+	else 
 		prompt->exit_status = prompt->exit_status / 256;
 	prompt->flag = 0;
 }
@@ -123,7 +126,7 @@ void	ft_exec(t_prompt *prompt)
 	{
 		first_cmd(&pipex, prompt);
 		if (prompt->list_cmd->next != NULL)
-			ft_child_child(&pipex, prompt);
+			ft_child_child(&pipex, prompt, 0);
 		second_cmd(&pipex, prompt);
 	}
 	else
