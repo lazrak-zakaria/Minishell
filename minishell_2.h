@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_2.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 13:01:18 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 10:49:29 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int		ft_part_3_5(t_queue *q);
 
 void	ft_norm_p1_2(char *a, t_var *var);
 char	*ft_substr(char	*a, int s, int e);
-void	ft_parse(char *a, t_prompt *ys);
+int		ft_parse(char *a, t_prompt *ys);
 
 /*         utils 			*/
 char	*ft_dupstr(char *a);
@@ -126,7 +126,7 @@ void	ft_join_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys);
 char	*ft_itoa(int n);
 /*****************************/
 int		ft_find(char *a, char c);
-void	ft_here_doc(t_queue *queue, t_prompt *ys);
+int		ft_here_doc(t_queue *queue, t_prompt *ys);
 
 void	ft_memfree(char **a);
 void	ft_free_lis(t_list *head);

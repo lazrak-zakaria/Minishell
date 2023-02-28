@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 13:30:15 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 11:54:19 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ typedef struct s_pipex
 }t_pipex;
 
 /*   */
-void	ft_parse(char *a, t_prompt *ys);
+int	ft_parse(char *a, t_prompt *ys);
 void	ft_free_lis(t_list *head);
 void	ft_putchar_fd(char c, int fd);
 
