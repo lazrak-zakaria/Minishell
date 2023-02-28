@@ -6,11 +6,15 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 14:34:59 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:09:08 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_2.h"
+
+t_queue	*ft_divide(char *a);
+void	ft_handle_token(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var);
+int		ft_bgs_check(char *a);
 
 char	*ft_hq(char *a)
 {
@@ -41,30 +45,6 @@ char	*ft_hq(char *a)
 	return (vec.string);
 }
 
-int	ft_bgs_check(char *a)
-{
-	int	i;
-	int	f;
-
-	i = 0;
-	f = 0;
-	while (a[i] && f < 2)
-	{
-		if (a[i] == ' ')
-		{
-			++i;
-			continue ;
-		}
-		else
-		{
-			++f;
-			while (a[i] && a[i] != ' ')
-				++i;
-		}
-	}
-	return (f >= 2);
-}
-
 void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 {
 	t_elem	*elem;
@@ -75,7 +55,7 @@ void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 	elem = var->temp_queue->data;
 	b = elem->s;
 	if ((elem->dollar && !elem->quote && !b)
-			|| (elem->dollar && b && ft_bgs_check(b)))
+		|| (elem->dollar && b && ft_bgs_check(b)))
 	{
 		s = ft_hq(elem->d_s);
 		ft_push(&cmd->rel, ft_new_node(ft_dupstr("BIGOUS")));
@@ -105,7 +85,6 @@ void	ft_handle_in_hd(t_elem *elem, t_cmd_parse *cmd, char *b)
 		i++;
 	}
 	s = ft_hq(elem->d_s);
-	//print(s);
 	if ((elem->dollar || !b) && s)
 		ft_push(&cmd->file, ft_new_node(ft_dupstr(s)));
 	else
@@ -144,7 +123,7 @@ void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 		ft_push(&cmd->file, ft_new_node(ft_dupstr(b)));
 	}
 }
-t_queue	*ft_divide(char *a);
+
 void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 {
 	char	*a;
@@ -152,17 +131,7 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 
 	a = e->s;
 	if (a && (a[0] == '>' || a[0] == '<' || a[0] == '|') && !e->quote)
-	{
-		if (a[0] == '>')
-			ft_handle_out(a, cmd, queue, var);
-		else if (a[0] == '<')
-			ft_handle_in(a, cmd, queue, var);
-		else
-		{
-			ft_push(&var->queue_answer, ft_new_node(cmd));
-			var->flag = 1;
-		}
-	}
+		ft_handle_token(a, cmd, queue, var);
 	else
 	{
 		if (e->dollar && a && !e->quote)
@@ -175,35 +144,8 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var)
 				v.temp_queue = v.temp_queue->next;
 			}
 			ft_free(v.queue_answer);
-			//free(a);
 		}
 		else if (a)
 			ft_push(&cmd->cmd, ft_new_node(ft_dupstr(a)));
 	}
-}
-
-t_queue	*ft_divide(char *a)
-{
-	t_var	var;
-
-	ft_memset(&var, 0, sizeof(var));
-	while (a && a[var.i])
-	{
-		if (a[var.i] == ' ' || a[var.i] == '\t')
-		{
-			if (var.flag)
-			{
-				ft_push(&var.queue_answer, ft_new_node(var.vec.string));
-				var.flag = 0;
-				ft_memset(&var.vec, 0, sizeof(t_vector));
-			}
-			var.i++;
-			continue ;
-		}
-		ft_push_back(&var.vec, a[var.i++]);
-		var.flag = 1;
-		if (!a[var.i])
-			ft_push(&var.queue_answer, ft_new_node(var.vec.string));
-	}
-	return (var.queue_answer);
 }

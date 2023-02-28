@@ -6,12 +6,13 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 17:16:52 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 20:49:42 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:05:45 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_2.h"
 
+int		ft_parse_2(t_queue *q, t_prompt *ys);
 int		ft_here_doc(t_queue *queue, t_prompt *ys);
 int		check_enclosed_quotes(char	*a);
 /*************/
@@ -84,7 +85,7 @@ int	ft_parse(char *a, t_prompt *ys)
 	t_queue	*temp;
 
 	if (ft_check_q(a, ys))
-		return 0;
+		return (1);
 	q = ft_part_1(a);
 	temp = ft_part_2(q);
 	ft_free_q(q);
@@ -94,19 +95,7 @@ int	ft_parse(char *a, t_prompt *ys)
 	{
 		ft_free_q(q);
 		ys->exit_status = 258;
-		return 0;
-	}
-	temp = ft_part_4(q, ys);
-	ft_free_q(q);
-	q = ft_part_5(temp);
-	if (ft_here_doc(q, ys))
-	{
-		ft_free_qq(temp);
-		ft_free_part_5(q);
 		return (1);
 	}
-	ys->list_cmd = ft_copy_(q);
-	ft_free_qq(temp);
-	ft_free_part_5(q);
-	return 0;
+	return (ft_parse_2(q, ys));
 }

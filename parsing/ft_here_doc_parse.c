@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_here_doc_parse22.c                              :+:      :+:    :+:   */
+/*   ft_here_doc_parse.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 13:56:03 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:03:54 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell_2.h"
+
+int		ft_parent_(int *fd, t_prompt *ys, t_vector *vec, t_cmd_parse *cmd);
+void	ft_here_var(t_vector *vec, t_prompt *ys);
+void	ft_heredocline(char c, char *s, t_vector *vec, t_prompt *ys);
+void	ft_sig_hd(int *fd);
 
 void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 {
@@ -25,7 +30,7 @@ void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 			(*i)++;
 		else
 			while (ft_dollar_ok(s[(*i)]) || s[(*i)] == '$')
-			(*i)++;
+			(i)++;
 		tofree = ft_substr(s, j, (*i));
 		ff = ft_expand_dollar(tofree, ys);
 		free(tofree);
@@ -44,73 +49,29 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 {
 	t_vector	vec;
 	char		*s;
-	char		*b;
-	int			i;
 	int			fd[2];
 
+	ft_here_var(&vec, ys);
 	pipe(fd);
-	ft_memset(&vec, 0, sizeof(vec));
-	ft_push_back(&vec, '\0');
-	vec.i = 0;
-	ys->exit_status = 0;
-	ys->flag = 2;
-	
-	int k = fork();
-	if (k == 0)
+	if (fork() == 0)
 	{
-		signal(SIGINT, SIG_DFL);
-		close(fd[0]);
+		ft_sig_hd(fd);
 		while (a)
 		{
-			i = 0;
 			s = readline(">");
 			if (!s || !ft_cmpstr(s, a))
 			{
-				//ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
-				//write (1, "\n", 1);
 				write(fd[1], vec.string, ft_strlen(vec.string));
 				free(s);
 				break ;
 			}
-			if (h[1] == 'E')
-				while (s[i])
-					ft_sub_take(s, &i, ys, &vec);
-			else
-			{
-				while (s[i])
-					ft_push_back(&vec, s[i++]);
-			}
-			ft_push_back(&vec, '\n');
-			free(s);
+			ft_heredocline(h[1], s, &vec, ys);
 		}
 		close(fd[1]);
 		free(vec.string);
 		exit(0);
 	}
-	else
-	{
-		close(fd[1]);
-		wait(&ys->exit_status);
-		ys->flag = 0;
-		if (ys->exit_status == SIGINT)
-		{
-			ys->exit_status = 1;
-			free(vec.string);
-			return (1);
-		}
-		else
-			ys->exit_status = 0;
-		char c;
-		
-		while (read(fd[0], &c, 1)> 0)
-		{
-			ft_push_back(&vec, c);
-		}
-		close(fd[0]);
-		ft_push(&cmd->buffer, ft_new_node(ft_dupstr(vec.string)));
-		free(vec.string);
-	}
-	return (0);
+	return (ft_parent_(fd, ys, &vec, cmd));
 }
 
 int	ft_here_doc(t_queue *queue, t_prompt *ys)
@@ -138,5 +99,5 @@ int	ft_here_doc(t_queue *queue, t_prompt *ys)
 			}
 		}
 	}
-	return 0;
+	return (0);
 }

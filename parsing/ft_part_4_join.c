@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:16:42 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 13:11:46 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 15:06:43 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_subjoin_dollar(t_vector **vec, t_vector *vec_dollar, t_prompt *ys)
 	{
 		if (!strncmp(a, ys->env[i], j))
 		{
-			ft_cp_env(vec , ys->env[i], j);
+			ft_cp_env(vec, ys->env[i], j);
 			break ;
 		}
 		++i;
