@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/28 17:01:07 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:11:55 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int ac, char **av, char **env)
 	{
 		//printf("%d_", prompt.exit_status);
 		prompt.list_cmd = NULL;
-		char *a = readline("MINISHELL:");
+		char *a = readline("minishell: ");
 		if (a == NULL)
 		{
 			printf("exit\n");
