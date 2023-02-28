@@ -27,6 +27,7 @@ observe Who's expands and who's not !
 With this input :
 
 ----> $?
+
 -----> any env variable
 
 
