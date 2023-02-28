@@ -26,16 +26,20 @@ observe Who's expands and who's not !
 
 With this input :
 
-> '$?'
-> 'any env variable'
+----> $?
+-----> any env variable
 
 
 Test ex :
 
 << $"" cat
+
 << ""$ cat
+
 << $'' cat
+
 << ''$ cat
+
 << $U'SER' cat
 
 
