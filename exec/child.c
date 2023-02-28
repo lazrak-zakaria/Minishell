@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/27 14:52:20 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 16:54:29 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	get_cmd_child(t_pipex *pipex, t_prompt *pt)
 {
 	if (pt->list_cmd->data->cmd[0] == NULL)
-		return ;
+		exit(0);
 	dup2(pt->list_cmd->data->fd_0, 0);
 	dup2(pt->list_cmd->data->fd_1, 1);
 	if (is_builting(pt->list_cmd->data->cmd[0]))
