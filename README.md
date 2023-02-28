@@ -25,8 +25,9 @@ observe Who's expands and who's not !
 << limit cat
 
 With this input :
-> $?
-> any env variable
+
+> '$?'
+> 'any env variable'
 
 
 Test ex :
