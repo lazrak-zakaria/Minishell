@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 17:03:54 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/02/28 17:12:36 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	ft_take(char *a, t_cmd_parse *cmd, t_prompt *ys, char *h)
 		ft_sig_hd(fd);
 		while (a)
 		{
-			s = readline(">");
+			s = readline("> ");
 			if (!s || !ft_cmpstr(s, a))
 			{
 				write(fd[1], vec.string, ft_strlen(vec.string));
