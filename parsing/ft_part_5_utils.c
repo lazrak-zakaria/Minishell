@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/23 11:58:24 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 17:09:08 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:20:45 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int		ft_bgs_check(char *a);
 
 char	*ft_hq(char *a)
 {
-	char		*b;
 	t_vector	vec;
 	char		c;
 	int			i;

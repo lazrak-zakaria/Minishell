@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:23:58 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/27 19:01:56 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:20:38 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ t_queue	*ft_part_5(t_queue *queue)
 	t_cmd_parse	*cmd;
 	t_elem		*elem;
 	t_var		var;
-	char		*a;
 
 	cmd = malloc(sizeof(t_cmd_parse));
 	ft_memset(cmd, 0, sizeof(t_cmd_parse));
