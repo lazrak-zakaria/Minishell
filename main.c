@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/01 12:31:38 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:05:16 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	ft_minishell(void)
 
 	while ("*_*")
 	{
+		g_prompt.flag = 0;
 		g_prompt.list_cmd = NULL;
 		a = readline("minishell: ");
 		if (a == NULL)

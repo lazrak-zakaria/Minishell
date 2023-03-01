@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 11:54:19 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:11:59 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-
 typedef struct s_prompt
 {
 	t_list			*list_cmd;
@@ -72,7 +71,7 @@ typedef struct s_pipex
 }t_pipex;
 
 /*   */
-int	ft_parse(char *a, t_prompt *ys);
+int		ft_parse(char *a, t_prompt *ys);
 void	ft_free_lis(t_list *head);
 void	ft_putchar_fd(char c, int fd);
 
@@ -136,5 +135,7 @@ void	ft_free_env(t_env *current);
 
 int		check_agrs(char *s);
 void	sort_env(t_env *head);
+
+void	ft_wait_main(t_prompt *prompt, pid_t last_cmd);
 
 #endif
