@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:40:33 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 15:37:34 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 13:20:26 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int	ft_is_token(char *a)
 int	ft_part_3_5(t_queue *q)
 {
 	char	*a;
-	char	*b;
 	char	f;
 
 	f = 0;
