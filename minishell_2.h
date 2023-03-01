@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/28 10:49:29 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 11:30:26 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,10 @@ void	ft_part_norm5(t_elem *e, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 t_list	*ft_lstlast(t_list *lst);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 t_list	*ft_lstnew(void *content);
+
+t_list	*ft_copy_(t_queue *q);
+
+void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var);
+void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 
 #endif
