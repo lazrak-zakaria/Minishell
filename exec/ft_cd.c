@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:32:27 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/25 17:05:59 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/01 14:05:27 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	ft_home(t_prompt *prompt)
 
 int	ft_cd_2(char **args, t_prompt *prompt)
 {
-	if (!args[1] || my_strcmp(args[1], "~"))
+	if (!args[1])
 	{
 		if (ft_home(prompt) == 0)
 			return (0);
