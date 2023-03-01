@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 15:47:55 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/28 17:41:59 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/02/28 17:17:15 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,18 @@
 
 void	ft_wait_main(t_prompt *prompt, pid_t last_cmd);
 
-void	ft_child_child(t_pipex *pipex, t_prompt *prompt, int ret)
+int	ft_child_child(t_pipex *pipex, t_prompt *prompt, int ret)
 {
+	pid_t	pid;
+
 	while (prompt->list_cmd->next != NULL)
 	{
-		pipe(pipex->pipe2);
-		if (fork() == 0)
+		if (pipe(pipex->pipe2) == -1)
+			return (perror("pipe"), -1);
+		pid = fork();
+		if (pid == -1)
+			return (perror("fork"), -1);
+		if (pid == 0)
 		{
 			signal(SIGQUIT, SIG_DFL);
 			prompt->list_cmd->data->fd_1 = pipex->pipe2[1];
@@ -40,15 +46,21 @@ void	ft_child_child(t_pipex *pipex, t_prompt *prompt, int ret)
 		close(pipex->pipe2[1]);
 		prompt->list_cmd = prompt->list_cmd->next;
 	}
+	return (0);
 }
 
-void	first_cmd(t_pipex *pipex, t_prompt *prompt)
+int	first_cmd(t_pipex *pipex, t_prompt *prompt)
 {
-	int	ret;
+	int		ret;
+	pid_t	pid;
 
 	prompt->flag = 1;
-	pipe(pipex->pipe);
-	if (fork() == 0)
+	if (pipe(pipex->pipe) == -1)
+		return (perror("pipe"), -1);
+	pid = fork();
+	if (pid == -1)
+		return (perror("fork"), -1);
+	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
 		prompt->list_cmd->data->fd_1 = pipex->pipe[1];
@@ -66,14 +78,17 @@ void	first_cmd(t_pipex *pipex, t_prompt *prompt)
 	}
 	prompt->list_cmd = prompt->list_cmd->next;
 	close(pipex->pipe[1]);
+	return (0);
 }
 
-void	second_cmd(t_pipex *pipex, t_prompt *prompt)
+int	second_cmd(t_pipex *pipex, t_prompt *prompt)
 {
 	int		ret;
 	pid_t	last_cmd;
 
 	last_cmd = fork();
+	if (last_cmd == -1)
+		return (perror("fork"), -1);
 	if (last_cmd == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -90,6 +105,7 @@ void	second_cmd(t_pipex *pipex, t_prompt *prompt)
 	}
 	close(pipex->pipe[0]);
 	ft_wait_main(prompt, last_cmd);
+	return (0);
 }
 
 void	ft_wait_main(t_prompt *prompt, pid_t last_cmd)
@@ -124,10 +140,13 @@ void	ft_exec(t_prompt *prompt)
 		return ;
 	if (prompt->list_cmd->next != NULL)
 	{
-		first_cmd(&pipex, prompt);
+		if (first_cmd(&pipex, prompt) == -1)
+			return ;
 		if (prompt->list_cmd->next != NULL)
-			ft_child_child(&pipex, prompt, 0);
-		second_cmd(&pipex, prompt);
+			if (ft_child_child(&pipex, prompt, 0) == -1)
+				return ;
+		if (second_cmd(&pipex, prompt) == -1)
+			return ;
 	}
 	else
 		one_cmd(prompt, &pipex);
