@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/01 11:42:38 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/01 11:47:38 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	ft_signal(void)
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void	ft_minishell()
+void	ft_minishell(void)
 {
 	char	*a;
 
@@ -86,4 +86,3 @@ int	main(int ac, char **av, char **env)
 	g_prompt.list_cmd = NULL;
 	ft_minishell();
 }
-
