@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/20 11:54:27 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/02 18:23:27 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/02 18:24:35 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_sub_take(char *s, int *i, t_prompt *ys, t_vector *vec)
 		while (ff[j])
 			ft_push_back(vec, ff[j++]);
 		free(ff);
-		printf ("hhhhhhhhhh\n");
 	}
 	if (s[(*i)])
 		ft_push_back(vec, s[(*i)++]);
