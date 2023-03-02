@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:06:23 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/02 11:20:26 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/02 14:49:49 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	ft_cd_norm(t_prompt *prompt, char *buffer, char *oldpwd, char *buffer2);
 
 int	ft_cd(char **args, t_prompt *prompt, int a, int fd)
 {
-	char	buffer[PATH_MAX + 1];
-	char	buffer2[PATH_MAX + 1];
+	char	buffer[PATH_MAX];
+	char	buffer2[PATH_MAX];
 	int		exit_status;
 	char	*oldpwd;
 
