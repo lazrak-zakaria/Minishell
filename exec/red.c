@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:45:51 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/26 09:21:11 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:22:35 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	open_output_file(char *filename, char *relation)
 
 	if (relation[0] == 'T')
 		fd = open(filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	else if (relation[0] == 'A')
+	else
 		fd = open(filename, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	return (fd);
 }
@@ -40,7 +40,7 @@ int	open_input_file(char *filename, char *relation, int *j, t_list *cmd)
 
 	if (relation[0] == 'I')
 		fd = open(filename, O_RDONLY);
-	else if (relation[0] == 'H')
+	else
 		fd = ft_write_pipe(cmd->data->buffer[*j], j);
 	return (fd);
 }

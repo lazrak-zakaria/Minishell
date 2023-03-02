@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 16:26:02 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/02/27 10:59:30 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/02 11:21:56 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,6 @@ int	ft_unset_2(t_prompt *prompt, char **args)
 {
 	int		error;
 	t_env	*current;
-	t_env	*save;
 	int		i;
 
 	error = 0;
