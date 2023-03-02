@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 17:03:18 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/02 18:24:39 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/02 18:27:03 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,7 @@ void	ft_heredocline(char c, char *s, t_vector *vec, t_prompt *ys)
 	i = 0;
 	if (c == 'E')
 		while (s[i])
-		{
 			ft_sub_take(s, &i, ys, vec);
-		}
 	else
 	{
 		while (s[i])
