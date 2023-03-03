@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/19 16:42:28 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 15:03:03 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 15:49:36 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,23 @@ int	check_err(t_queue *q, char *a, char f)
 
 int	ft_err_1(char *a)
 {
-	if (ft_strlen(a) == 3)
-	{
-		if (a[0] == a[1])
+	if (a[0] == a[1] && !a[3])
 			ft_synerr(a, 2, -1);
-		else if (a[1] == a[2])
-			ft_synerr(a, 2, 1);
-		else
-			ft_synerr(a, 1, -1);
-	}
-	else if (ft_strlen(a) >= 3)
+	else if (a[0] == a[1])
 	{
 		if (a[2] == a[3])
 			ft_synerr(a, 2, 3);
-		else
+		else if (a[2] != a[3])
 			ft_synerr(a, 2, -1);
+	}
+	else if (a[0] != a[1] && !a[2])
+		ft_synerr(a, 1, -1);
+	else if (a[0] != a[1])
+	{
+		if (a[1] == a[2])
+			ft_synerr(a, 1, 2);
+		else if (a[1] != a[2])
+			ft_synerr(a, 1, -1);
 	}
 	return (1);
 }
