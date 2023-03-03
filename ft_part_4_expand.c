@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_part_4_expand.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:14:35 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 10:46:05 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/03 18:43:41 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,7 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 			ft_norm_expand(a, &vec, ys, &pr);
 		}
 	}
+	if (!vec.string)
+		ft_push_back(&vec, '\0');
 	return (vec.string);
 }
