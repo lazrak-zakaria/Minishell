@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:14:35 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 18:43:41 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 20:29:34 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,13 @@ void	ft_sub_expand(char *a, t_vector *vec, t_prompt *ys, int *i)
 			pr.f = 1;
 			ft_norm_expand(a, vec, ys, &pr);
 		}
-		if (!vec->string)
-		{
-			ft_push_back(vec, '\0');
-			vec->i--;
-		}	
 		(*i)++;
 	}
+	if (!vec->string)
+	{
+		ft_push_back(vec, '\0');
+		vec->i--;
+	}	
 }
 
 void	ft_sub_norm(char *a, t_vector *vec, int *i, int *flag)
@@ -109,7 +109,5 @@ char	*ft_expand_dollar(char *a, t_prompt *ys)
 			ft_norm_expand(a, &vec, ys, &pr);
 		}
 	}
-	if (!vec.string)
-		ft_push_back(&vec, '\0');
 	return (vec.string);
 }
