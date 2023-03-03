@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/27 13:02:54 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/01 13:55:25 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:49:09 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,6 @@ void	ft_signal_handler(int sg)
 		rl_redisplay();
 	}
 }
-
-/*
-	// struct termios    mini_shell; 
-
-	// tcgetattr(STDIN_FILENO, &mini_shell); 
-	// mini_shell.c_lflag &= ~ECHOCTL; 
-	// tcsetattr(STDIN_FILENO, TCSANOW, &mini_shell);
-*/
 
 void	ft_signal(void)
 {
