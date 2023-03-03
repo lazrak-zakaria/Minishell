@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 17:03:24 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/03 10:46:05 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/03 10:50:41 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	one_cmd(t_prompt *prompt, t_pipex *pipex)
 		{
 			wait(&prompt->exit_status);
 			if (prompt->exit_status == SIGINT)
-				prompt->exit_status = 128 + SIGINT;
+				prompt->exit_status = 130;
 			else if (prompt->exit_status == SIGQUIT)
-				prompt->exit_status = 128 + SIGQUIT;
+				prompt->exit_status = 131;
 			else
 				prompt->exit_status = prompt->exit_status / 256;
 		}
