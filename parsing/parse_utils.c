@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:00:16 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/02/26 14:10:09 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 10:22:29 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,23 @@ char	*ft_itoa(int n)
 // 		i++;
 // 	return (i);
 // }
+
+int	ft_ncmpstr(char *s1, char *s2, size_t n)
+{
+	size_t			i;
+	unsigned char	*a;
+	unsigned char	*b;
+
+	i = 0;
+	a = (unsigned char *)s1;
+	b = (unsigned char *)s2;
+	while (a[i] && b[i] && i < n)
+	{
+		if (a[i] != b[i])
+			return (a[i] - b[i]);
+		i++;
+	}
+	if (i == n)
+		return (0);
+	return (a[i] - b[i]);
+}
