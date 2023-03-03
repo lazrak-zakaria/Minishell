@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 10:24:38 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 10:29:07 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,6 @@ t_list	*ft_copy_(t_queue *q);
 
 void	ft_handle_out(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var);
 void	ft_handle_in(char *a, t_cmd_parse *cmd, t_queue **queue, t_var *var);
-int	ft_ncmpstr(char *s1, char *s2, size_t n);
+int		ft_ncmpstr(char *s1, char *s2, size_t n);
 
 #endif
