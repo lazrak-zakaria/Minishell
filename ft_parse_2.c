@@ -6,7 +6,7 @@
 /*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/28 17:04:51 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 10:28:42 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 13:27:10 by zlazrak          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	ft_bgs_check(char *a)
 	f = 0;
 	while (a[i] && f < 2)
 	{
-		if (a[i] == ' ')
+		if (a[i] == ' ' || a[i] == '\t')
 		{
 			++i;
 			continue ;
@@ -89,7 +89,7 @@ int	ft_bgs_check(char *a)
 		else
 		{
 			++f;
-			while (a[i] && a[i] != ' ')
+			while (a[i] && a[i] != ' ' && a[i] != '\t')
 				++i;
 		}
 	}
