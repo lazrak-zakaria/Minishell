@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/03 10:46:05 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/03 18:26:59 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	get_cmd_child(t_pipex *pipex, t_prompt *pt)
 	execve(pt->list_cmd->data->cmd[0], pt->list_cmd->data->cmd, pipex->envp);
 	write(2, "bash: ", 7);
 	perror(pt->list_cmd->data->cmd[0]);
+	if (access(pt->list_cmd->data->cmd[0], F_OK) == 0)
+		exit(126);
 	exit(127);
 }
 
