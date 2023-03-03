@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/12 10:37:47 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 10:47:43 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/03/03 11:30:31 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@
 # include <readline/history.h>
 # include "vector.h"
 # include <string.h>
-# include <fcntl.h>
 # include <sys/stat.h>
 # include <limits.h>
+# include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
 

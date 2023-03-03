@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_2.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zlazrak <zlazrak@student.42.fr>            +#+  +:+       +#+        */
+/*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/25 18:47:36 by zlazrak           #+#    #+#             */
-/*   Updated: 2023/03/03 10:29:07 by zlazrak          ###   ########.fr       */
+/*   Updated: 2023/03/03 11:30:58 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <fcntl.h>
+# include <sys/wait.h>
+# include <signal.h>
 # include "queue.h"
 # include "vector.h"
 
