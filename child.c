@@ -6,7 +6,7 @@
 /*   By: yel-mass <yel-mass@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/22 11:47:56 by yel-mass          #+#    #+#             */
-/*   Updated: 2023/03/03 18:26:59 by yel-mass         ###   ########.fr       */
+/*   Updated: 2023/04/09 08:08:05 by yel-mass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	get_cmd_path(char **paths, char **cmd)
 		while (*paths != NULL)
 		{
 			path = ft_strjoin(*paths, tmp);
-			if (path != NULL && access(path, F_OK | X_OK) == 0)
+			if (path != NULL && access(path, F_OK) == 0)
 			{
 				free(tmp);
 				free(cmd[0]);
